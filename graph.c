@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "graph.h"
+#include "queue.h"
 
 struct Vertex * construct_vertex(int i, const char * s)
 {
@@ -37,7 +38,7 @@ int free_vertex(struct Vertex * vert)
 	return 1;
 }
 
-int add_vertex(struct Vertex * a, struct Vertex * b)
+int add_edge(struct Vertex * a, struct Vertex * b)
 {
 	a->neighbours[a->n_neighbours] = b;
 	b->neighbours[b->n_neighbours] = a;
@@ -84,14 +85,19 @@ void print_neighbours(struct Vertex * a)
 	printf("\n");
 }
 
+struct Path * find_path(struct Vertex * a, struct Vertex * b)
+{
+	struct Queue * queue = construct_queue(MAX_BORDERS);
+}
+
 // driver code
 int main(void)
 {
 	struct Vertex * a = construct_vertex(1, "a");
 	struct Vertex * b = construct_vertex(2, "b");
-	struct Vertex * c = construct_vertex(3, "b");
-	add_vertex(a, b);
-	add_vertex(a, c);
+	struct Vertex * c = construct_vertex(3, "c");
+	add_edge(a, b);
+	add_edge(a, c);
 	printf("%d, %d\n", are_adjacent(a, b), are_adjacent(a, c));
 	print_neighbours(a);
 	return 0;

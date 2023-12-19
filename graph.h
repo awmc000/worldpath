@@ -10,6 +10,9 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+// Max. number of countries bordering one country.
+#define MAX_BORDERS 14
+
 struct Vertex {
 	int i_data; 					// integer data, country code
 	char * s_data; 					// string data, country name
@@ -44,7 +47,7 @@ int free_vertex(struct Vertex * vert);
  * @param b Pointer to a vertex.
  * @return 1 on success.
  **/
-int add_vertex(struct Vertex * a, struct Vertex * b);
+int add_edge(struct Vertex * a, struct Vertex * b);
 
 /**
  * @brief Returns if a is adjacent to b.
