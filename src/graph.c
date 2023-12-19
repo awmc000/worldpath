@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "graph.h"
-#include "queue.h"
+#include "../include/graph.h"
+#include "../include/queue.h"
 
 struct Vertex * construct_vertex(int i, const char * s)
 {

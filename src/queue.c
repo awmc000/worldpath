@@ -6,8 +6,8 @@
  * Alex McColm
  **/
 #include <stdlib.h>
-#include "queue.h"
-#include "graph.h"
+#include "../include/queue.h"
+#include "../include/graph.h"
 
 /*
 struct Queue {
