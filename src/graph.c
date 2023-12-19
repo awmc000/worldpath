@@ -85,20 +85,62 @@ void print_neighbours(struct Vertex * a)
 	printf("\n");
 }
 
-struct Path * find_path(struct Vertex * a, struct Vertex * b)
+/*
+struct Path {
+	int length;
+	struct Vertex ** vertices;
+};
+*/
+struct Path * construct_path()
 {
-	struct Queue * queue = construct_queue(MAX_BORDERS);
+	struct Path * new_path = calloc(1, sizeof(struct Path *));
+	
+	new_path->vertices = calloc(1, sizeof(struct Vertex *));
+
+	new_path->length = 0;
 }
 
-// driver code
-int main(void)
+int path_insert(struct Path * path, struct Vertex * vert)
 {
-	struct Vertex * a = construct_vertex(1, "a");
-	struct Vertex * b = construct_vertex(2, "b");
-	struct Vertex * c = construct_vertex(3, "c");
-	add_edge(a, b);
-	add_edge(a, c);
-	printf("%d, %d\n", are_adjacent(a, b), are_adjacent(a, c));
-	print_neighbours(a);
-	return 0;
+	// Reallocate vertices to hold length+1
+	path->vertices = realloc(path->vertices, path->length + 1);
+	
+	// Set vertices[length] to vert
+	path->vertices[path->length] = vert;
+
+	// Increment length
+	path->length++;
+}
+
+struct Path * find_path(struct Vertex * a, struct Vertex * b)
+{
+	struct Path * path = construct_path();
+
+	path_insert(path, a);
+
+	// Base case: a ~ b / a is adjacent to b, return (a,b)
+	if (are_adjacent(a, b))
+	{
+		path_insert(path, b);
+		return path;
+	}
+
+	// Normal case: a is not adjacent to b, use BFS	
+	struct Queue * queue = construct_queue(MAX_BORDERS);
+	// TODO:
+	// Initialize a hash map marking which nodes are visited
+	// Mark the start node as visited
+	//Initialize a datastructure mapping each node to its previous node
+	// Repeat until the queue is empty :
+	// 		Extract a node from the front of queue
+	// 		If the node is the target :
+	// 			Use the mapping to trace backward and extract the path
+	// 			Return the path
+	// 		For each neighbor N of the node :
+	// 			If N is unvisited :
+	// 				Mark N as visited
+	// 				Add N to the end of the queue
+	// 				Update the mapping so that N points to the node
+	// Return no path
+
 }

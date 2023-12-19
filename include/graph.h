@@ -22,11 +22,11 @@ struct Vertex {
 
 struct Path {
 	int length;
-	struct Vertex * vertices;
+	struct Vertex ** vertices;
 };
 
 /**
- * @brief Constructs a vertex to return.
+ * @brief Constructs a vertex on the heap to return.
  * @param i integer data, country code
  * @param s string data, country name
  * @return Pointer to vertex allocated on the heap.
@@ -61,6 +61,21 @@ int are_adjacent(struct Vertex * a, struct Vertex * b);
  * @brief Given a vertex, prints its neighbours to stdout.
  **/
 void print_neighbours(struct Vertex * a);
+
+/**
+ * @brief Constructs a Path object, basically an array
+ * of vertices, on the heap.
+ * @return Pointer to Path allocated on the heap. 
+ **/
+struct Path * construct_path();
+
+/**
+ * @brief Adds a vertex to a path.
+ * @param path Pointer to path to add to.
+ * @param vert Pointer to Vertex to add to path.
+ * @return 1 on success, 0 on failure.
+ **/
+int path_insert(struct Path * path, struct Vertex * vert);
 
 /**
  * @brief Uses breadth-first search to find a path between
