@@ -7,6 +7,8 @@
  * Alex McColm
  *
  **/
+#ifndef GRAPH_H
+#define GRAPH_H
 
 struct Vertex {
 	int i_data; 					// integer data, country code
@@ -66,3 +68,4 @@ void print_neighbours(struct Vertex * a);
  * otherwise.
  **/
 struct Path * find_path(struct Vertex * a, struct Vertex * b);
+#endif // GRAPH_H
