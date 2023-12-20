@@ -13,6 +13,7 @@
 
 #include "../include/graph.h"
 #include "../include/queue.h"
+#include "../include/hash_table.h"
 
 struct Vertex * construct_vertex(int i, const char * s)
 {
@@ -127,20 +128,47 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 
 	// Normal case: a is not adjacent to b, use BFS	
 	struct Queue * queue = construct_queue(MAX_BORDERS);
-	// TODO:
+	
 	// Initialize a hash map marking which nodes are visited
+	struct hash_table * visited = hashtable_create(300);
+	
 	// Mark the start node as visited
+	hashtable_insert(visited, a->s_data);
+
+	// TODO:
 	//Initialize a datastructure mapping each node to its previous node
+	struct hash_table * previous = dictionary_create(300);
+
 	// Repeat until the queue is empty :
-	// 		Extract a node from the front of queue
-	// 		If the node is the target :
-	// 			Use the mapping to trace backward and extract the path
-	// 			Return the path
-	// 		For each neighbor N of the node :
-	// 			If N is unvisited :
-	// 				Mark N as visited
-	// 				Add N to the end of the queue
-	// 				Update the mapping so that N points to the node
+	while (!queue_empty(queue))
+	{
+		// Extract a node from the front of queue
+		struct Vertex * next_vertex = dequeue(queue);
+		
+		// If the node is the target :
+		if (next_vertex == b)
+		{
+			// Use the mapping to trace backward and extract the path
+			// Return the path
+		}
+		// For each neighbor N of the node :
+		for (int i = 0; i < next_vertex->n_neighbours; i++)
+		{
+			struct Vertex * N = next_vertex->neighbours[i];
+			// If N is unvisited :
+			if (!hashtable_contains(visited, N->s_data))
+			{
+				// Mark N as visited
+				hashtable_insert(visited, N->s_data);
+
+				// Add N to the end of the queue
+				enqueue(queue, N);
+
+				// Update the mapping so that N points to the node
+				dictionary_insert(previous, N->s_data, next_vertex->s_data);
+			}
+		}
+	}
 	// Return no path
 
 }
