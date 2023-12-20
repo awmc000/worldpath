@@ -43,7 +43,16 @@ struct hash_table *hashtable_create(size_t initial_size)
 	new_ht->array_size = initial_size;
 	new_ht->array_elems = 0;
 	new_ht->hash = djb_hash;
+	new_ht->is_dictionary = 0;
 }
+
+struct hash_table *dictionary_create(size_t initial_size)
+{
+	struct hash_table * new_ht = hashtable_create(initial_size);
+	new_ht->is_dictionary = 1;
+	new_ht->values = calloc(initial_size, sizeof(char *));
+}
+
 
 /**
  * @brief Inserts a string into a hash table. Uses linear probing,
@@ -70,6 +79,30 @@ int hashtable_insert(struct hash_table *ht, char * s)
 
 	ht->strings[s_index] = s;
 	ht->array_elems++;
+	return 1;
+}
+
+int dictionary_insert(struct hash_table *ht, char * key, char * value)
+{
+	unsigned int s_index = (* ht->hash)(key) % ht->array_size;
+	unsigned int probes = 0;
+
+	while (ht->strings[s_index] != NULL)
+	{
+		s_index = (s_index + 1) % ht->array_size;
+		probes++;
+		if (probes == MAX_PROBES)
+		{
+			printf("Failed to add %s with key %s!\n", key, value);
+			return 0;
+		}
+	}
+
+	ht->strings[s_index] = key;
+	ht->values[s_index] = value;
+
+	ht->array_elems++;
+
 	return 1;
 }
 
@@ -114,7 +147,8 @@ int hashtable_remove(struct hash_table *ht, char * s)
  * key.
  * @param ht Pointer to the hash table
  * @param search_key String to find a match for
- * @return 1 if contained or 0 if not contained or operation failed
+ * @return Index of first occurence if contained 
+ * or 0 if not contained or operation failed
  **/
 int hashtable_contains(struct hash_table *ht, char * search_key)
 {
@@ -129,7 +163,7 @@ int hashtable_contains(struct hash_table *ht, char * search_key)
 	{
 		if (strcmp(ht->strings[s_index], search_key) == 0)
 		{
-			return 1;
+			return s_index;
 		}
 
 		s_index = (s_index + 1) % ht->array_size;
@@ -141,6 +175,16 @@ int hashtable_contains(struct hash_table *ht, char * search_key)
 	}
 
 	return 0;
+}
+
+char * dictionary_get_value(struct hash_table *dict, char * search_key)
+{
+	int index = hashtable_contains(dict, search_key);
+	
+	if (index == 0)
+		return NULL;
+
+	return dict->values[index];
 }
 
 /**

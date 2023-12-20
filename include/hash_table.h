@@ -22,6 +22,9 @@ struct hash_table {
 	unsigned int array_elems;
 	unsigned int (*hash)(char *);
 	char **strings;
+	
+	int is_dictionary;
+	char **values;
 };
 
 /**
@@ -30,11 +33,15 @@ struct hash_table {
  **/
 struct hash_table *hashtable_create(size_t initial_size);
 
+struct hash_table *dictionary_create(size_t initial_size);
+
 /**
  * @brief Inserts the string `s` to the hash table `ht`. 
  * @return 1 on success and 0 on failure.
  **/
 int hashtable_insert(struct hash_table *ht, char * s);
+
+int dictionary_insert(struct hash_table *ht, char * key, char * value);
 
 /**
  * @brief Removes the string `s` from the hash_table `ht`. 
@@ -48,6 +55,7 @@ int hashtable_remove(struct hash_table *ht, char * s);
  **/
 int hashtable_contains(struct hash_table *ht, char * search_key);
 
+char * dictionary_get_value(struct hash_table *dict, char * search_key);
 /**
  * @brief Resize the hash table to the specified size.
  * Uses the C library function `realloc()`.
