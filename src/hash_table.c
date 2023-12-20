@@ -7,9 +7,9 @@
  *
  * Implementation of the header file `hash_table.h`.
  */
-#include "hash_table.h"
 #include <stdlib.h>
 #include <string.h>
+#include "../include/hash_table.h"
 
 /**
  * @brief Generates a hash code for a string. Algorithm by Dan 
