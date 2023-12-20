@@ -214,6 +214,34 @@ START_TEST(test_hash_table_resize)
 }
 END_TEST
 
+START_TEST(test_hash_table_dictionary_create)
+{
+	struct hash_table *ht = dictionary_create(10);
+	ck_assert(ht != NULL);
+	ck_assert_int_eq(ht->is_dictionary, 1);
+}
+END_TEST
+/*
+START_TEST(test_hash_table_dictionary_insert)
+{
+	struct hash_table *ht = hashtable_create(10);
+	char *word = calloc(5 + 1, sizeof(char));
+	strcpy(word, "Hello");
+	hashtable_insert(ht, word);
+	ck_assert(ht != NULL);
+}
+END_TEST
+*/
+START_TEST(test_hash_table_dictionary_find)
+{
+	struct hash_table *ht = dictionary_create(10);
+	char *key = strdup("Canada");
+	char *value = strdup("United States of America");
+	dictionary_insert(ht, key, value);
+	ck_assert_str_eq(dictionary_get_value(ht, key), value);
+}
+END_TEST
+
 Suite * hash_table_suite(void)
 {
 	Suite *s;
@@ -240,6 +268,8 @@ Suite * hash_table_suite(void)
 	tcase_add_test(tc_core, test_hash_table_remove);
 	tcase_add_test(tc_core, test_hash_table_full);
 	//tcase_add_test(tc_core, test_hash_table_resize);
+	tcase_add_test(tc_core, test_hash_table_dictionary_create);
+	tcase_add_test(tc_core, test_hash_table_dictionary_find);
 	suite_add_tcase(s, tc_core);
 
 	return s;
