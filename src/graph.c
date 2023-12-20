@@ -96,12 +96,13 @@ struct Path * construct_path()
 {
 	struct Path * new_path = calloc(1, sizeof(struct Path *));
 	
-	new_path->vertices = calloc(1, sizeof(struct Vertex *));
+	new_path->vertices = calloc(1, sizeof(char *));
 
 	new_path->length = 0;
 }
 
-int path_insert(struct Path * path, struct Vertex * vert)
+// TODO: Make this function variadic
+int path_insert(struct Path * path, char * vert)
 {
 	// Reallocate vertices to hold length+1
 	path->vertices = realloc(path->vertices, path->length + 1);
@@ -113,16 +114,30 @@ int path_insert(struct Path * path, struct Vertex * vert)
 	path->length++;
 }
 
+int path_prepend(struct Path * path, struct Vertex * vert)
+{
+	return 0; // TODO: implement
+}
+
+void path_print(struct Path * path)
+{
+	for (int i = 0; i < path->length; i++)
+	{
+		fprintf(stderr, "[%d]: %s\n", i, path->vertices[i]);
+	}
+}
+
+
 struct Path * find_path(struct Vertex * a, struct Vertex * b)
 {
 	struct Path * path = construct_path();
 
-	path_insert(path, a);
 
 	// Base case: a ~ b / a is adjacent to b, return (a,b)
 	if (are_adjacent(a, b))
 	{
-		path_insert(path, b);
+		path_insert(path, a->s_data);
+		path_insert(path, b->s_data);
 		return path;
 	}
 
@@ -149,7 +164,20 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 		if (next_vertex == b)
 		{
 			// Use the mapping to trace backward and extract the path
+			char * next_prev = b->s_data;
+
+			while (strcmp(next_prev, a->s_data) != 0)
+			{
+				next_prev = dictionary_get_value(previous, next_prev);
+
+				// Todo: Implement and use path_prepend(path, next_prev);
+				path_insert(path, next_prev);
+			}
+
+			path_print(path);
+
 			// Return the path
+			return path;
 		}
 		// For each neighbor N of the node :
 		for (int i = 0; i < next_vertex->n_neighbours; i++)
@@ -170,5 +198,5 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 		}
 	}
 	// Return no path
-
+	return NULL;
 }

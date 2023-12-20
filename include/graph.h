@@ -22,7 +22,7 @@ struct Vertex {
 
 struct Path {
 	int length;
-	struct Vertex ** vertices;
+	char ** vertices;
 };
 
 /**
@@ -70,12 +70,26 @@ void print_neighbours(struct Vertex * a);
 struct Path * construct_path();
 
 /**
- * @brief Adds a vertex to a path.
+ * @brief Adds a string to the end of a path. TODO: make variadic.
  * @param path Pointer to path to add to.
- * @param vert Pointer to Vertex to add to path.
+ * @param vert Pointer to string to add to path.
  * @return 1 on success, 0 on failure.
  **/
-int path_insert(struct Path * path, struct Vertex * vert);
+int path_insert(struct Path * path, char * vert);
+
+/**
+ * @brief Adds a string to the beginning of a path. TODO: make variadic.
+ * @param path Pointer to path to add to.
+ * @param vert Pointer to string to add to path.
+ * @return 1 on success, 0 on failure.
+ **/
+int path_prepend(struct Path * path, struct Vertex * vert);
+
+/**
+ * @brief Prints the contents of a path in order.
+ * @param path Pointer to a Path structure.
+ **/
+void path_print(struct Path * path);
 
 /**
  * @brief Uses breadth-first search to find a path between
