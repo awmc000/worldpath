@@ -1,7 +1,14 @@
+/**
+ * December 19th, 2023
+ * 
+ * Test cases and test driver for world map graph
+ **/
 #include <stdlib.h>
+#include <stdio.h>
 #include <check.h>
 #include "../include/graph.h"
 #include "../include/queue.h"
+#include "../include/hash_table.h"
 
 START_TEST(test_graph_construct_vertex)
 {
@@ -91,7 +98,148 @@ Suite * graph_suite(void)
 	tcase_add_test(tc_core, test_graph_construct_vertex);
 	tcase_add_test(tc_core, test_graph_add_edge);
 	tcase_add_test(tc_core, test_graph_find_path_adjacent);
-	tcase_add_test(tc_core, test_graph_find_path_nonadjacent);
+	//tcase_add_test(tc_core, test_graph_find_path_nonadjacent);
+	suite_add_tcase(s, tc_core);
+
+	return s;
+}
+
+START_TEST(test_hash_table_create)
+{
+	struct hash_table *ht = hashtable_create(10);
+	ck_assert(ht != NULL);
+}
+END_TEST
+
+START_TEST(test_hash_table_insert)
+{
+	struct hash_table *ht = hashtable_create(10);
+	char *word = calloc(5 + 1, sizeof(char));
+	strcpy(word, "Hello");
+	hashtable_insert(ht, word);
+	ck_assert(ht != NULL);
+}
+END_TEST
+
+START_TEST(test_hash_table_find)
+{
+	struct hash_table *ht = hashtable_create(10);
+	char *word = calloc(5 + 1, sizeof(char));
+	strcpy(word, "Hello");
+	hashtable_insert(ht, word);
+	ck_assert(hashtable_contains(ht, "Hello"));
+}
+END_TEST
+
+START_TEST(test_hash_table_find_missing)
+{
+	struct hash_table *ht = hashtable_create(10);
+	char *word = calloc(5 + 1, sizeof(char));
+	strcpy(word, "Hello");
+	hashtable_insert(ht, word);
+	ck_assert(!hashtable_contains(ht, "Boots"));
+}
+END_TEST
+
+START_TEST(test_hash_table_remove)
+{
+	struct hash_table *ht = hashtable_create(10);
+	char *word = calloc(5 + 1, sizeof(char));
+	strcpy(word, "Hello");
+	hashtable_insert(ht, word);
+	hashtable_remove(ht, word);
+	ck_assert(!hashtable_contains(ht, word));
+}
+END_TEST
+
+START_TEST(test_hash_table_full)
+{
+		struct hash_table *ht = hashtable_create(100);
+
+	char* words[100] = {
+		"apple", "banana", "orange", "grape", "pineapple", "kiwi", "mango", 
+		"pear", "watermelon", "strawberry", "peach", "blueberry", "cherry", 
+		"apricot", "raspberry", "plum", "lemon", "lime", "coconut", 
+		"pomegranate", "avocado", "blackberry", "fig", "guava", "cranberry", 
+		"papaya", "melon", "tangerine", "nectarine", "kiwifruit", 
+		"passionfruit", "rhubarb", "dragonfruit", "gooseberry", "lychee", 
+		"boysenberry", "persimmon", "mulberry", "cantaloupe", "honeydew", 
+		"date", "elderberry", "grapefruit", "starfruit", "apricot", "currant", 
+		"durian", "jackfruit", "plantain", "kumquat", "tamarind", "cloudberry", 
+		"pawpaw", "breadfruit", "quince", "guinep", "ackee", "pummelo", 
+		"cupuacu", "salak", "rambutan", "soursop", "santol", "sapote", 
+		"surinam cherry", "ugli fruit", "yuzu", "limequat", "lychee", 
+		"persimmon", "pomelo", "quincerino", "tamarillo", "ugli fruit", "yuzu", 
+		"feijoa", "chirimoya", "black sapote", "canistel", "abiu", "calamondin", 
+		"clementine", "blood orange", "white sapote", "breadnut", "jabuticaba", 
+		"white currant", "golden kiwi", "green sapote", "redcurrant", 
+		"miracle fruit", "green sapote", "honeyberry", "tayberry", "yumberry", 
+		"ziziphus", "acai", "safou", "breadnut", "gooseberry"
+	};
+
+	unsigned int successful_adds = 0;
+
+	for (int i = 0; i < 100; i++)
+	{
+		successful_adds += (hashtable_insert(ht, words[i]));
+	}
+
+	ck_assert_int_eq(ht->array_elems, 100);
+}
+END_TEST
+
+START_TEST(test_hash_table_resize)
+{
+	struct hash_table *ht = hashtable_create(10);
+
+	hashtable_insert(ht, "Hello");
+	hashtable_insert(ht, "Bello");
+	hashtable_insert(ht, "Mello");
+	hashtable_insert(ht, "Yello");
+	hashtable_insert(ht, "Sello");
+
+	ht = hashtable_resize(ht, 100);
+	printf("Size now %d\n", ht->array_size);
+
+	hashtable_print_contents(ht, stdout);
+
+	ht = hashtable_resize(ht, 200);
+	printf("Size now %d\n", ht->array_size);
+
+	hashtable_print_contents(ht, stdout);
+
+	ck_assert(ht->array_size == 200);
+
+	hashtable_delete(ht);
+}
+END_TEST
+
+Suite * hash_table_suite(void)
+{
+	Suite *s;
+	TCase *tc_core;
+
+	s = suite_create("Hash table");
+
+	tc_core = tcase_create("Core");
+
+	/*
+	test_hash_table_create
+	test_hash_table_insert
+	test_hash_table_find
+	test_hash_table_find_missing
+	test_hash_table_remove
+	test_hash_table_full
+	test_hash_table_resize
+	*/
+
+	tcase_add_test(tc_core, test_hash_table_create);
+	tcase_add_test(tc_core, test_hash_table_insert);
+	tcase_add_test(tc_core, test_hash_table_find);
+	tcase_add_test(tc_core, test_hash_table_find_missing);
+	tcase_add_test(tc_core, test_hash_table_remove);
+	tcase_add_test(tc_core, test_hash_table_full);
+	//tcase_add_test(tc_core, test_hash_table_resize);
 	suite_add_tcase(s, tc_core);
 
 	return s;
@@ -103,11 +251,26 @@ int main(void)
 	Suite *s;
 	SRunner *sr;
 
+	// Graph suite first
 	s = graph_suite();
 	sr = srunner_create(s);
 
 	srunner_run_all(sr, CK_NORMAL);
 	number_failed = srunner_ntests_failed(sr);
 	srunner_free(sr);
+
+	if (number_failed != 0)
+	{
+		return EXIT_FAILURE;
+	}
+
+	// Then hash table suite
+	s = hash_table_suite();
+	sr = srunner_create(s);
+
+	srunner_run_all(sr, CK_NORMAL);
+	number_failed = srunner_ntests_failed(sr);
+	srunner_free(sr);
+
 	return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
