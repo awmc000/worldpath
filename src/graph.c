@@ -114,9 +114,24 @@ int path_insert(struct Path * path, char * vert)
 	path->length++;
 }
 
-int path_prepend(struct Path * path, struct Vertex * vert)
+int path_prepend(struct Path * path, char * vert)
 {
-	return 0; // TODO: implement
+	// Reallocate vertices to hold length+1
+	path->vertices = realloc(path->vertices, path->length + 1);
+	
+	// Copy over all existing vertices to the right one space
+	for (int i = 1; i < path->length - 1; i++)
+	{
+		char * tmp = path->vertices[i];
+		path->vertices[i] = path->vertices[i + 1];
+		path->vertices[i+1] = tmp;
+	}
+
+	// Set vertices[0] to vert
+	path->vertices[0] = vert;
+
+	// Increment length
+	path->length++;
 }
 
 void path_print(struct Path * path)

@@ -83,7 +83,7 @@ int path_insert(struct Path * path, char * vert);
  * @param vert Pointer to string to add to path.
  * @return 1 on success, 0 on failure.
  **/
-int path_prepend(struct Path * path, struct Vertex * vert);
+int path_prepend(struct Path * path, char * vert);
 
 /**
  * @brief Prints the contents of a path in order.
