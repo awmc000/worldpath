@@ -38,6 +38,7 @@ struct hash_table *hashtable_create(size_t initial_size)
 {
 	struct hash_table *new_ht = calloc(1, 
 		sizeof(struct hash_table) + initial_size * sizeof(char *));
+		// Can this be removed?   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 	new_ht->strings = calloc(initial_size, sizeof(char *));
 	new_ht->array_size = initial_size;
@@ -49,8 +50,10 @@ struct hash_table *hashtable_create(size_t initial_size)
 struct hash_table *dictionary_create(size_t initial_size)
 {
 	struct hash_table * new_ht = hashtable_create(initial_size);
+	fprintf(stderr, "Created ht\n");
 	new_ht->is_dictionary = 1;
 	new_ht->values = calloc(initial_size, sizeof(char *));
+	fprintf(stderr, "Set ht to dictionary and allocated values array: %p\n", new_ht->values);
 }
 
 
@@ -184,7 +187,9 @@ char * dictionary_get_value(struct hash_table *dict, char * search_key)
 	if (index == 0)
 		return NULL;
 
-	return dict->values[index];
+	char * value = dict->values[index];
+
+	return value;
 }
 
 /**
@@ -200,7 +205,6 @@ struct hash_table * hashtable_resize(struct hash_table *ht, size_t size)
 	if (new_ht == NULL)
 	{
 		return ht;
-	
 	}
 	
 	ht = new_ht;
@@ -255,4 +259,10 @@ void hashtable_delete(struct hash_table *ht)
 		}
 	}
 	free(ht->strings);
+}
+
+void dictionary_delete(struct hash_table * dict)
+{
+	free(dict->values);
+	hashtable_delete(dict);
 }

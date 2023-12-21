@@ -72,4 +72,6 @@ void hashtable_print_contents(struct hash_table *ht, FILE *fp);
  **/
 void hashtable_delete(struct hash_table *ht);
 
+void dictionary_delete(struct hash_table * dict);
+
 #endif // HASH_TABLE_H
