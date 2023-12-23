@@ -45,6 +45,7 @@ struct hash_table *hashtable_create(size_t initial_size)
 	new_ht->array_elems = 0;
 	new_ht->hash = djb_hash;
 	new_ht->is_dictionary = 0;
+	return new_ht;
 }
 
 struct hash_table *dictionary_create(size_t initial_size)
@@ -54,6 +55,7 @@ struct hash_table *dictionary_create(size_t initial_size)
 	new_ht->is_dictionary = 1;
 	new_ht->values = calloc(initial_size, sizeof(char *));
 	fprintf(stderr, "Set ht to dictionary and allocated values array: %p\n", new_ht->values);
+	return new_ht;
 }
 
 

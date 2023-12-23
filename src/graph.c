@@ -18,7 +18,6 @@
 struct Vertex * construct_vertex(int i, const char * s)
 {
 	struct Vertex * new_vertex = calloc(1, sizeof(struct Vertex));
-
 	new_vertex->i_data = i;
 	new_vertex->s_data = strdup(s);
 	new_vertex->n_neighbours = 0;
@@ -102,6 +101,7 @@ struct Path * construct_path()
 }
 
 // TODO: Make this function variadic
+// O(1)
 int path_insert(struct Path * path, char * vert)
 {
 	// Reallocate vertices to hold length+1
@@ -114,13 +114,28 @@ int path_insert(struct Path * path, char * vert)
 	path->length++;
 }
 
+void path_reverse(struct Path * path)
+{
+	for (int i = 0; i < path->length / 2; i++)
+	{
+		// A -> TEMP
+		char * temp = path->vertices[i];
+		// B -> A
+		path->vertices[i] = path->vertices[path->length - 1 - i];
+		// TEMP -> B
+		path->vertices[path->length - 1 - i] = temp;
+	}
+}
+
+// TODO: Make this function variadic
+// O(N)
 int path_prepend(struct Path * path, char * vert)
 {
 	// Reallocate vertices to hold length+1
 	path->vertices = realloc(path->vertices, path->length + 1);
 	
 	// Copy over all existing vertices to the right one space
-	for (int i = 1; i < path->length - 1; i++)
+	for (int i = 1; i < path->length - 2; i++)
 	{
 		char * tmp = path->vertices[i];
 		path->vertices[i] = path->vertices[i + 1];
@@ -134,11 +149,16 @@ int path_prepend(struct Path * path, char * vert)
 	path->length++;
 }
 
+// O(N)
 void path_print(struct Path * path)
 {
+	fprintf(stderr, "printing path length %d\n", path->length);
 	for (int i = 0; i < path->length; i++)
 	{
-		fprintf(stderr, "[%d]: %s\n", i, path->vertices[i]);
+		if (path->vertices[i] != NULL)
+			fprintf(stderr, "[%d]: %s\n", i, path->vertices[i]);
+		else
+			fprintf(stderr, "%d is null\n", i);
 	}
 }
 
@@ -158,7 +178,8 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 
 	// Normal case: a is not adjacent to b, use BFS	
 	struct Queue * queue = construct_queue(MAX_BORDERS);
-	
+	enqueue(queue, a);
+
 	// Initialize a hash map marking which nodes are visited
 	struct hash_table * visited = hashtable_create(300);
 	
@@ -167,30 +188,35 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 
 	// TODO:
 	//Initialize a datastructure mapping each node to its previous node
-	struct hash_table * previous = dictionary_create(300);
-
+	fprintf(stderr, "constructing previous hash table\n");
+	struct hash_table * previous = dictionary_create(300); // seg fault occurs inside this call
+	fprintf(stderr, "created previous\n");
+	//fprintf(stderr, "%s\n", previous->values[0]); -- TRIGGERS SEGFAULT?
+	//fprintf(stderr, "constructed previous hash table\n");
 	// Repeat until the queue is empty :
 	while (!queue_empty(queue))
 	{
 		// Extract a node from the front of queue
 		struct Vertex * next_vertex = dequeue(queue);
-		
+
 		// If the node is the target :
 		if (next_vertex == b)
 		{
 			// Use the mapping to trace backward and extract the path
 			char * next_prev = b->s_data;
-
+			path_insert(path, b->s_data);
 			while (strcmp(next_prev, a->s_data) != 0)
 			{
 				next_prev = dictionary_get_value(previous, next_prev);
-
-				// Todo: Implement and use path_prepend(path, next_prev);
+				fprintf(stderr, "next_prev = %s\n", next_prev);
+				//path_prepend(path, next_prev);
 				path_insert(path, next_prev);
 			}
 
 			path_print(path);
 
+			// Reverse
+			path_reverse(path);
 			// Return the path
 			return path;
 		}
@@ -206,12 +232,17 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 
 				// Add N to the end of the queue
 				enqueue(queue, N);
+				fprintf(stderr, "Enqueued %s\n", N->s_data);
 
 				// Update the mapping so that N points to the node
 				dictionary_insert(previous, N->s_data, next_vertex->s_data);
+				fprintf(stderr, "Previous of %s is %s\n", N->s_data, next_vertex->s_data);
 			}
 		}
 	}
+
+	dictionary_delete(previous);
+	hashtable_delete(visited);
 	// Return no path
 	return NULL;
 }
