@@ -209,7 +209,6 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 			{
 				next_prev = dictionary_get_value(previous, next_prev);
 				fprintf(stderr, "next_prev = %s\n", next_prev);
-				//path_prepend(path, next_prev);
 				path_insert(path, next_prev);
 			}
 
@@ -228,7 +227,12 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 			if (!hashtable_contains(visited, N->s_data))
 			{
 				// Mark N as visited
+
+				fprintf(stderr, "Before visited insert: Size of visited ht is %d with %d elems\n", 
+					visited->array_size, visited->array_elems);
 				hashtable_insert(visited, N->s_data);
+				fprintf(stderr, "After visited insert: Size of visited ht is %d with %d elems\n", 
+					visited->array_size, visited->array_elems);
 
 				// Add N to the end of the queue
 				enqueue(queue, N);
@@ -237,6 +241,9 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 				// Update the mapping so that N points to the node
 				dictionary_insert(previous, N->s_data, next_vertex->s_data);
 				fprintf(stderr, "Previous of %s is %s\n", N->s_data, next_vertex->s_data);
+				fprintf(stderr, "Size of visited ht is %d with %d elems\n", 
+					visited->array_size, visited->array_elems);
+				hashtable_print_contents(visited, stderr);
 			}
 		}
 	}
