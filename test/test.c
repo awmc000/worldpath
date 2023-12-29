@@ -76,11 +76,7 @@ START_TEST(test_graph_find_path_nonadjacent)
 	ck_assert_int_eq(add_edge(b, d), 1);
 	ck_assert_int_eq(add_edge(d, e), 1);
 
-	fprintf(stderr, "about to compute path\n");
-
 	struct Path * a_to_b = find_path(a, e);
-
-	fprintf(stderr, "computed path\n");
 	
 	path_print(a_to_b);
 
@@ -92,6 +88,42 @@ START_TEST(test_graph_find_path_nonadjacent)
 }
 END_TEST
 
+START_TEST(test_graph_find_path_complex)
+{
+	/*
+	 * Construct this graph:
+	 *          A
+	 *        / |  \
+	 *       B  C---D
+	 *       |     /  
+	 *       E    /
+	 *       |   /
+	 *       F  /
+	 *       | /
+	 *       G/
+	 */
+	struct Vertex * a = construct_vertex(0, "A");
+	struct Vertex * b = construct_vertex(1, "B");
+	struct Vertex * c = construct_vertex(2, "C");
+	struct Vertex * d = construct_vertex(3, "D");
+	struct Vertex * e = construct_vertex(4, "E");
+	struct Vertex * f = construct_vertex(4, "F");
+	struct Vertex * g = construct_vertex(4, "G");
+
+	ck_assert_int_eq(add_edge(a, b), 1);
+	ck_assert_int_eq(add_edge(a, c), 1);
+	ck_assert_int_eq(add_edge(a, d), 1);
+	ck_assert_int_eq(add_edge(b, e), 1);
+	ck_assert_int_eq(add_edge(e, f), 1);
+	ck_assert_int_eq(add_edge(f, g), 1);
+	ck_assert_int_eq(add_edge(d, g), 1);
+
+	struct Path * a_to_g = find_path(a, g);
+
+	path_print(a_to_g);
+
+}
+END_TEST
 Suite * graph_suite(void)
 {
 	Suite *s;
@@ -105,6 +137,7 @@ Suite * graph_suite(void)
 	tcase_add_test(tc_core, test_graph_add_edge);
 	tcase_add_test(tc_core, test_graph_find_path_adjacent);
 	tcase_add_test(tc_core, test_graph_find_path_nonadjacent);
+	//tcase_add_test(tc_core, test_graph_find_path_complex);
 	suite_add_tcase(s, tc_core);
 
 	return s;
