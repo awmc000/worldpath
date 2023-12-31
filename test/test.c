@@ -118,6 +118,7 @@ START_TEST(test_graph_find_path_complex)
 	ck_assert_int_eq(add_edge(f, g), 1);
 	ck_assert_int_eq(add_edge(d, g), 1);
 
+	// We should get the path A -> D -> G
 	struct Path * a_to_g = find_path(a, g);
 
 	path_print(a_to_g);
@@ -314,6 +315,86 @@ Suite * hash_table_suite(void)
 	return s;
 }
 
+START_TEST(test_queue_basic_use)
+{
+	// Declare pointer
+	struct Queue * queue;
+
+	// Construct
+	queue = construct_queue(10);
+
+	// Make some vertices
+	struct Vertex * a = construct_vertex(1, "A");
+	struct Vertex * b = construct_vertex(2, "B");
+	struct Vertex * c = construct_vertex(3, "C");
+	struct Vertex * d = construct_vertex(4, "D");
+	struct Vertex * e = construct_vertex(5, "E");
+	struct Vertex * f = construct_vertex(6, "F");
+	struct Vertex * g = construct_vertex(7, "G");
+	struct Vertex * h = construct_vertex(8, "H");
+	struct Vertex * i = construct_vertex(9, "I");
+	struct Vertex * j = construct_vertex(10, "J");
+
+	enqueue(queue, a);
+	ck_assert_int_eq(queue->num_entries, 1);
+
+	enqueue(queue, b);
+	ck_assert_int_eq(queue->num_entries, 2);
+
+	enqueue(queue, c);
+	ck_assert_int_eq(queue->num_entries, 3);
+
+	enqueue(queue, d);
+	ck_assert_int_eq(queue->num_entries, 4);
+
+	enqueue(queue, e);
+	ck_assert_int_eq(queue->num_entries, 5);
+
+	enqueue(queue, f);
+	ck_assert_int_eq(queue->num_entries, 6);
+
+	enqueue(queue, g);
+	ck_assert_int_eq(queue->num_entries, 7);
+
+	enqueue(queue, h);
+	ck_assert_int_eq(queue->num_entries, 8);
+
+	enqueue(queue, i);
+	ck_assert_int_eq(queue->num_entries, 9);
+
+	enqueue(queue, j);
+	ck_assert_int_eq(queue->num_entries, 10);
+	
+	ck_assert(!queue_empty(queue));
+	ck_assert(queue_full(queue));
+
+	for (int ct = 0; ct < 10; ct++)
+		dequeue(queue);
+	
+	ck_assert(queue_empty(queue));
+
+	dequeue(queue);
+
+	// Destroy when done
+	destroy_queue(queue);
+}
+END_TEST
+
+Suite * queue_suite(void)
+{
+	Suite *s;
+	TCase *tc_core;
+
+	s = suite_create("Queue");
+
+	tc_core = tcase_create("Core");
+
+	tcase_add_test(tc_core, test_queue_basic_use);
+	suite_add_tcase(s, tc_core);
+
+	return s;
+}
+
 int main(void)
 {
 	int number_failed;
@@ -337,6 +418,13 @@ int main(void)
 	s = hash_table_suite();
 	sr = srunner_create(s);
 
+	srunner_run_all(sr, CK_NORMAL);
+	number_failed = srunner_ntests_failed(sr);
+	srunner_free(sr);
+
+	// Queue suite
+	s = queue_suite();
+	sr = srunner_create(s);
 	srunner_run_all(sr, CK_NORMAL);
 	number_failed = srunner_ntests_failed(sr);
 	srunner_free(sr);
