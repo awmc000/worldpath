@@ -148,6 +148,7 @@ int hashtable_remove(struct hash_table *ht, char * s)
 		}
 	}
 
+	return 0;
 }
 
 /**

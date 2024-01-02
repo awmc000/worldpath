@@ -112,6 +112,8 @@ struct Path * construct_path()
 	}
 
 	new_path->length = 0;
+
+	return new_path;
 }
 
 // TODO: Make this function variadic
@@ -120,12 +122,15 @@ int path_insert(struct Path * path, char * vert)
 {
 	// Reallocate vertices to hold length+1
 	path->vertices = realloc(path->vertices, path->length + 1);
+	// TODO: handle realloc failure
 	
 	// Set vertices[length] to vert
 	path->vertices[path->length] = vert;
 
 	// Increment length
 	path->length++;
+
+	return 1;
 }
 
 void path_reverse(struct Path * path)
@@ -147,6 +152,7 @@ int path_prepend(struct Path * path, char * vert)
 {
 	// Reallocate vertices to hold length+1
 	path->vertices = realloc(path->vertices, path->length + 1);
+	// TODO: handle realloc failure
 	
 	// Copy over all existing vertices to the right one space
 	for (int i = 1; i < path->length - 2; i++)
@@ -161,6 +167,8 @@ int path_prepend(struct Path * path, char * vert)
 
 	// Increment length
 	path->length++;
+
+	return 1;
 }
 
 // O(N)
