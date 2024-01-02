@@ -13,3 +13,10 @@
 /*.sln
 ## Visual Studio
 /.vs
+/*.vcxproj.user
+/*.dir
+/x64
+/Debug
+/MinSizeRel
+/Release
+/RelWithDebInfo
