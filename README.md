@@ -1,5 +1,6 @@
 # Core Idea
 A game for the Nintendo DS that has the player make paths between countries on the world map. Uses graph theory and breadth first search.
+A reimplementation of [Travle](https://imois.in/games/travle/) by Oisin Carroll.
 # Technologies and libraries used
 - C programming language
 - GNU compiler collection
