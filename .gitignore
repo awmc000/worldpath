@@ -1,0 +1,15 @@
+#############################
+# Build Artifacts
+#############################
+## CMake
+/CMakeCache.txt
+/cmake_install.cmake
+/CMakeFiles
+## CMake "Makefiles" Generator
+/Makefile
+## CMake "Visual Studio" Generator
+/*.vcxproj
+/*.vcxproj.filters
+/*.sln
+## Visual Studio
+/.vs
