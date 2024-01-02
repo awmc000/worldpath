@@ -155,7 +155,8 @@ START_TEST(test_hash_table_insert)
 {
 	struct hash_table *ht = hashtable_create(10);
 	char *word = calloc(5 + 1, sizeof(char));
-	strcpy(word, "Hello");
+	ck_assert_msg(word, "calloc ran out of memory, test cannot continue");
+	memcpy(word, "Hello", 5 + 1);
 	hashtable_insert(ht, word);
 	ck_assert(ht != NULL);
 }
@@ -165,7 +166,8 @@ START_TEST(test_hash_table_find)
 {
 	struct hash_table *ht = hashtable_create(10);
 	char *word = calloc(5 + 1, sizeof(char));
-	strcpy(word, "Hello");
+	ck_assert_msg(word, "calloc ran out of memory, test cannot continue");
+	memcpy(word, "Hello", 5 + 1);
 	hashtable_insert(ht, word);
 	ck_assert(hashtable_contains(ht, "Hello"));
 }
@@ -175,7 +177,8 @@ START_TEST(test_hash_table_find_missing)
 {
 	struct hash_table *ht = hashtable_create(10);
 	char *word = calloc(5 + 1, sizeof(char));
-	strcpy(word, "Hello");
+	ck_assert_msg(word, "calloc ran out of memory, test cannot continue");
+	memcpy(word, "Hello", 5 + 1);
 	hashtable_insert(ht, word);
 	ck_assert(!hashtable_contains(ht, "Boots"));
 }
@@ -185,7 +188,8 @@ START_TEST(test_hash_table_remove)
 {
 	struct hash_table *ht = hashtable_create(10);
 	char *word = calloc(5 + 1, sizeof(char));
-	strcpy(word, "Hello");
+	ck_assert_msg(word, "calloc ran out of memory, test cannot continue");
+	memcpy(word, "Hello", 5 + 1);
 	hashtable_insert(ht, word);
 	hashtable_remove(ht, word);
 	ck_assert(!hashtable_contains(ht, word));
@@ -266,7 +270,8 @@ START_TEST(test_hash_table_dictionary_insert)
 {
 	struct hash_table *ht = hashtable_create(10);
 	char *word = calloc(5 + 1, sizeof(char));
-	strcpy(word, "Hello");
+	ck_assert_msg(word, "calloc ran out of memory, test cannot continue");
+	memcpy(word, "Hello", 5 + 1);
 	hashtable_insert(ht, word);
 	ck_assert(ht != NULL);
 }

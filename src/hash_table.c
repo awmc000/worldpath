@@ -9,6 +9,7 @@
  */
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "../include/hash_table.h"
 
 /**
@@ -39,8 +40,10 @@ struct hash_table *hashtable_create(size_t initial_size)
 	struct hash_table *new_ht = calloc(1, 
 		sizeof(struct hash_table) + initial_size * sizeof(char *));
 		// Can this be removed?   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	assert(new_ht != NULL);
 
 	new_ht->strings = calloc(initial_size, sizeof(char *));
+	assert(new_ht->strings != NULL);
 	new_ht->array_size = initial_size;
 	new_ht->array_elems = 0;
 	new_ht->hash = djb_hash;
@@ -209,8 +212,15 @@ struct hash_table * hashtable_resize(struct hash_table *ht, size_t size)
 		return ht;
 	}
 	
+	new_ht->strings = realloc(ht->strings, sizeof(char *) * size);
+
+	if (new_ht->strings == NULL)
+	{
+		free(new_ht);
+		return ht;
+	}
+
 	ht = new_ht;
-	ht->strings = realloc(ht->strings, sizeof(char *) * size);
 	ht->array_size = size;
 	
 	return ht;
