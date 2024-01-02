@@ -1,6 +1,8 @@
 #############################
 # Build Artifacts
 #############################
+## Common convention is to use "build" folder for all artifacts.
+/build
 ## CMake
 /CMakeCache.txt
 /cmake_install.cmake
@@ -20,3 +22,5 @@
 /MinSizeRel
 /Release
 /RelWithDebInfo
+## vcpkg
+vcpkg_installed
