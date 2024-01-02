@@ -208,7 +208,7 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 			while (strcmp(next_prev, a->s_data) != 0)
 			{
 				next_prev = dictionary_get_value(previous, next_prev);
-				fprintf(stderr, "next_prev = %s\n", next_prev);
+				//fprintf(stderr, "next_prev = %s\n", next_prev);
 				path_insert(path, next_prev);
 			}
 
@@ -227,29 +227,29 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 			if (!hashtable_contains(visited, N->s_data))
 			{
 
-				fprintf(stderr, "Before visited insert: Size of visited ht is %d with %d elems\n", 
-					visited->array_size, visited->array_elems);
+				// fprintf(stderr, "Before visited insert: Size of visited ht is %d with %d elems\n", 
+				// 	visited->array_size, visited->array_elems);
 
 				// Mark N as visited
 				hashtable_insert(visited, N->s_data);
 
-				fprintf(stderr, "After visited insert: Size of visited ht is %d with %d elems\n", 
-					visited->array_size, visited->array_elems);
+				// fprintf(stderr, "After visited insert: Size of visited ht is %d with %d elems\n", 
+				// 	visited->array_size, visited->array_elems);
 
-				// Add N to the end of the queue
-				fprintf(stderr, "Before enqueuing N, Size of visited ht is %d with %d elems\n", 
+				fprintf(stderr, "====\nBefore enqueuing N, Size of visited ht is %d with %d elems\n", 
 					visited->array_size, visited->array_elems);
-				enqueue(queue, N);
+				// Add N to the end of the queue
+				enqueue(queue, N); // It seems that this is where visited turns to null. But WHY?
 				fprintf(stderr, "Enqueued %s\n", N->s_data);
 
-				fprintf(stderr, "Before inserting previous, Size of visited ht is %d with %d elems\n", 
+				fprintf(stderr, "After enqueuing N, Size of visited ht is %d with %d elems\n====\n", 
 					visited->array_size, visited->array_elems);
 
 				// Update the mapping so that N points to the node
 				dictionary_insert(previous, N->s_data, next_vertex->s_data);
-				fprintf(stderr, "Previous of %s is %s\n", N->s_data, next_vertex->s_data);
-				fprintf(stderr, "After inserting previous, Size of visited ht is %d with %d elems\n", 
-					visited->array_size, visited->array_elems);
+				// fprintf(stderr, "Previous of %s is %s\n", N->s_data, next_vertex->s_data);
+				// fprintf(stderr, "After inserting previous, Size of visited ht is %d with %d elems\n", 
+				// 	visited->array_size, visited->array_elems);
 				// Visited is becoming null somehow, and causing this print func call to access bad memory => segfault
 				//hashtable_print_contents(visited, stderr); 
 			}
