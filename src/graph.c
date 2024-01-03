@@ -28,7 +28,7 @@ struct Vertex * construct_vertex(int i, const char * s)
 	new_vertex->i_data = i;
 	new_vertex->s_data = strdup(s);
 	new_vertex->n_neighbours = 0;
-	new_vertex->neighbours = calloc(1, sizeof(struct Vertex *));
+	new_vertex->neighbours = NULL;
 
 	return new_vertex;
 }
@@ -47,14 +47,15 @@ int free_vertex(struct Vertex * vert)
 
 int add_edge(struct Vertex * a, struct Vertex * b)
 {
-	a->neighbours[a->n_neighbours] = b;
-	b->neighbours[b->n_neighbours] = a;
 
 	a->n_neighbours++;
 	b->n_neighbours++;
 
 	a->neighbours = realloc(a->neighbours, a->n_neighbours * sizeof(struct Vertex *));
 	b->neighbours = realloc(b->neighbours, b->n_neighbours * sizeof(struct Vertex *));
+
+	a->neighbours[a->n_neighbours - 1] = b;
+	b->neighbours[b->n_neighbours - 1] = a;
 
 	return 1;
 }
