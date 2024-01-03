@@ -100,7 +100,7 @@ struct Path {
 */
 struct Path * construct_path()
 {
-	struct Path * new_path = calloc(1, sizeof(struct Path *));
+	struct Path * new_path = calloc(1, sizeof(struct Path));
 	if (new_path == NULL)
 		return NULL;
 	
