@@ -121,7 +121,7 @@ struct Path * construct_path()
 int path_insert(struct Path * path, char * vert)
 {
 	// Reallocate vertices to hold length+1
-	path->vertices = realloc(path->vertices, path->length + 1);
+	path->vertices = realloc(path->vertices, (path->length + 1) * sizeof(*path->vertices));
 	// TODO: handle realloc failure
 	
 	// Set vertices[length] to vert
