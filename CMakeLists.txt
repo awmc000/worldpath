@@ -12,3 +12,10 @@ add_executable(worldmapgraph test/test.c src/graph.c src/queue.c src/hash_table.
 
 find_package(check CONFIG REQUIRED)
 target_link_libraries(worldmapgraph PRIVATE $<IF:$<TARGET_EXISTS:Check::check>,Check::check,Check::checkShared>)
+
+# Enable Address Sanitizer
+target_compile_options(worldmapgraph PRIVATE "-fsanitize=address")
+if(NOT CMAKE_GENERATOR MATCHES "Visual Studio")
+	# *nix linkers like to be told they're linking ASAN.
+	target_link_options(worldmapgraph PRIVATE "-fsanitize=address")
+endif()
