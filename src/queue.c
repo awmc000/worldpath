@@ -21,9 +21,9 @@ struct Queue {
 
 struct Queue * construct_queue(int queue_size)
 {
-	struct Queue * new_queue = calloc(1, sizeof(struct Queue *));
+	struct Queue * new_queue = calloc(1, sizeof(*new_queue));
 	
-	new_queue->values = calloc(1, sizeof(struct Queue *));
+	new_queue->values = calloc(queue_size, sizeof(*new_queue->values));
 	new_queue->head = 0;
 	new_queue->tail = 0;
 	new_queue->num_entries = 0;

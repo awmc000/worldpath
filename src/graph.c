@@ -10,18 +10,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "../include/graph.h"
 #include "../include/queue.h"
 #include "../include/hash_table.h"
 
+// MSVC prefers _strdup over POSIX's strdup, as the former is a reserved name
+#if defined(_WIN32)
+#define strdup _strdup
+#endif
+
 struct Vertex * construct_vertex(int i, const char * s)
 {
 	struct Vertex * new_vertex = calloc(1, sizeof(struct Vertex));
+	assert(new_vertex != NULL);
 	new_vertex->i_data = i;
 	new_vertex->s_data = strdup(s);
 	new_vertex->n_neighbours = 0;
-	new_vertex->neighbours = calloc(1, sizeof(struct Vertex *));
+	new_vertex->neighbours = NULL;
 
 	return new_vertex;
 }
@@ -40,14 +47,15 @@ int free_vertex(struct Vertex * vert)
 
 int add_edge(struct Vertex * a, struct Vertex * b)
 {
-	a->neighbours[a->n_neighbours] = b;
-	b->neighbours[b->n_neighbours] = a;
 
 	a->n_neighbours++;
 	b->n_neighbours++;
 
-	a->neighbours = realloc(a->neighbours, a->n_neighbours);
-	b->neighbours = realloc(b->neighbours, b->n_neighbours);
+	a->neighbours = realloc(a->neighbours, a->n_neighbours * sizeof(struct Vertex *));
+	b->neighbours = realloc(b->neighbours, b->n_neighbours * sizeof(struct Vertex *));
+
+	a->neighbours[a->n_neighbours - 1] = b;
+	b->neighbours[b->n_neighbours - 1] = a;
 
 	return 1;
 }
@@ -93,11 +101,20 @@ struct Path {
 */
 struct Path * construct_path()
 {
-	struct Path * new_path = calloc(1, sizeof(struct Path *));
+	struct Path * new_path = calloc(1, sizeof(struct Path));
+	if (new_path == NULL)
+		return NULL;
 	
 	new_path->vertices = calloc(1, sizeof(char *));
+	if (new_path->vertices == NULL)
+	{
+		free(new_path);
+		return NULL;
+	}
 
 	new_path->length = 0;
+
+	return new_path;
 }
 
 // TODO: Make this function variadic
@@ -105,13 +122,16 @@ struct Path * construct_path()
 int path_insert(struct Path * path, char * vert)
 {
 	// Reallocate vertices to hold length+1
-	path->vertices = realloc(path->vertices, path->length + 1);
+	path->vertices = realloc(path->vertices, (path->length + 1) * sizeof(*path->vertices));
+	// TODO: handle realloc failure
 	
 	// Set vertices[length] to vert
 	path->vertices[path->length] = vert;
 
 	// Increment length
 	path->length++;
+
+	return 1;
 }
 
 void path_reverse(struct Path * path)
@@ -133,6 +153,7 @@ int path_prepend(struct Path * path, char * vert)
 {
 	// Reallocate vertices to hold length+1
 	path->vertices = realloc(path->vertices, path->length + 1);
+	// TODO: handle realloc failure
 	
 	// Copy over all existing vertices to the right one space
 	for (int i = 1; i < path->length - 2; i++)
@@ -147,6 +168,8 @@ int path_prepend(struct Path * path, char * vert)
 
 	// Increment length
 	path->length++;
+
+	return 1;
 }
 
 // O(N)

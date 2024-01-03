@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/worldmapgraph.dir/src/graph.c.o CMakeFiles/worldmapgraph.dir/src/queue.c.o -o worldmapgraph 

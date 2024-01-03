@@ -1,0 +1,26 @@
+#############################
+# Build Artifacts
+#############################
+## Common convention is to use "build" folder for all artifacts.
+/build
+## CMake
+/CMakeCache.txt
+/cmake_install.cmake
+/CMakeFiles
+## CMake "Makefiles" Generator
+/Makefile
+## CMake "Visual Studio" Generator
+/*.vcxproj
+/*.vcxproj.filters
+/*.sln
+## Visual Studio
+/.vs
+/*.vcxproj.user
+/*.dir
+/x64
+/Debug
+/MinSizeRel
+/Release
+/RelWithDebInfo
+## vcpkg
+vcpkg_installed
