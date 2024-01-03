@@ -53,8 +53,8 @@ int add_edge(struct Vertex * a, struct Vertex * b)
 	a->n_neighbours++;
 	b->n_neighbours++;
 
-	a->neighbours = realloc(a->neighbours, a->n_neighbours);
-	b->neighbours = realloc(b->neighbours, b->n_neighbours);
+	a->neighbours = realloc(a->neighbours, a->n_neighbours * sizeof(struct Vertex *));
+	b->neighbours = realloc(b->neighbours, b->n_neighbours * sizeof(struct Vertex *));
 
 	return 1;
 }
@@ -101,7 +101,7 @@ struct Path {
 struct Path * construct_path()
 {
 	struct Path * new_path = calloc(1, sizeof(struct Path *));
-	if( new_path == NULL )
+	if (new_path == NULL)
 		return NULL;
 	
 	new_path->vertices = calloc(1, sizeof(char *));
