@@ -138,7 +138,7 @@ Suite * graph_suite(void)
 	tcase_add_test(tc_core, test_graph_add_edge);
 	tcase_add_test(tc_core, test_graph_find_path_adjacent);
 	tcase_add_test(tc_core, test_graph_find_path_nonadjacent);
-	//tcase_add_test(tc_core, test_graph_find_path_complex);
+	tcase_add_test(tc_core, test_graph_find_path_complex);
 	suite_add_tcase(s, tc_core);
 
 	return s;
