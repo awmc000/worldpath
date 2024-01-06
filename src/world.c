@@ -7,6 +7,7 @@
  * land borders with another country.
  */
 #include <string.h>
+#include <stdlib.h>
 #include "../include/hash_table.h"
 #include "../include/graph.h"
 
@@ -267,6 +268,256 @@ int main(void)
 	dictionary_insert(alpha2_to_name, strdup("ZW"), strdup("Zimbabwe"));
 	
 	// Create a dictionary mapping alpha2 to numeric
+	struct hash_table *alpha2_to_numeric = dictionary_create(500);
+	dictionary_insert(alpha2_to_numeric, "AF", "4");
+	dictionary_insert(alpha2_to_numeric, "AX", "248");
+	dictionary_insert(alpha2_to_numeric, "AL", "8");
+	dictionary_insert(alpha2_to_numeric, "DZ", "12");
+	dictionary_insert(alpha2_to_numeric, "AS", "16");
+	dictionary_insert(alpha2_to_numeric, "AD", "20");
+	dictionary_insert(alpha2_to_numeric, "AO", "24");
+	dictionary_insert(alpha2_to_numeric, "AI", "660");
+	dictionary_insert(alpha2_to_numeric, "AQ", "10");
+	dictionary_insert(alpha2_to_numeric, "AG", "28");
+	dictionary_insert(alpha2_to_numeric, "AR", "32");
+	dictionary_insert(alpha2_to_numeric, "AM", "51");
+	dictionary_insert(alpha2_to_numeric, "AW", "533");
+	dictionary_insert(alpha2_to_numeric, "AU", "36");
+	dictionary_insert(alpha2_to_numeric, "AT", "40");
+	dictionary_insert(alpha2_to_numeric, "AZ", "31");
+	dictionary_insert(alpha2_to_numeric, "BS", "44");
+	dictionary_insert(alpha2_to_numeric, "BH", "48");
+	dictionary_insert(alpha2_to_numeric, "BD", "50");
+	dictionary_insert(alpha2_to_numeric, "BB", "52");
+	dictionary_insert(alpha2_to_numeric, "BY", "112");
+	dictionary_insert(alpha2_to_numeric, "BE", "56");
+	dictionary_insert(alpha2_to_numeric, "BZ", "84");
+	dictionary_insert(alpha2_to_numeric, "BJ", "204");
+	dictionary_insert(alpha2_to_numeric, "BM", "60");
+	dictionary_insert(alpha2_to_numeric, "BT", "64");
+	dictionary_insert(alpha2_to_numeric, "BO", "68");
+	dictionary_insert(alpha2_to_numeric, "BQ", "535");
+	dictionary_insert(alpha2_to_numeric, "BA", "70");
+	dictionary_insert(alpha2_to_numeric, "BW", "72");
+	dictionary_insert(alpha2_to_numeric, "BV", "74");
+	dictionary_insert(alpha2_to_numeric, "BR", "76");
+	dictionary_insert(alpha2_to_numeric, "IO", "86");
+	dictionary_insert(alpha2_to_numeric, "BN", "96");
+	dictionary_insert(alpha2_to_numeric, "BG", "100");
+	dictionary_insert(alpha2_to_numeric, "BF", "854");
+	dictionary_insert(alpha2_to_numeric, "BI", "108");
+	dictionary_insert(alpha2_to_numeric, "CV", "132");
+	dictionary_insert(alpha2_to_numeric, "KH", "116");
+	dictionary_insert(alpha2_to_numeric, "CM", "120");
+	dictionary_insert(alpha2_to_numeric, "CA", "124");
+	dictionary_insert(alpha2_to_numeric, "KY", "136");
+	dictionary_insert(alpha2_to_numeric, "CF", "140");
+	dictionary_insert(alpha2_to_numeric, "TD", "148");
+	dictionary_insert(alpha2_to_numeric, "CL", "152");
+	dictionary_insert(alpha2_to_numeric, "CN", "156");
+	dictionary_insert(alpha2_to_numeric, "CX", "162");
+	dictionary_insert(alpha2_to_numeric, "CC", "166");
+	dictionary_insert(alpha2_to_numeric, "CO", "170");
+	dictionary_insert(alpha2_to_numeric, "KM", "174");
+	dictionary_insert(alpha2_to_numeric, "CG", "178");
+	dictionary_insert(alpha2_to_numeric, "CD", "180");
+	dictionary_insert(alpha2_to_numeric, "CK", "184");
+	dictionary_insert(alpha2_to_numeric, "CR", "188");
+	dictionary_insert(alpha2_to_numeric, "CI", "384");
+	dictionary_insert(alpha2_to_numeric, "HR", "191");
+	dictionary_insert(alpha2_to_numeric, "CU", "192");
+	dictionary_insert(alpha2_to_numeric, "CW", "531");
+	dictionary_insert(alpha2_to_numeric, "CY", "196");
+	dictionary_insert(alpha2_to_numeric, "CZ", "203");
+	dictionary_insert(alpha2_to_numeric, "DK", "208");
+	dictionary_insert(alpha2_to_numeric, "DJ", "262");
+	dictionary_insert(alpha2_to_numeric, "DM", "212");
+	dictionary_insert(alpha2_to_numeric, "DO", "214");
+	dictionary_insert(alpha2_to_numeric, "EC", "218");
+	dictionary_insert(alpha2_to_numeric, "EG", "818");
+	dictionary_insert(alpha2_to_numeric, "SV", "222");
+	dictionary_insert(alpha2_to_numeric, "GQ", "226");
+	dictionary_insert(alpha2_to_numeric, "ER", "232");
+	dictionary_insert(alpha2_to_numeric, "EE", "233");
+	dictionary_insert(alpha2_to_numeric, "SZ", "748");
+	dictionary_insert(alpha2_to_numeric, "ET", "231");
+	dictionary_insert(alpha2_to_numeric, "FK", "238");
+	dictionary_insert(alpha2_to_numeric, "FO", "234");
+	dictionary_insert(alpha2_to_numeric, "FJ", "242");
+	dictionary_insert(alpha2_to_numeric, "FI", "246");
+	dictionary_insert(alpha2_to_numeric, "FR", "250");
+	dictionary_insert(alpha2_to_numeric, "GF", "254");
+	dictionary_insert(alpha2_to_numeric, "PF", "258");
+	dictionary_insert(alpha2_to_numeric, "TF", "260");
+	dictionary_insert(alpha2_to_numeric, "GA", "266");
+	dictionary_insert(alpha2_to_numeric, "GM", "270");
+	dictionary_insert(alpha2_to_numeric, "GE", "268");
+	dictionary_insert(alpha2_to_numeric, "DE", "276");
+	dictionary_insert(alpha2_to_numeric, "GH", "288");
+	dictionary_insert(alpha2_to_numeric, "GI", "292");
+	dictionary_insert(alpha2_to_numeric, "GR", "300");
+	dictionary_insert(alpha2_to_numeric, "GL", "304");
+	dictionary_insert(alpha2_to_numeric, "GD", "308");
+	dictionary_insert(alpha2_to_numeric, "GP", "312");
+	dictionary_insert(alpha2_to_numeric, "GU", "316");
+	dictionary_insert(alpha2_to_numeric, "GT", "320");
+	dictionary_insert(alpha2_to_numeric, "GG", "831");
+	dictionary_insert(alpha2_to_numeric, "GN", "324");
+	dictionary_insert(alpha2_to_numeric, "GW", "624");
+	dictionary_insert(alpha2_to_numeric, "GY", "328");
+	dictionary_insert(alpha2_to_numeric, "HT", "332");
+	dictionary_insert(alpha2_to_numeric, "HM", "334");
+	dictionary_insert(alpha2_to_numeric, "VA", "336");
+	dictionary_insert(alpha2_to_numeric, "HN", "340");
+	dictionary_insert(alpha2_to_numeric, "HK", "344");
+	dictionary_insert(alpha2_to_numeric, "HU", "348");
+	dictionary_insert(alpha2_to_numeric, "IS", "352");
+	dictionary_insert(alpha2_to_numeric, "IN", "356");
+	dictionary_insert(alpha2_to_numeric, "ID", "360");
+	dictionary_insert(alpha2_to_numeric, "IR", "364");
+	dictionary_insert(alpha2_to_numeric, "IQ", "368");
+	dictionary_insert(alpha2_to_numeric, "IE", "372");
+	dictionary_insert(alpha2_to_numeric, "IM", "833");
+	dictionary_insert(alpha2_to_numeric, "IL", "376");
+	dictionary_insert(alpha2_to_numeric, "IT", "380");
+	dictionary_insert(alpha2_to_numeric, "JM", "388");
+	dictionary_insert(alpha2_to_numeric, "JP", "392");
+	dictionary_insert(alpha2_to_numeric, "JE", "832");
+	dictionary_insert(alpha2_to_numeric, "JO", "400");
+	dictionary_insert(alpha2_to_numeric, "KZ", "398");
+	dictionary_insert(alpha2_to_numeric, "KE", "404");
+	dictionary_insert(alpha2_to_numeric, "KI", "296");
+	dictionary_insert(alpha2_to_numeric, "KP", "408");
+	dictionary_insert(alpha2_to_numeric, "KR", "410");
+	dictionary_insert(alpha2_to_numeric, "KW", "414");
+	dictionary_insert(alpha2_to_numeric, "KG", "417");
+	dictionary_insert(alpha2_to_numeric, "LA", "418");
+	dictionary_insert(alpha2_to_numeric, "LV", "428");
+	dictionary_insert(alpha2_to_numeric, "LB", "422");
+	dictionary_insert(alpha2_to_numeric, "LS", "426");
+	dictionary_insert(alpha2_to_numeric, "LR", "430");
+	dictionary_insert(alpha2_to_numeric, "LY", "434");
+	dictionary_insert(alpha2_to_numeric, "LI", "438");
+	dictionary_insert(alpha2_to_numeric, "LT", "440");
+	dictionary_insert(alpha2_to_numeric, "LU", "442");
+	dictionary_insert(alpha2_to_numeric, "MO", "446");
+	dictionary_insert(alpha2_to_numeric, "MG", "450");
+	dictionary_insert(alpha2_to_numeric, "MW", "454");
+	dictionary_insert(alpha2_to_numeric, "MY", "458");
+	dictionary_insert(alpha2_to_numeric, "MV", "462");
+	dictionary_insert(alpha2_to_numeric, "ML", "466");
+	dictionary_insert(alpha2_to_numeric, "MT", "470");
+	dictionary_insert(alpha2_to_numeric, "MH", "584");
+	dictionary_insert(alpha2_to_numeric, "MQ", "474");
+	dictionary_insert(alpha2_to_numeric, "MR", "478");
+	dictionary_insert(alpha2_to_numeric, "MU", "480");
+	dictionary_insert(alpha2_to_numeric, "YT", "175");
+	dictionary_insert(alpha2_to_numeric, "MX", "484");
+	dictionary_insert(alpha2_to_numeric, "FM", "583");
+	dictionary_insert(alpha2_to_numeric, "MD", "498");
+	dictionary_insert(alpha2_to_numeric, "MC", "492");
+	dictionary_insert(alpha2_to_numeric, "MN", "496");
+	dictionary_insert(alpha2_to_numeric, "ME", "499");
+	dictionary_insert(alpha2_to_numeric, "MS", "500");
+	dictionary_insert(alpha2_to_numeric, "MA", "504");
+	dictionary_insert(alpha2_to_numeric, "MZ", "508");
+	dictionary_insert(alpha2_to_numeric, "MM", "104");
+	dictionary_insert(alpha2_to_numeric, "NA", "516");
+	dictionary_insert(alpha2_to_numeric, "NR", "520");
+	dictionary_insert(alpha2_to_numeric, "NP", "524");
+	dictionary_insert(alpha2_to_numeric, "NL", "528");
+	dictionary_insert(alpha2_to_numeric, "NC", "540");
+	dictionary_insert(alpha2_to_numeric, "NZ", "554");
+	dictionary_insert(alpha2_to_numeric, "NI", "558");
+	dictionary_insert(alpha2_to_numeric, "NE", "562");
+	dictionary_insert(alpha2_to_numeric, "NG", "566");
+	dictionary_insert(alpha2_to_numeric, "NU", "570");
+	dictionary_insert(alpha2_to_numeric, "NF", "574");
+	dictionary_insert(alpha2_to_numeric, "MK", "807");
+	dictionary_insert(alpha2_to_numeric, "MP", "580");
+	dictionary_insert(alpha2_to_numeric, "NO", "578");
+	dictionary_insert(alpha2_to_numeric, "OM", "512");
+	dictionary_insert(alpha2_to_numeric, "PK", "586");
+	dictionary_insert(alpha2_to_numeric, "PW", "585");
+	dictionary_insert(alpha2_to_numeric, "PS", "275");
+	dictionary_insert(alpha2_to_numeric, "PA", "591");
+	dictionary_insert(alpha2_to_numeric, "PG", "598");
+	dictionary_insert(alpha2_to_numeric, "PY", "600");
+	dictionary_insert(alpha2_to_numeric, "PE", "604");
+	dictionary_insert(alpha2_to_numeric, "PH", "608");
+	dictionary_insert(alpha2_to_numeric, "PN", "612");
+	dictionary_insert(alpha2_to_numeric, "PL", "616");
+	dictionary_insert(alpha2_to_numeric, "PT", "620");
+	dictionary_insert(alpha2_to_numeric, "PR", "630");
+	dictionary_insert(alpha2_to_numeric, "QA", "634");
+	dictionary_insert(alpha2_to_numeric, "RE", "638");
+	dictionary_insert(alpha2_to_numeric, "RO", "642");
+	dictionary_insert(alpha2_to_numeric, "RU", "643");
+	dictionary_insert(alpha2_to_numeric, "RW", "646");
+	dictionary_insert(alpha2_to_numeric, "BL", "652");
+	dictionary_insert(alpha2_to_numeric, "SH", "654");
+	dictionary_insert(alpha2_to_numeric, "KN", "659");
+	dictionary_insert(alpha2_to_numeric, "LC", "662");
+	dictionary_insert(alpha2_to_numeric, "MF", "663");
+	dictionary_insert(alpha2_to_numeric, "PM", "666");
+	dictionary_insert(alpha2_to_numeric, "VC", "670");
+	dictionary_insert(alpha2_to_numeric, "WS", "882");
+	dictionary_insert(alpha2_to_numeric, "SM", "674");
+	dictionary_insert(alpha2_to_numeric, "ST", "678");
+	dictionary_insert(alpha2_to_numeric, "SA", "682");
+	dictionary_insert(alpha2_to_numeric, "SN", "686");
+	dictionary_insert(alpha2_to_numeric, "RS", "688");
+	dictionary_insert(alpha2_to_numeric, "SC", "690");
+	dictionary_insert(alpha2_to_numeric, "SL", "694");
+	dictionary_insert(alpha2_to_numeric, "SG", "702");
+	dictionary_insert(alpha2_to_numeric, "SX", "534");
+	dictionary_insert(alpha2_to_numeric, "SK", "703");
+	dictionary_insert(alpha2_to_numeric, "SI", "705");
+	dictionary_insert(alpha2_to_numeric, "SB", "90");
+	dictionary_insert(alpha2_to_numeric, "SO", "706");
+	dictionary_insert(alpha2_to_numeric, "ZA", "710");
+	dictionary_insert(alpha2_to_numeric, "GS", "239");
+	dictionary_insert(alpha2_to_numeric, "SS", "728");
+	dictionary_insert(alpha2_to_numeric, "ES", "724");
+	dictionary_insert(alpha2_to_numeric, "LK", "144");
+	dictionary_insert(alpha2_to_numeric, "SD", "729");
+	dictionary_insert(alpha2_to_numeric, "SR", "740");
+	dictionary_insert(alpha2_to_numeric, "SJ", "744");
+	dictionary_insert(alpha2_to_numeric, "SE", "752");
+	dictionary_insert(alpha2_to_numeric, "CH", "756");
+	dictionary_insert(alpha2_to_numeric, "SY", "760");
+	dictionary_insert(alpha2_to_numeric, "TW", "158");
+	dictionary_insert(alpha2_to_numeric, "TJ", "762");
+	dictionary_insert(alpha2_to_numeric, "TZ", "834");
+	dictionary_insert(alpha2_to_numeric, "TH", "764");
+	dictionary_insert(alpha2_to_numeric, "TL", "626");
+	dictionary_insert(alpha2_to_numeric, "TG", "768");
+	dictionary_insert(alpha2_to_numeric, "TK", "772");
+	dictionary_insert(alpha2_to_numeric, "TO", "776");
+	dictionary_insert(alpha2_to_numeric, "TT", "780");
+	dictionary_insert(alpha2_to_numeric, "TN", "788");
+	dictionary_insert(alpha2_to_numeric, "TR", "792");
+	dictionary_insert(alpha2_to_numeric, "TM", "795");
+	dictionary_insert(alpha2_to_numeric, "TC", "796");
+	dictionary_insert(alpha2_to_numeric, "TV", "798");
+	dictionary_insert(alpha2_to_numeric, "UG", "800");
+	dictionary_insert(alpha2_to_numeric, "UA", "804");
+	dictionary_insert(alpha2_to_numeric, "AE", "784");
+	dictionary_insert(alpha2_to_numeric, "GB", "826");
+	dictionary_insert(alpha2_to_numeric, "US", "840");
+	dictionary_insert(alpha2_to_numeric, "UM", "581");
+	dictionary_insert(alpha2_to_numeric, "UY", "858");
+	dictionary_insert(alpha2_to_numeric, "UZ", "860");
+	dictionary_insert(alpha2_to_numeric, "VU", "548");
+	dictionary_insert(alpha2_to_numeric, "VE", "862");
+	dictionary_insert(alpha2_to_numeric, "VN", "704");
+	dictionary_insert(alpha2_to_numeric, "VG", "92");
+	dictionary_insert(alpha2_to_numeric, "VI", "850");
+	dictionary_insert(alpha2_to_numeric, "WF", "876");
+	dictionary_insert(alpha2_to_numeric, "EH", "732");
+	dictionary_insert(alpha2_to_numeric, "YE", "887");
+	dictionary_insert(alpha2_to_numeric, "ZM", "894");
+	dictionary_insert(alpha2_to_numeric, "ZW", "716");
 
 	// Create a vertex for each country
 	struct Vertex * country_AF = construct_vertex(4, "AF");
@@ -1415,13 +1666,40 @@ int main(void)
 	add_edge(country_ZW, country_ZA);
 	add_edge(country_ZW, country_ZM);
 
-	// Test: Path from France to China
-	// dictionary_get_value(dictionary , searchkey)
-	struct Path * test_path = find_path(country_KR, country_ZA);
+	// User selected country codes test
+	printf("Enter two alpha2 country codes not separated by spaces or a newline, eg MXCA for Mexico to Canada.\n");
 	
-	for (int i = 0; i < test_path->length; i++)
-		printf("%s\n", dictionary_get_value(alpha2_to_name, test_path->vertices[i]));
-	path_print(test_path);
+	char country_a[3];
+
+	country_a[0] = getc(stdin);
+	country_a[1] = getc(stdin);
+	country_a[2] = '\0';
+
+	char country_b[3];
+	
+	country_b[0] = getc(stdin);
+	country_b[1] = getc(stdin);
+	country_b[2] = '\0';
+
+	char * s_numericA = dictionary_get_value(alpha2_to_numeric, country_a);
+	char * s_numericB = dictionary_get_value(alpha2_to_numeric, country_b);
+		
+	int numeric_a = atoi(s_numericA);
+	int numeric_b = atoi(s_numericB);
+
+	struct Vertex * countryVertA = countryVertices[numeric_a];
+	struct Vertex * countryVertB = countryVertices[numeric_b];
+
+	// Compute a path between the two vertices
+	struct Path * a_b_path = find_path(countryVertA, countryVertB);
+
+	// Print the path or an error message.
+	if (a_b_path == NULL)
+		printf("No path found.\n");
+	else
+		for (int i = 0; i < a_b_path->length; i++)
+			printf("%s\n", dictionary_get_value(alpha2_to_name, 
+				a_b_path->vertices[i]));
 
 	return 0;	
 }
