@@ -6,6 +6,7 @@ from countryinfo import CountryInfo
 inserts = []
 vertices = []
 pointers = []
+alpha2ToNumeric = []
 edges = []
 
 
@@ -26,6 +27,7 @@ with open('countries.csv') as csvFile:
 		# Add the country as a vertex
 		vertices.append(f'struct Vertex * country_{countryAlpha2} = construct_vertex({countryCode}, "{countryAlpha2}");')
 		pointers.append(f'countryVertices[{countryCode}] = country_{countryAlpha2};')
+		alpha2ToNumeric.append(f'dictionary_insert(alpha2_to_numeric, "{countryAlpha2}", "{countryCode}");')
 
 with open('borders.csv') as csvFile:
 	next(csvFile)
@@ -41,5 +43,6 @@ with open('borders.csv') as csvFile:
 print(*inserts, sep='\n')
 print(*vertices, sep='\n')
 print(*pointers, sep='\n')
+print(*alpha2ToNumeric, sep='\n')
 print(*edges, sep='\n')
 
