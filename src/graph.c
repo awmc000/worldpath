@@ -189,8 +189,7 @@ void path_print(struct Path * path)
 struct Path * find_path(struct Vertex * a, struct Vertex * b)
 {
 	struct Path * path = construct_path();
-
-
+	
 	// Base case: a ~ b / a is adjacent to b, return (a,b)
 	if (are_adjacent(a, b))
 	{
@@ -209,20 +208,13 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 	// Mark the start node as visited
 	hashtable_insert(visited, a->s_data);
 
-	// TODO:
 	//Initialize a datastructure mapping each node to its previous node
-	fprintf(stderr, "constructing previous hash table\n");
-	struct hash_table * previous = dictionary_create(300); // seg fault occurs inside this call
-	fprintf(stderr, "created previous\n");
-	//fprintf(stderr, "%s\n", previous->values[0]); -- TRIGGERS SEGFAULT?
-	//fprintf(stderr, "constructed previous hash table\n");
-	// Repeat until the queue is empty :
+	struct hash_table * previous = dictionary_create(300); 
+
 	while (!queue_empty(queue))
 	{
-		// Extract a node from the front of queue
 		struct Vertex * next_vertex = dequeue(queue);
 
-		// If the node is the target :
 		if (next_vertex == b)
 		{
 			// Use the mapping to trace backward and extract the path
@@ -231,15 +223,10 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 			while (strcmp(next_prev, a->s_data) != 0)
 			{
 				next_prev = dictionary_get_value(previous, next_prev);
-				//fprintf(stderr, "next_prev = %s\n", next_prev);
 				path_insert(path, next_prev);
 			}
 
-			//path_print(path);
-
-			// Reverse
 			path_reverse(path);
-			// Return the path
 			return path;
 		}
 		// For each neighbor N of the node :
@@ -249,32 +236,14 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 			// If N is unvisited :
 			if (!hashtable_contains(visited, N->s_data))
 			{
-
-				// fprintf(stderr, "Before visited insert: Size of visited ht is %d with %d elems\n", 
-				// 	visited->array_size, visited->array_elems);
-
 				// Mark N as visited
 				hashtable_insert(visited, N->s_data);
 
-				// fprintf(stderr, "After visited insert: Size of visited ht is %d with %d elems\n", 
-				// 	visited->array_size, visited->array_elems);
-
-				fprintf(stderr, "====\nBefore enqueuing N, Size of visited ht is %d with %d elems\n", 
-					visited->array_size, visited->array_elems);
-				// Add N to the end of the queue
-				enqueue(queue, N); // It seems that this is where visited turns to null. But WHY?
-				fprintf(stderr, "Enqueued %s\n", N->s_data);
-
-				fprintf(stderr, "After enqueuing N, Size of visited ht is %d with %d elems\n====\n", 
-					visited->array_size, visited->array_elems);
+				// Enqueue N
+				enqueue(queue, N);
 
 				// Update the mapping so that N points to the node
-				dictionary_insert(previous, N->s_data, next_vertex->s_data);
-				// fprintf(stderr, "Previous of %s is %s\n", N->s_data, next_vertex->s_data);
-				// fprintf(stderr, "After inserting previous, Size of visited ht is %d with %d elems\n", 
-				// 	visited->array_size, visited->array_elems);
-				// Visited is becoming null somehow, and causing this print func call to access bad memory => segfault
-				//hashtable_print_contents(visited, stderr); 
+				dictionary_insert(previous, N->s_data, next_vertex->s_data); 
 			}
 		}
 	}
