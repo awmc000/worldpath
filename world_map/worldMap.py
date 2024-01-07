@@ -3,7 +3,8 @@
 import csv
 from countryinfo import CountryInfo
 
-inserts = []
+alpha2ToNameInserts = []
+nameToAlpha2Inserts = []
 vertices = []
 pointers = []
 alpha2ToNumeric = []
@@ -22,7 +23,8 @@ with open('countries.csv') as csvFile:
 		countryAlpha3 = row[2]
 		countryCode = str(int(row[3]))
 		# Add the country's name and ISO3 code to the code->name mapping
-		inserts.append(f'dictionary_insert(iso3_to_name, strdup("{countryAlpha2}"), strdup("{countryName}"));')
+		alpha2ToNameInserts.append(f'dictionary_insert(alpha2_to_name, strdup("{countryAlpha2}"), strdup("{countryName}"));')
+		nameToAlpha2Inserts.append(f'dictionary_insert(name_to_alpha2, strdup("{countryName}"), strdup("{countryAlpha2}"));')
 		country = CountryInfo(countryName)
 		# Add the country as a vertex
 		vertices.append(f'struct Vertex * country_{countryAlpha2} = construct_vertex({countryCode}, "{countryAlpha2}");')
@@ -40,7 +42,8 @@ with open('borders.csv') as csvFile:
 			edges.append(f'add_edge(country_{firstAlpha2}, country_{secondAlpha2});')
 
 
-print(*inserts, sep='\n')
+print(*alpha2ToNameInserts, sep='\n')
+print(*nameToAlpha2Inserts, sep='\n')
 print(*vertices, sep='\n')
 print(*pointers, sep='\n')
 print(*alpha2ToNumeric, sep='\n')
