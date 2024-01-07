@@ -1554,4 +1554,8 @@ int main(void)
 
 	printf("Path from %s to %s?\n", dictionary_get_value(alpha2_to_name, source->s_data),
 		dictionary_get_value(alpha2_to_name, dest->s_data));
+
+	struct Vertex * choice = select_country(name_to_alpha2, alpha2_to_numeric, countryVertices);
+
+	return 0;
 }
