@@ -15,6 +15,8 @@
 
 #define BUFFERSIZE 127
 
+#define ERASENEWLINE(buffer) buffer[strcspn(buffer, "\n")] = '\0'
+
 struct Vertex * select_country(struct hash_table * name_to_alpha2,
 	struct hash_table * alpha2_to_numeric,
 	struct Vertex ** countryVertices)
@@ -28,7 +30,7 @@ struct Vertex * select_country(struct hash_table * name_to_alpha2,
 	fgets(linebuf, BUFFERSIZE * sizeof(char), stdin);
 	
 	// fgets() is capturing the newline, set it to a null byte
-	linebuf[strcspn(linebuf, "\n")] = '\0';
+	ERASENEWLINE(linebuf);
 	
 	// Get the alpha2 code of the name
 	char * alpha2 = dictionary_get_value(name_to_alpha2, linebuf);
@@ -65,7 +67,7 @@ struct Path * user_enter_path(struct hash_table * name_to_alpha2,
 		fgets(linebuf, BUFFERSIZE * sizeof(char), stdin);
 
 		// fgets() is capturing the newline, set it to a null byte
-		linebuf[strcspn(linebuf, "\n")] = '\0';
+		ERASENEWLINE(linebuf);
 
 		// Check input
 		if (strcmp(linebuf, "done") == 0)
@@ -1578,7 +1580,6 @@ int main(void)
 	add_edge(country_ZW, country_MZ);
 	add_edge(country_ZW, country_ZA);
 	add_edge(country_ZW, country_ZM);
-
 
 	// Set up random number generator.
 	srand(time(NULL));
