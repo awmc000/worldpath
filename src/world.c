@@ -108,6 +108,7 @@ int main(void)
 	memset(countryVertices, 0, sizeof(struct Vertex *) * 895);
 	struct hash_table *alpha2_to_numeric = dictionary_create(500);
 
+	// TODO: all these strdups are ending up as memory leaks
 	dictionary_insert(alpha2_to_name, strdup("AF"), strdup("Afghanistan"));
 	dictionary_insert(alpha2_to_name, strdup("AL"), strdup("Albania"));
 	dictionary_insert(alpha2_to_name, strdup("DZ"), strdup("Algeria"));
@@ -1594,6 +1595,18 @@ int main(void)
 	struct Vertex * choice = select_country(name_to_alpha2, alpha2_to_numeric, countryVertices);
 
 	struct Path * user_path = user_enter_path(name_to_alpha2, alpha2_to_numeric, countryVertices);
+
+
+	// Free all dyamic memory used
+	dictionary_delete(alpha2_to_name);
+	free(alpha2_to_name);
+	dictionary_delete(name_to_alpha2);
+	free(name_to_alpha2);
+	// Freeing this dict in particular causes a mem leak - why?
+	// dictionary_delete(alpha2_to_numeric);
+	free(alpha2_to_numeric);
+
+	printf("%ld\n", sizeof(int));
 
 	return 0;
 }
