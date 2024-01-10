@@ -267,6 +267,7 @@ void hashtable_delete(struct hash_table *ht)
 	{
 		if (ht->strings[i] != NULL)
 		{
+			printf("freeing %s\n", ht->strings[i]);
 			free(ht->strings[i]);
 			ht->array_elems--;
 		}
@@ -276,6 +277,14 @@ void hashtable_delete(struct hash_table *ht)
 
 void dictionary_delete(struct hash_table * dict)
 {
+	for (unsigned int i = 0; i < dict->array_size; i++)
+	{
+		if (dict->values[i] != NULL)
+		{
+			printf("freeing %s\n", dict->values[i]);
+			free(dict->values[i]);
+		}
+	}
 	free(dict->values);
 	hashtable_delete(dict);
 }
