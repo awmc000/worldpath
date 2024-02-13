@@ -21,7 +21,7 @@ struct Vertex * select_country(struct hash_table * name_to_alpha2,
 	struct hash_table * alpha2_to_numeric,
 	struct Vertex ** countryVertices)
 {
-	printf("Enter the NAME of a country:\n");
+	printf("Enter the NAME of a country or 'done' to exit:\n");
 	
 	// Allocate buffer
 	char * linebuf = calloc(BUFFERSIZE, sizeof(char));
@@ -32,6 +32,9 @@ struct Vertex * select_country(struct hash_table * name_to_alpha2,
 	// fgets() is capturing the newline, set it to a null byte
 	ERASENEWLINE(linebuf);
 	
+	if (strcmp(linebuf, "done") == 0)
+		return NULL;
+
 	// Get the alpha2 code of the name
 	char * alpha2 = dictionary_get_value(name_to_alpha2, linebuf);
 	
@@ -60,25 +63,15 @@ struct Path * user_enter_path(struct hash_table * name_to_alpha2,
 
 	do 
 	{
-		// Give prompt
-		printf("Enter any key to continue or \"done\" to exit:\n");
-
-		// Get input
-		fgets(linebuf, BUFFERSIZE * sizeof(char), stdin);
-
-		// fgets() is capturing the newline, set it to a null byte
-		ERASENEWLINE(linebuf);
-
-		// Check input
-		if (strcmp(linebuf, "done") == 0)
-			break;
-
 		// Select a country
 		struct Vertex * next_country = select_country(name_to_alpha2,
 			alpha2_to_numeric, countryVertices);
 
 		// Add it to the path
-		path_insert(user_path, next_country->s_data);
+		if (next_country != NULL)
+			path_insert(user_path, next_country->s_data);
+		else
+			break;
 	} while (strcmp(linebuf, "done") != 0);
 
 	path_print(user_path);
@@ -1589,12 +1582,18 @@ int main(void)
 	struct Vertex * source = random_country(countryVertices);
 	struct Vertex * dest = random_country(countryVertices);
 
-	printf("Will create a path from %s to %s.\n", dictionary_get_value(alpha2_to_name, source->s_data),
+	printf("Will create a path from %s to %s.\n", 
+	dictionary_get_value(alpha2_to_name, source->s_data),
 		dictionary_get_value(alpha2_to_name, dest->s_data));
 
-	struct Vertex * choice = select_country(name_to_alpha2, alpha2_to_numeric, countryVertices);
+	struct Path * sys_path = find_path(source, dest);
+	path_print(sys_path);
 
-	struct Path * user_path = user_enter_path(name_to_alpha2, alpha2_to_numeric, countryVertices);
+	// struct Vertex * choice = select_country(name_to_alpha2, 
+		// alpha2_to_numeric, countryVertices);
+
+	struct Path * user_path = user_enter_path(name_to_alpha2, 
+		alpha2_to_numeric, countryVertices);
 
 
 	// Free all dyamic memory used
