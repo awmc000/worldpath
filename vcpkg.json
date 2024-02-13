@@ -1,9 +1,0 @@
-{
-  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-  "dependencies": [
-    "check"
-  ],
-  "features": {},
-  "vcpkg-configuration": {},
-  "builtin-baseline": "742c086636a9cfb57eb77a6cc5f2d6832666d169"
-}
