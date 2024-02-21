@@ -21,22 +21,35 @@ struct Vertex * select_country(struct hash_table * name_to_alpha2,
 	struct hash_table * alpha2_to_numeric,
 	struct Vertex ** countryVertices)
 {
-	printf("Enter the NAME of a country or 'done' to exit:\n");
-	
-	// Allocate buffer
-	char * linebuf = calloc(BUFFERSIZE, sizeof(char));
-	
-	// Get user input
-	fgets(linebuf, BUFFERSIZE * sizeof(char), stdin);
-	
-	// fgets() is capturing the newline, set it to a null byte
-	ERASENEWLINE(linebuf);
-	
-	if (strcmp(linebuf, "done") == 0)
-		return NULL;
+	int done_selecting = 0;
+	char * linebuf, * alpha2;
+	while (!done_selecting)
+	{
+		printf("Enter the NAME of a country or 'done' to exit:\n");
+		// Allocate buffer
+		linebuf = calloc(BUFFERSIZE, sizeof(char));
+		
+		// Get user input
+		fgets(linebuf, BUFFERSIZE * sizeof(char), stdin);
+		
+		// fgets() is capturing the newline, set it to a null byte
+		ERASENEWLINE(linebuf);
+		
+		if (strcmp(linebuf, "done") == 0)
+			return NULL;
 
-	// Get the alpha2 code of the name
-	char * alpha2 = dictionary_get_value(name_to_alpha2, linebuf);
+		// Get the alpha2 code of the name
+		if (hashtable_contains(name_to_alpha2, linebuf))
+		{
+			alpha2 = dictionary_get_value(name_to_alpha2, linebuf);
+			printf("Country \"%s\" has the Alpha2 code %s.\n", linebuf, alpha2);
+			done_selecting = 1;
+		}
+		else
+		{
+			fprintf(stdout, "Did not find \"%s\" as a country name.\n", linebuf);
+		}
+	}
 	
 	// Get the country code number of the alpha2
 	char * s_number = dictionary_get_value(alpha2_to_numeric, alpha2);
