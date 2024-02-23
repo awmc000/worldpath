@@ -248,7 +248,8 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 		}
 	}
 
-	hashtable_delete(visited);
+	// Causes memory issues elsewhere!
+	// hashtable_delete(visited);
 
 	printf("find_path: NO PATH!\n");
 	// Return no path
