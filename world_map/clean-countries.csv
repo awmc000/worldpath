@@ -15,7 +15,6 @@ Belize,BZ,84
 Benin,BJ,204
 Bhutan,BT,64
 Bolivia (Plurinational State of),BO,68
-Bonaire, Sint Eustatius and Saba,BQ,535
 Bosnia and Herzegovina,BA,70
 Botswana,BW,72
 Brazil,BR,76
@@ -32,7 +31,7 @@ Chile,CL,152
 China,CN,156
 Colombia,CO,170
 Congo,CG,178
-Congo, Democratic Republic of the,CD,180
+Democratic Republic of Congo,CD,180
 Costa Rica,CR,188
 Côte d'Ivoire,CI,384
 Croatia,HR,191
@@ -78,7 +77,7 @@ Jordan,JO,400
 Kazakhstan,KZ,398
 Kenya,KE,404
 Korea (Democratic People's Republic of),KP,408
-Korea, Republic of,KR,410
+Republic of Korea,KR,410
 Kuwait,KW,414
 Kyrgyzstan,KG,417
 Lao People's Democratic Republic,LA,418
@@ -96,7 +95,7 @@ Malaysia,MY,458
 Mali,ML,466
 Mauritania,MR,478
 Mexico,MX,484
-Moldova, Republic of,MD,498
+Moldova,MD,498
 Monaco,MC,492
 Mongolia,MN,496
 Montenegro,ME,499
@@ -113,7 +112,7 @@ North Macedonia,MK,807
 Norway,NO,578
 Oman,OM,512
 Pakistan,PK,586
-Palestine, State of,PS,275
+Palestine,PS,275
 Panama,PA,591
 Papua New Guinea,PG,598
 Paraguay,PY,600
@@ -142,9 +141,9 @@ Suriname,SR,740
 Sweden,SE,752
 Switzerland,CH,756
 Syrian Arab Republic,SY,760
-Taiwan, Province of China,TW,158
+Taiwan,TW,158
 Tajikistan,TJ,762
-Tanzania, United Republic of,TZ,834
+Tanzania,TZ,834
 Thailand,TH,764
 Timor-Leste,TL,626
 Togo,TG,768
