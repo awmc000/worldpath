@@ -2,6 +2,9 @@
 
 import csv
 
+from signal import signal, SIGPIPE, SIG_DFL  
+signal(SIGPIPE,SIG_DFL) 
+
 alpha2ToNameInserts = []
 nameToAlpha2Inserts = []
 vertices = []
@@ -11,16 +14,15 @@ edges = []
 
 
 # For each country C...
-with open('countries.csv') as csvFile:
+with open('clean-countries.csv') as csvFile:
 	next(csvFile)
 	csvReader = csv.reader(csvFile)
 	
-	
+	# name,alpha2,number
 	for row in csvReader:
 		countryName = row[0]
 		countryAlpha2 = row[1]
-		countryAlpha3 = row[2]
-		countryCode = str(int(row[3]))
+		countryCode = str(int(row[2]))
 		# Add the country's name and ISO3 code to the code->name mapping
 		alpha2ToNameInserts.append(f'dictionary_insert(alpha2_to_name, strdup("{countryAlpha2}"), strdup("{countryName}"));')
 		nameToAlpha2Inserts.append(f'dictionary_insert(name_to_alpha2, strdup("{countryName}"), strdup("{countryAlpha2}"));')
@@ -29,13 +31,14 @@ with open('countries.csv') as csvFile:
 		pointers.append(f'countryVertices[{countryCode}] = country_{countryAlpha2};')
 		alpha2ToNumeric.append(f'dictionary_insert(alpha2_to_numeric, "{countryAlpha2}", "{countryCode}");')
 
-with open('borders.csv') as csvFile:
+# code,bordercode
+with open('clean-borders.csv') as csvFile:
 	next(csvFile)
 	csvReader = csv.reader(csvFile)
 
 	for row in csvReader:
 		firstAlpha2 = row[0]
-		secondAlpha2 = row[2]
+		secondAlpha2 = row[1]
 		if len(secondAlpha2) > 1:
 			edges.append(f'add_edge(country_{firstAlpha2}, country_{secondAlpha2});')
 
