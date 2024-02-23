@@ -9,6 +9,11 @@ main: hash_table.o queue.o graph.o world.o
 	gcc -I include hash_table.o queue.o graph.o world.o \
 		-o worldpath -Wall -Wextra
 
+memcheck: hash_table.o queue.o graph.o world.o
+	gcc -g -I include hash_table.o queue.o graph.o world.o \
+		-o worldpath -Wall -Wextra -fsanitize=address
+
+
 hash_table.o: src/hash_table.c
 	gcc -I include -c src/hash_table.c
 
