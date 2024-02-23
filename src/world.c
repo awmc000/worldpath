@@ -131,7 +131,6 @@ int main(void)
 	dictionary_insert(alpha2_to_name, strdup("BJ"), strdup("Benin"));
 	dictionary_insert(alpha2_to_name, strdup("BT"), strdup("Bhutan"));
 	dictionary_insert(alpha2_to_name, strdup("BO"), strdup("Bolivia (Plurinational State of)"));
-	dictionary_insert(alpha2_to_name, strdup("BQ"), strdup("Bonaire, Sint Eustatius and Saba"));
 	dictionary_insert(alpha2_to_name, strdup("BA"), strdup("Bosnia and Herzegovina"));
 	dictionary_insert(alpha2_to_name, strdup("BW"), strdup("Botswana"));
 	dictionary_insert(alpha2_to_name, strdup("BR"), strdup("Brazil"));
@@ -148,7 +147,7 @@ int main(void)
 	dictionary_insert(alpha2_to_name, strdup("CN"), strdup("China"));
 	dictionary_insert(alpha2_to_name, strdup("CO"), strdup("Colombia"));
 	dictionary_insert(alpha2_to_name, strdup("CG"), strdup("Congo"));
-	dictionary_insert(alpha2_to_name, strdup("CD"), strdup("Congo, Democratic Republic of the"));
+	dictionary_insert(alpha2_to_name, strdup("CD"), strdup("Democratic Republic of Congo"));
 	dictionary_insert(alpha2_to_name, strdup("CR"), strdup("Costa Rica"));
 	dictionary_insert(alpha2_to_name, strdup("CI"), strdup("Côte d'Ivoire"));
 	dictionary_insert(alpha2_to_name, strdup("HR"), strdup("Croatia"));
@@ -194,7 +193,7 @@ int main(void)
 	dictionary_insert(alpha2_to_name, strdup("KZ"), strdup("Kazakhstan"));
 	dictionary_insert(alpha2_to_name, strdup("KE"), strdup("Kenya"));
 	dictionary_insert(alpha2_to_name, strdup("KP"), strdup("Korea (Democratic People's Republic of)"));
-	dictionary_insert(alpha2_to_name, strdup("KR"), strdup("Korea, Republic of"));
+	dictionary_insert(alpha2_to_name, strdup("KR"), strdup("Republic of Korea"));
 	dictionary_insert(alpha2_to_name, strdup("KW"), strdup("Kuwait"));
 	dictionary_insert(alpha2_to_name, strdup("KG"), strdup("Kyrgyzstan"));
 	dictionary_insert(alpha2_to_name, strdup("LA"), strdup("Lao People's Democratic Republic"));
@@ -212,7 +211,7 @@ int main(void)
 	dictionary_insert(alpha2_to_name, strdup("ML"), strdup("Mali"));
 	dictionary_insert(alpha2_to_name, strdup("MR"), strdup("Mauritania"));
 	dictionary_insert(alpha2_to_name, strdup("MX"), strdup("Mexico"));
-	dictionary_insert(alpha2_to_name, strdup("MD"), strdup("Moldova, Republic of"));
+	dictionary_insert(alpha2_to_name, strdup("MD"), strdup("Moldova"));
 	dictionary_insert(alpha2_to_name, strdup("MC"), strdup("Monaco"));
 	dictionary_insert(alpha2_to_name, strdup("MN"), strdup("Mongolia"));
 	dictionary_insert(alpha2_to_name, strdup("ME"), strdup("Montenegro"));
@@ -229,7 +228,7 @@ int main(void)
 	dictionary_insert(alpha2_to_name, strdup("NO"), strdup("Norway"));
 	dictionary_insert(alpha2_to_name, strdup("OM"), strdup("Oman"));
 	dictionary_insert(alpha2_to_name, strdup("PK"), strdup("Pakistan"));
-	dictionary_insert(alpha2_to_name, strdup("PS"), strdup("Palestine, State of"));
+	dictionary_insert(alpha2_to_name, strdup("PS"), strdup("Palestine"));
 	dictionary_insert(alpha2_to_name, strdup("PA"), strdup("Panama"));
 	dictionary_insert(alpha2_to_name, strdup("PG"), strdup("Papua New Guinea"));
 	dictionary_insert(alpha2_to_name, strdup("PY"), strdup("Paraguay"));
@@ -258,9 +257,9 @@ int main(void)
 	dictionary_insert(alpha2_to_name, strdup("SE"), strdup("Sweden"));
 	dictionary_insert(alpha2_to_name, strdup("CH"), strdup("Switzerland"));
 	dictionary_insert(alpha2_to_name, strdup("SY"), strdup("Syrian Arab Republic"));
-	dictionary_insert(alpha2_to_name, strdup("TW"), strdup("Taiwan, Province of China"));
+	dictionary_insert(alpha2_to_name, strdup("TW"), strdup("Taiwan"));
 	dictionary_insert(alpha2_to_name, strdup("TJ"), strdup("Tajikistan"));
-	dictionary_insert(alpha2_to_name, strdup("TZ"), strdup("Tanzania, United Republic of"));
+	dictionary_insert(alpha2_to_name, strdup("TZ"), strdup("Tanzania"));
 	dictionary_insert(alpha2_to_name, strdup("TH"), strdup("Thailand"));
 	dictionary_insert(alpha2_to_name, strdup("TL"), strdup("Timor-Leste"));
 	dictionary_insert(alpha2_to_name, strdup("TG"), strdup("Togo"));
@@ -297,7 +296,6 @@ int main(void)
 	dictionary_insert(name_to_alpha2, strdup("Benin"), strdup("BJ"));
 	dictionary_insert(name_to_alpha2, strdup("Bhutan"), strdup("BT"));
 	dictionary_insert(name_to_alpha2, strdup("Bolivia (Plurinational State of)"), strdup("BO"));
-	dictionary_insert(name_to_alpha2, strdup("Bonaire, Sint Eustatius and Saba"), strdup("BQ"));
 	dictionary_insert(name_to_alpha2, strdup("Bosnia and Herzegovina"), strdup("BA"));
 	dictionary_insert(name_to_alpha2, strdup("Botswana"), strdup("BW"));
 	dictionary_insert(name_to_alpha2, strdup("Brazil"), strdup("BR"));
@@ -314,7 +312,7 @@ int main(void)
 	dictionary_insert(name_to_alpha2, strdup("China"), strdup("CN"));
 	dictionary_insert(name_to_alpha2, strdup("Colombia"), strdup("CO"));
 	dictionary_insert(name_to_alpha2, strdup("Congo"), strdup("CG"));
-	dictionary_insert(name_to_alpha2, strdup("Congo, Democratic Republic of the"), strdup("CD"));
+	dictionary_insert(name_to_alpha2, strdup("Democratic Republic of Congo"), strdup("CD"));
 	dictionary_insert(name_to_alpha2, strdup("Costa Rica"), strdup("CR"));
 	dictionary_insert(name_to_alpha2, strdup("Côte d'Ivoire"), strdup("CI"));
 	dictionary_insert(name_to_alpha2, strdup("Croatia"), strdup("HR"));
@@ -360,7 +358,7 @@ int main(void)
 	dictionary_insert(name_to_alpha2, strdup("Kazakhstan"), strdup("KZ"));
 	dictionary_insert(name_to_alpha2, strdup("Kenya"), strdup("KE"));
 	dictionary_insert(name_to_alpha2, strdup("Korea (Democratic People's Republic of)"), strdup("KP"));
-	dictionary_insert(name_to_alpha2, strdup("Korea, Republic of"), strdup("KR"));
+	dictionary_insert(name_to_alpha2, strdup("Republic of Korea"), strdup("KR"));
 	dictionary_insert(name_to_alpha2, strdup("Kuwait"), strdup("KW"));
 	dictionary_insert(name_to_alpha2, strdup("Kyrgyzstan"), strdup("KG"));
 	dictionary_insert(name_to_alpha2, strdup("Lao People's Democratic Republic"), strdup("LA"));
@@ -378,7 +376,7 @@ int main(void)
 	dictionary_insert(name_to_alpha2, strdup("Mali"), strdup("ML"));
 	dictionary_insert(name_to_alpha2, strdup("Mauritania"), strdup("MR"));
 	dictionary_insert(name_to_alpha2, strdup("Mexico"), strdup("MX"));
-	dictionary_insert(name_to_alpha2, strdup("Moldova, Republic of"), strdup("MD"));
+	dictionary_insert(name_to_alpha2, strdup("Moldova"), strdup("MD"));
 	dictionary_insert(name_to_alpha2, strdup("Monaco"), strdup("MC"));
 	dictionary_insert(name_to_alpha2, strdup("Mongolia"), strdup("MN"));
 	dictionary_insert(name_to_alpha2, strdup("Montenegro"), strdup("ME"));
@@ -395,7 +393,7 @@ int main(void)
 	dictionary_insert(name_to_alpha2, strdup("Norway"), strdup("NO"));
 	dictionary_insert(name_to_alpha2, strdup("Oman"), strdup("OM"));
 	dictionary_insert(name_to_alpha2, strdup("Pakistan"), strdup("PK"));
-	dictionary_insert(name_to_alpha2, strdup("Palestine, State of"), strdup("PS"));
+	dictionary_insert(name_to_alpha2, strdup("Palestine"), strdup("PS"));
 	dictionary_insert(name_to_alpha2, strdup("Panama"), strdup("PA"));
 	dictionary_insert(name_to_alpha2, strdup("Papua New Guinea"), strdup("PG"));
 	dictionary_insert(name_to_alpha2, strdup("Paraguay"), strdup("PY"));
@@ -424,9 +422,9 @@ int main(void)
 	dictionary_insert(name_to_alpha2, strdup("Sweden"), strdup("SE"));
 	dictionary_insert(name_to_alpha2, strdup("Switzerland"), strdup("CH"));
 	dictionary_insert(name_to_alpha2, strdup("Syrian Arab Republic"), strdup("SY"));
-	dictionary_insert(name_to_alpha2, strdup("Taiwan, Province of China"), strdup("TW"));
+	dictionary_insert(name_to_alpha2, strdup("Taiwan"), strdup("TW"));
 	dictionary_insert(name_to_alpha2, strdup("Tajikistan"), strdup("TJ"));
-	dictionary_insert(name_to_alpha2, strdup("Tanzania, United Republic of"), strdup("TZ"));
+	dictionary_insert(name_to_alpha2, strdup("Tanzania"), strdup("TZ"));
 	dictionary_insert(name_to_alpha2, strdup("Thailand"), strdup("TH"));
 	dictionary_insert(name_to_alpha2, strdup("Timor-Leste"), strdup("TL"));
 	dictionary_insert(name_to_alpha2, strdup("Togo"), strdup("TG"));
@@ -463,7 +461,6 @@ int main(void)
 	struct Vertex * country_BJ = construct_vertex(204, "BJ");
 	struct Vertex * country_BT = construct_vertex(64, "BT");
 	struct Vertex * country_BO = construct_vertex(68, "BO");
-	struct Vertex * country_BQ = construct_vertex(535, "BQ");
 	struct Vertex * country_BA = construct_vertex(70, "BA");
 	struct Vertex * country_BW = construct_vertex(72, "BW");
 	struct Vertex * country_BR = construct_vertex(76, "BR");
@@ -629,7 +626,6 @@ int main(void)
 	countryVertices[204] = country_BJ;
 	countryVertices[64] = country_BT;
 	countryVertices[68] = country_BO;
-	countryVertices[535] = country_BQ;
 	countryVertices[70] = country_BA;
 	countryVertices[72] = country_BW;
 	countryVertices[76] = country_BR;
@@ -795,7 +791,6 @@ int main(void)
 	dictionary_insert(alpha2_to_numeric, "BJ", "204");
 	dictionary_insert(alpha2_to_numeric, "BT", "64");
 	dictionary_insert(alpha2_to_numeric, "BO", "68");
-	dictionary_insert(alpha2_to_numeric, "BQ", "535");
 	dictionary_insert(alpha2_to_numeric, "BA", "70");
 	dictionary_insert(alpha2_to_numeric, "BW", "72");
 	dictionary_insert(alpha2_to_numeric, "BR", "76");
@@ -1592,16 +1587,24 @@ int main(void)
 	srand(time(NULL));
 
 	// Pick two random countries.
-	struct Vertex * source = random_country(countryVertices);
-	struct Vertex * dest = random_country(countryVertices);
+	struct Vertex * source = NULL;
+	struct Vertex * dest = NULL;
+	struct Path * sys_path = NULL;
+	
+	while (sys_path == NULL)
+	{
+		source = random_country(countryVertices);
+		dest = random_country(countryVertices);
+		sys_path = find_path(source, dest);
+		printf("Will create a path from %s to %s.\n", 
+			dictionary_get_value(alpha2_to_name, source->s_data),
+			dictionary_get_value(alpha2_to_name, dest->s_data));
+	}
 
-	printf("Will create a path from %s to %s.\n", 
-	dictionary_get_value(alpha2_to_name, source->s_data),
-		dictionary_get_value(alpha2_to_name, dest->s_data));
-
-	struct Path * sys_path = find_path(source, dest);
-	path_print(sys_path);
-
+	if (sys_path == NULL)
+		printf("Path computed is null!\n");
+	else
+		path_print(sys_path);
 	// struct Vertex * choice = select_country(name_to_alpha2, 
 		// alpha2_to_numeric, countryVertices);
 

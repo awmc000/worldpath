@@ -248,8 +248,9 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 		}
 	}
 
-	dictionary_delete(previous);
 	hashtable_delete(visited);
+
+	printf("find_path: NO PATH!\n");
 	// Return no path
 	return NULL;
 }
