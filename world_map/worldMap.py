@@ -1,7 +1,6 @@
 # Program to generate C code for the world map.
 
 import csv
-from countryinfo import CountryInfo
 
 alpha2ToNameInserts = []
 nameToAlpha2Inserts = []
@@ -25,7 +24,6 @@ with open('countries.csv') as csvFile:
 		# Add the country's name and ISO3 code to the code->name mapping
 		alpha2ToNameInserts.append(f'dictionary_insert(alpha2_to_name, strdup("{countryAlpha2}"), strdup("{countryName}"));')
 		nameToAlpha2Inserts.append(f'dictionary_insert(name_to_alpha2, strdup("{countryName}"), strdup("{countryAlpha2}"));')
-		country = CountryInfo(countryName)
 		# Add the country as a vertex
 		vertices.append(f'struct Vertex * country_{countryAlpha2} = construct_vertex({countryCode}, "{countryAlpha2}");')
 		pointers.append(f'countryVertices[{countryCode}] = country_{countryAlpha2};')
