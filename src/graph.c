@@ -14,7 +14,7 @@
 
 #include "../include/graph.h"
 #include "../include/queue.h"
-#include "../include/hash_table.h"
+
 
 // MSVC prefers _strdup over POSIX's strdup, as the former is a reserved name
 #if defined(_WIN32)
@@ -254,4 +254,27 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 	printf("find_path: NO PATH!\n");
 	// Return no path
 	return NULL;
+}
+
+int validate_path(struct Path * path, 
+	struct hash_table * alpha2_to_numeric, struct Vertex * countryVertices[])
+{
+	// If the path has 0 or 1 node, it cannot have an invalid step.
+	if (path->length < 2)
+		return 1;
+	
+	for (int i = 0; i < path->length - 1; i++)
+	{
+		struct Vertex * v1 = countryVertices[
+			atoi(dictionary_get_value(
+				alpha2_to_numeric, 
+				path->vertices[i]))];
+		struct Vertex * v2 = countryVertices[
+			atoi(dictionary_get_value(
+				alpha2_to_numeric, 
+				path->vertices[i+1]))];
+		if (!are_adjacent(v1, v2))
+			return 0;
+	}
+	return 1;
 }

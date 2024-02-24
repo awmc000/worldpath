@@ -10,6 +10,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include "../include/hash_table.h"
+
 // Max. number of countries bordering one country.
 #define MAX_BORDERS 14
 
@@ -100,4 +102,14 @@ void path_print(struct Path * path);
  * otherwise.
  **/
 struct Path * find_path(struct Vertex * a, struct Vertex * b);
+
+/**
+ * @brief Checks that every node in a path is actually adjacent to 
+ * the next.
+ * @param path Pointer to the path object.
+ * @return 1 if valid, 0 if invalid.
+*/
+int validate_path(struct Path * path, 
+	struct hash_table * alpha2_to_numeric, struct Vertex * countryVertices[]);
+
 #endif // GRAPH_H
