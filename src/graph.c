@@ -249,9 +249,9 @@ struct Path * find_path(struct Vertex * a, struct Vertex * b)
 	}
 
 	// Causes memory issues elsewhere!
+	// If you uncomment this, the second game will be disrupted by null data in hts
 	// hashtable_delete(visited);
 
-	printf("find_path: NO PATH!\n");
 	// Return no path
 	return NULL;
 }

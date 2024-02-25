@@ -54,10 +54,8 @@ struct hash_table *hashtable_create(size_t initial_size)
 struct hash_table *dictionary_create(size_t initial_size)
 {
 	struct hash_table * new_ht = hashtable_create(initial_size);
-	fprintf(stderr, "Created ht\n");
 	new_ht->is_dictionary = 1;
 	new_ht->values = calloc(initial_size, sizeof(char *));
-	fprintf(stderr, "Set ht to dictionary and allocated values array: %p\n", new_ht->values);
 	return new_ht;
 }
 
@@ -267,7 +265,6 @@ void hashtable_delete(struct hash_table *ht)
 	{
 		if (ht->strings[i] != NULL)
 		{
-			// printf("freeing %s\n", ht->strings[i]);
 			free(ht->strings[i]);
 			ht->array_elems--;
 		}
@@ -281,7 +278,6 @@ void dictionary_delete(struct hash_table * dict)
 	{
 		if (dict->values[i] != NULL)
 		{
-			// printf("freeing %s\n", dict->values[i]);
 			free(dict->values[i]);
 		}
 	}
