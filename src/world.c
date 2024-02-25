@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <nds.h>
 #include "../include/world.h"
 #include "../include/hash_table.h"
 #include "../include/graph.h"
@@ -80,7 +81,6 @@ struct Path * user_enter_path(struct hash_table * name_to_alpha2,
 		// Select a country
 		struct Vertex * next_country = select_country(name_to_alpha2,
 			alpha2_to_numeric, countryVertices);
-
 		// Add it to the path
 		if (next_country != NULL)
 			path_insert(user_path, next_country->s_data);
@@ -101,9 +101,14 @@ struct Vertex * random_country(struct Vertex **countryVertices)
 		vert = countryVertices[rand() % 896];
 	}
 
-	printf("Settled on %s.\n", vert->s_data);
+	// printf("Settled on %s.\n", vert->s_data);
 
 	return vert;
+}
+
+void OnKeyPressed(int key) {
+	if(key > 0)
+    	iprintf("%c", key);
 }
 
 int main(void)
@@ -114,7 +119,7 @@ int main(void)
 	struct Vertex * countryVertices[895];
 	memset(countryVertices, 0, sizeof(struct Vertex *) * 895);
 	struct hash_table *alpha2_to_numeric = dictionary_create(500);
-
+	{
 	char * AF_name = strdup("Afghanistan");
 	char * AL_name = strdup("Albania");
 	char * DZ_name = strdup("Algeria");
@@ -1912,7 +1917,7 @@ int main(void)
 	add_edge(country_ZW, country_MZ);
 	add_edge(country_ZW, country_ZA);
 	add_edge(country_ZW, country_ZM);
-
+	}
 
 	// Set up random number generator.
 	srand(time(NULL));
@@ -1922,40 +1927,83 @@ int main(void)
 	struct Vertex * dest = NULL;
 	struct Path * sys_path = NULL;
 	
-	while (sys_path == NULL)
+
+	// lcdMainOnTop();
+	// consoleDemoInit();
+	PrintConsole top;
+	Keyboard kb;
+	// Keyboard *kbd = 	keyboardDemoInit();
+	// kbd->OnKeyPressed = OnKeyPressed;
+	
+	int keys = 0;
+
+	/* initialize video */
+	videoSetMode(MODE_0_2D);
+	videoSetModeSub(MODE_0_2D);
+
+	/* initialize VRAM */
+	vramSetPrimaryBanks(VRAM_A_MAIN_BG,
+						VRAM_B_MAIN_SPRITE,
+						VRAM_C_SUB_BG,
+						VRAM_D_SUB_SPRITE);
+
+	consoleInit(&top,    0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true);
+
+	/* initialize sub screen console and keyboard
+	* use map base 14 and tile base 0 for keyboard
+	* use map base 18 and tile base 2 for console
+	*   as indicated by:
+	*   http://mtheall.com/vram.html#T0=2&NT0=864&MB0=14&TB0=0&S0=2&T1=2&NT1=128&MB1=18&TB1=2&S1=0
+	*/
+	keyboardInit(&kb,    0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
+	kb.OnKeyPressed = OnKeyPressed;
+	consoleSelect(&top);
+
+	while (1) // while game is active
 	{
-		source = random_country(countryVertices);
-		dest = random_country(countryVertices);
-		sys_path = find_path(source, dest);
-		printf("Create a path from %s to %s.\n", 
+		while (sys_path == NULL)
+		{
+			source = random_country(countryVertices);
+			dest = random_country(countryVertices);
+			sys_path = find_path(source, dest);
+		}
+		iprintf("Create a path from %s to %s.\n", 
 			dictionary_get_value(alpha2_to_name, source->s_data),
 			dictionary_get_value(alpha2_to_name, dest->s_data));
-	}
 
-	if (sys_path == NULL)
-		printf("Path computed is null!\n");
-	else
-		path_print(sys_path);
+		if (sys_path == NULL)
+			iprintf("Path computed is null!\n");
+		else
+			path_print(sys_path);
 
-	struct Path * user_path = user_enter_path(name_to_alpha2, 
-		alpha2_to_numeric, countryVertices);
+		struct Path * user_path = user_enter_path(name_to_alpha2, 
+			alpha2_to_numeric, countryVertices);
 
-	int path_valid = validate_path(user_path, alpha2_to_numeric, countryVertices);
+		int path_valid = validate_path(user_path, alpha2_to_numeric, countryVertices);
 
-	if (path_valid)
-	{
-		char * first_alpha2 = user_path->vertices[0];
-		int first_is_source = strcmp(first_alpha2, source->s_data) == 0;
+		if (path_valid)
+		{
+			char * first_alpha2 = user_path->vertices[0];
+			int first_is_source = strcmp(first_alpha2, source->s_data) == 0;
 
-		char * last_alpha2 = user_path->vertices[user_path->length - 1];
-		int end_is_dest = strcmp(last_alpha2, dest->s_data) == 0;
-		if (first_is_source && end_is_dest)
-			printf("Congrats, you made a valid path.\n");
-	}
-	else
-	{
-		printf("Your path was invalid. At some point, two countries"
-		"were adjacent in your path that are not bordering in real life.\n");
+			char * last_alpha2 = user_path->vertices[user_path->length - 1];
+			int end_is_dest = strcmp(last_alpha2, dest->s_data) == 0;
+			if (first_is_source && end_is_dest)
+				iprintf("Congrats, you made a valid path.\n");
+		}
+		else
+		{
+			iprintf("Your path was invalid. At some point, two countries"
+			"were adjacent in your path that are not bordering in real life.\n");
+		}
+
+		while(!keys) {
+			scanKeys();
+			keys = keysDown();
+			if(keys & KEY_START) exit(0);
+		}
+		swiWaitForVBlank();
+		consoleClear();
 	}
 
 	// Free all dyamic memory used
@@ -1966,7 +2014,7 @@ int main(void)
 	// Freeing this dict in particular causes a mem leak - why?
 	// dictionary_delete(alpha2_to_numeric);
 	free(alpha2_to_numeric);
-
+	{
 	free(AF_name);
 	free(AL_name);
 	free(DZ_name);
@@ -2297,6 +2345,7 @@ int main(void)
 	free(YE_alpha2);
 	free(ZM_alpha2);
 	free(ZW_alpha2);
+	}
 
 	return 0;
 }
