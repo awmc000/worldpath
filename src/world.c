@@ -11,11 +11,17 @@
 #include <stdio.h>
 #include <time.h>
 #include <nds.h>
+#include <gl2d.h>
 #include "../include/world.h"
 #include "../include/hash_table.h"
 #include "../include/graph.h"
 
+
+// Image data gen. by GRIT
+#include "world_map.h"
+
 #define BUFFERSIZE 127
+#define HLINE "+------------------------------+"
 
 #define ERASENEWLINE(buffer) buffer[strcspn(buffer, "\n")] = '\0'
 
@@ -27,7 +33,7 @@ struct Vertex * select_country(struct hash_table * name_to_alpha2,
 	char * linebuf, * alpha2;
 	while (!done_selecting)
 	{
-		printf("Enter the NAME of a country or 'done' to exit:\n");
+		printf("\nEnter COUNTRY NAME or 'done':");
 		// Allocate buffer
 		linebuf = calloc(BUFFERSIZE, sizeof(char));
 		
@@ -70,12 +76,13 @@ struct Vertex * select_country(struct hash_table * name_to_alpha2,
 
 struct Path * user_enter_path(struct hash_table * name_to_alpha2,
 	struct hash_table * alpha2_to_numeric,
-	struct Vertex ** countryVertices)
+	struct Vertex ** countryVertices,
+	struct Vertex * source)
 {
 	char * linebuf = calloc(BUFFERSIZE, sizeof(char));
 
 	struct Path * user_path = construct_path();
-
+	// path_insert(user_path, source->s_data);
 	do 
 	{
 		// Select a country
@@ -90,6 +97,22 @@ struct Path * user_enter_path(struct hash_table * name_to_alpha2,
 
 	path_print(user_path);
 	return user_path;
+}
+
+int score_path(struct Path * sys_path, struct Path * user_path)
+{
+	// Scoring system: 10 points for a valid path
+	// -1 for every length over sys path
+	// +100 for every length under sys path (should never happen)!
+	int score = 0;
+
+	int diff = sys_path->length - user_path->length;
+	if (diff > 0)
+		score -= diff;
+	else
+		score += (100 * diff);
+
+	return score;
 }
 
 struct Vertex * random_country(struct Vertex **countryVertices)
@@ -2293,22 +2316,28 @@ int main(void)
 	struct Vertex * dest = NULL;
 	struct Path * sys_path = NULL;
 	
-	PrintConsole top;
+	PrintConsole console;
 	Keyboard kb;
 	
 	int keys = 0;
 
-	// initialize video
-	videoSetMode(MODE_0_2D);
-	videoSetModeSub(MODE_0_2D);
+	int waiting = 1;
 
-	// initialize VRAM
-	vramSetPrimaryBanks(VRAM_A_MAIN_BG,
-						VRAM_B_MAIN_SPRITE,
-						VRAM_C_SUB_BG,
-						VRAM_D_SUB_SPRITE);
+	videoSetMode(MODE_5_3D);
+    vramSetBankA(VRAM_A_MAIN_BG_0x06000000);
 
-	consoleInit(&top,    0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true);
+    videoSetModeSub(MODE_5_2D);
+    vramSetBankC(VRAM_C_SUB_BG_0x06200000);
+
+	// setup background
+	int bg3 = bgInit(3, BgType_Bmp8, BgSize_B8_256x256, 0, 0);
+	dmaCopy(world_mapBitmap, bgGetGfxPtr(bg3), 256*256);
+	dmaCopy(world_mapPal, BG_PALETTE, 256*2);
+
+	consoleInit(&console, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true);
+	// consoleInit(&bottom, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true);
+	// consoleInit(&top,    0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true);
+	console.windowHeight = 12;
 
 	/* initialize sub screen console and keyboard
 	* use map base 14 and tile base 0 for keyboard
@@ -2318,29 +2347,27 @@ int main(void)
 	*/
 	keyboardInit(&kb,    0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
 	kb.OnKeyPressed = OnKeyPressed;
-	consoleSelect(&top);
+	consoleSelect(&console);
 
 	while (1) // while game is active
 	{
+		// Pick 2 countries and construct a path until the path is valid.
 		while (sys_path == NULL)
 		{
 			source = random_country(countryVertices);
 			dest = random_country(countryVertices);
 			sys_path = find_path(source, dest);
 		}
-		iprintf("Create a path from %s to %s.\n", 
+
+		iprintf("%s --> %s\n" HLINE "\n", 
 			dictionary_get_value(alpha2_to_name, source->s_data),
 			dictionary_get_value(alpha2_to_name, dest->s_data));
 
-		if (sys_path == NULL)
-			iprintf("Path computed is null!\n");
-		else
-			path_print(sys_path);
-
 		struct Path * user_path = user_enter_path(name_to_alpha2, 
-			alpha2_to_numeric, countryVertices);
+			alpha2_to_numeric, countryVertices, source);
 
-		int path_valid = validate_path(user_path, alpha2_to_numeric, countryVertices);
+		int path_valid = validate_path(user_path, alpha2_to_numeric, 
+			countryVertices);
 
 		if (path_valid)
 		{
@@ -2350,31 +2377,38 @@ int main(void)
 			char * last_alpha2 = user_path->vertices[user_path->length - 1];
 			int end_is_dest = strcmp(last_alpha2, dest->s_data) == 0;
 			if (first_is_source && end_is_dest)
+			{
 				iprintf("Congrats, you made a valid path.\n");
+				int score = score_path(sys_path, user_path);
+				iprintf("You scored %d/10 points!\n", score);
+			}
 		}
 		else
 		{
-			iprintf("Your path was invalid. At some point, two countries"
-			"were adjacent in your path that are not bordering in real life.\n");
+			iprintf("Invalid path. Try again.\n");
 		}
 
-		// while(!keys) {
-		// 	scanKeys();
-		// 	keys = keysDown();
-		// 	if(keys & KEY_START) exit(0);
-		// }
+		iprintf(HLINE "\n");
+		iprintf("[A]: play again, [START]: quit\n");
+				
+		while(waiting) {
+			scanKeys();
+			keys = keysDown();
+			if(keys & KEY_START) exit(0);
+			if(keys & KEY_A) waiting = 0;
+		}
+		
+		waiting = 1;
+		
 		sys_path = NULL;
 		swiWaitForVBlank();
 		consoleClear();
 	}
 
 	// Free all dyamic memory used
-	// dictionary_delete(alpha2_to_name);
+	dictionary_delete(alpha2_to_name);
 	free(alpha2_to_name);
-	// dictionary_delete(name_to_alpha2);
 	free(name_to_alpha2);
-	// Freeing this dict in particular causes a mem leak - why?
-	// dictionary_delete(alpha2_to_numeric);
 	free(alpha2_to_numeric);
 	free_strings();
 

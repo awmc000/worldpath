@@ -23,9 +23,9 @@ include $(DEVKITARM)/ds_rules
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	src
-DATA		:=	data  
+DATA		:=	
 INCLUDES	:=	include
-GRAPHICS	:=	gfx
+GRAPHICS	:=	data
  
 #---------------------------------------------------------------------------------
 # options for code generation
