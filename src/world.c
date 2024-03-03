@@ -2311,7 +2311,7 @@ int main(void)
 	// Set up random number generator.
 	srand(time(NULL));
 
-	// Pick two random countries.
+	// Starting point, destination, and generated path
 	struct Vertex * source = NULL;
 	struct Vertex * dest = NULL;
 	struct Path * sys_path = NULL;
@@ -2334,9 +2334,8 @@ int main(void)
 	dmaCopy(world_mapBitmap, bgGetGfxPtr(bg3), 256*256);
 	dmaCopy(world_mapPal, BG_PALETTE, 256*2);
 
-	consoleInit(&console, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true);
-	// consoleInit(&bottom, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true);
-	// consoleInit(&top,    0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true);
+	consoleInit(&console, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true); // bottom
+	// consoleInit(&console, 0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true); // top
 	console.windowHeight = 12;
 
 	/* initialize sub screen console and keyboard
@@ -2349,7 +2348,9 @@ int main(void)
 	kb.OnKeyPressed = OnKeyPressed;
 	consoleSelect(&console);
 
-	while (1) // while game is active
+	int running = 1;
+
+	while (running) // while game is active
 	{
 		// Pick 2 countries and construct a path until the path is valid.
 		while (sys_path == NULL)
@@ -2394,7 +2395,7 @@ int main(void)
 		while(waiting) {
 			scanKeys();
 			keys = keysDown();
-			if(keys & KEY_START) exit(0);
+			if(keys & KEY_START) running = 0, waiting = 0;
 			if(keys & KEY_A) waiting = 0;
 		}
 		
