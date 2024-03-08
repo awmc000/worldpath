@@ -2324,32 +2324,81 @@ int main(void)
 
 	int waiting = 1;
 
-	videoSetMode(MODE_5_3D);
-    vramSetBankA(VRAM_A_MAIN_BG_0x06000000);
+	// Set both screens to mode 0
+	NF_Set2D(0, 0);
+	NF_Set2D(1, 0);
 
-    videoSetModeSub(MODE_5_2D);
-    vramSetBankC(VRAM_C_SUB_BG_0x06200000);
+	swiWaitForVBlank();
 
-	// setup background
+	// Initialize file system and set it as root folder
+	nitroFSInit(NULL);
+	NF_SetRootFolder("NITROFS");
+
+	// Set both screens to mode 0
+	NF_Set2D(0, 0);
+	NF_Set2D(1, 0);
+
+	// begin
+	// Initialize tiled backgrounds system
+    NF_InitTiledBgBuffers();    // Initialize storage buffers
+    NF_InitTiledBgSys(0);       // Top screen
+    NF_InitTiledBgSys(1);       // Bottom screen
+
+    // Initialize sprite system
+    NF_InitSpriteBuffers();     // Initialize storage buffers
+    NF_InitSpriteSys(0);        // Top screen
+    NF_InitSpriteSys(1);        // Bottom screen
+
+    // Load background files from NitroFS
+    NF_LoadTiledBg("/bg/nfl", "nfl", 256, 256);
+    NF_LoadTiledBg("/bg/bg3", "layer_3", 256, 256);
+    NF_LoadTiledBg("/bg/bg2", "layer_2", 1024, 256);
+
+    // Load sprite files from NitroFS
+    NF_LoadSpriteGfx("/sprite/character", 0, 64, 64);
+    NF_LoadSpritePal("/sprite/character", 0);
+
+    NF_LoadSpriteGfx("/sprite/ball", 1, 32, 32);
+    NF_LoadSpritePal("/sprite/ball", 1);
+
+    // Create top screen background
+    NF_CreateTiledBg(0, 3, "nfl");
+
+    // Create bottom screen backgrounds
+    // NF_CreateTiledBg(1, 3, "layer_3");
+    // NF_CreateTiledBg(1, 2, "layer_2");
+
+    // Transfer the required sprites to VRAM
+    NF_VramSpriteGfx(1, 0, 0, true); // Ball: Keep all frames in VRAM
+    NF_VramSpritePal(1, 0, 0);
+
+    NF_VramSpriteGfx(0, 1, 0, false); // Character: Keep unused frames in RAM
+    NF_VramSpritePal(0, 1, 0);
+
+	// end
 
 	consoleInit(&console, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true); // bottom
 	// consoleInit(&console, 0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true); // top
 	console.windowHeight = 12;
 
-	/* initialize sub screen console and keyboard
-	* use map base 14 and tile base 0 for keyboard
-	* use map base 18 and tile base 2 for console
-	*   as indicated by:
-	*   http://mtheall.com/vram.html#T0=2&NT0=864&MB0=14&TB0=0&S0=2&T1=2&NT1=128&MB1=18&TB1=2&S1=0
-	*/
 	keyboardInit(&kb, 0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
 	kb.OnKeyPressed = OnKeyPressed;
 	consoleSelect(&console);
 
+	// Create a sprite on the top screen
+	NF_CreateSprite(0, 5, 0, 0, 100, 50);
+	
 	int running = 1;
 
 	while (running) // while game is active
 	{
+		NF_SpriteOamSet(0);
+		NF_SpriteOamSet(1);
+
+		oamUpdate(&oamMain);
+		oamUpdate(&oamSub);
+
+
 		// Pick 2 countries and construct a path until the path is valid.
 		while (sys_path == NULL)
 		{
