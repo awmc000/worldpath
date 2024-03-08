@@ -4,7 +4,7 @@ A reimplementation of [Travle](https://imois.in/games/travle/) by Oisin Carroll.
 # Technologies and libraries used
 - C programming language
 - GNU compiler collection
-- (will use) LibNDS, part of devkitpro
+- LibNDS
 - LibCheck for unit testing 
 # Wishlist
 - Graph with the countries of the world as vertices and their land borders as vertices.
@@ -18,10 +18,13 @@ A reimplementation of [Travle](https://imois.in/games/travle/) by Oisin Carroll.
 - Simple, satisfactory 2d world map.
 - Player can zoom in/out and pan on the world map.
 # Development Stages Planned
+## Done
 1. Graph C module working: construction, adjacency, pathfinding.
 2. Countries of the world graph and basic game logic working.
 3. Implemented as Text only game on NDS with on-screen keyboard.
+## In Progress
 4. 2D world map implemented.
+## Future
 5. User statistics and internet leaderboard implemented.
 6. Maintenance, debugging, improvements, translations.
 # License
