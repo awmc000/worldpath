@@ -11,14 +11,15 @@
 #include <stdio.h>
 #include <time.h>
 #include <nds.h>
-#include <gl2d.h>
+#include <filesystem.h>
+#include <nf_lib.h>
 #include "../include/world.h"
 #include "../include/hash_table.h"
 #include "../include/graph.h"
 
 
 // Image data gen. by GRIT
-#include "world_map.h"
+// #include "world_map.h"
 
 #define BUFFERSIZE 127
 #define HLINE "+------------------------------+"
@@ -2330,9 +2331,6 @@ int main(void)
     vramSetBankC(VRAM_C_SUB_BG_0x06200000);
 
 	// setup background
-	int bg3 = bgInit(3, BgType_Bmp8, BgSize_B8_256x256, 0, 0);
-	dmaCopy(world_mapBitmap, bgGetGfxPtr(bg3), 256*256);
-	dmaCopy(world_mapPal, BG_PALETTE, 256*2);
 
 	consoleInit(&console, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true); // bottom
 	// consoleInit(&console, 0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true); // top
@@ -2344,7 +2342,7 @@ int main(void)
 	*   as indicated by:
 	*   http://mtheall.com/vram.html#T0=2&NT0=864&MB0=14&TB0=0&S0=2&T1=2&NT1=128&MB1=18&TB1=2&S1=0
 	*/
-	keyboardInit(&kb,    0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
+	keyboardInit(&kb, 0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
 	kb.OnKeyPressed = OnKeyPressed;
 	consoleSelect(&console);
 
