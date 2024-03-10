@@ -104,7 +104,7 @@ int score_path(struct Path * sys_path, struct Path * user_path)
 {
 	// Scoring system: 10 points for a valid path
 	// -1 for every length over sys path
-	// +100 for every length under sys path (should never happen)!
+	// +100 for every length under sys path (should never happen)!	
 	int score = 0;
 
 	int diff = sys_path->length - user_path->length;
@@ -2288,42 +2288,8 @@ void free_strings()
 	free(ZW_alpha2);
 }
 
-int main(void)
+void system_setup()
 {
-	// Set up 2-letter code -> country name dictionary
-	struct hash_table * alpha2_to_name = dictionary_create(500);
-
-	// Set up country name -> 2-letter code dictionary
-	struct hash_table * name_to_alpha2 = dictionary_create(500);
-
-	// Set up 2 letter code -> number dictionary
-	struct hash_table *alpha2_to_numeric = dictionary_create(500);
-
-	// Array of countries by number for lookup
-	struct Vertex * countryVertices[895];
-	memset(countryVertices, 0, sizeof(struct Vertex *) * 895);
-	
-	create_country_strings();
-	populate_dictionaries(alpha2_to_name, name_to_alpha2, alpha2_to_numeric);
-	create_country_vertices();
-	create_country_edges();
-	populate_vertex_array(countryVertices);
-
-	// Set up random number generator.
-	srand(time(NULL));
-
-	// Starting point, destination, and generated path
-	struct Vertex * source = NULL;
-	struct Vertex * dest = NULL;
-	struct Path * sys_path = NULL;
-	
-	PrintConsole console;
-	Keyboard kb;
-	
-	int keys = 0;
-
-	int waiting = 1;
-
 	// Set both screens to mode 0
 	NF_Set2D(0, 0);
 	NF_Set2D(1, 0);
@@ -2342,7 +2308,7 @@ int main(void)
 	// Initialize tiled backgrounds system
     NF_InitTiledBgBuffers();    // Initialize storage buffers
     NF_InitTiledBgSys(0);       // Top screen
-    NF_InitTiledBgSys(1);       // Bottom screen
+    // NF_InitTiledBgSys(1);       // Bottom screen
 
     // Initialize sprite system
     NF_InitSpriteBuffers();     // Initialize storage buffers
@@ -2374,12 +2340,69 @@ int main(void)
 
     NF_VramSpriteGfx(0, 1, 0, false); // Character: Keep unused frames in RAM
     NF_VramSpritePal(0, 1, 0);
+}
 
-	// end
+void draw_console_pages(char pages[24][20][36], int item_selected, int page_selected)
+{
+	consoleClear();
+	iprintf("%c.....\n", 'a' + page_selected);
+	for (int i = 0; i < 20; i++)
+	{
+		if (item_selected == i)
+			iprintf(">");
+		iprintf("%d. %s\n", i, pages[page_selected][i]);
+	}
+}
+
+void draw_status_page(struct hash_table * alpha2_to_name, struct Vertex * source, struct Vertex * dest, struct Path * user_path)
+{
+	consoleClear();
+	iprintf("%s --> %s\n" HLINE "\n", 
+	dictionary_get_value(alpha2_to_name, source->s_data),
+	dictionary_get_value(alpha2_to_name, dest->s_data));
+	path_print(user_path);
+}
+
+int main(void)
+{
+	// Set up 2-letter code -> country name dictionary
+	struct hash_table * alpha2_to_name = dictionary_create(500);
+
+	// Set up country name -> 2-letter code dictionary
+	struct hash_table * name_to_alpha2 = dictionary_create(500);
+
+	// Set up 2 letter code -> number dictionary
+	struct hash_table *alpha2_to_numeric = dictionary_create(500);
+
+	// Array of countries by number for lookup
+	struct Vertex * countryVertices[895];
+	memset(countryVertices, 0, sizeof(struct Vertex *) * 895);
+	
+	create_country_strings();
+	populate_dictionaries(alpha2_to_name, name_to_alpha2, alpha2_to_numeric);
+	create_country_vertices();
+	create_country_edges();
+	populate_vertex_array(countryVertices);
+
+	// Set up random number generator.
+	srand(time(NULL));
+
+	// Starting point, destination, and generated path
+	struct Vertex * source = NULL;
+	struct Vertex * dest = NULL;
+	struct Path * sys_path = NULL;
+	struct Path * user_path = NULL;
+	
+	PrintConsole console;
+	Keyboard kb;
+	
+	int keys = 0;
+
+	system_setup();
 
 	consoleInit(&console, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true); // bottom
 	// consoleInit(&console, 0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true); // top
-	console.windowHeight = 12;
+	console.windowHeight = 24;
 
 	keyboardInit(&kb, 0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
 	kb.OnKeyPressed = OnKeyPressed;
@@ -2390,6 +2413,107 @@ int main(void)
 	
 	int running = 1;
 
+	int num_pages = 26;
+	int page_selected = 0;
+	int item_selected = 0;
+
+	char pages[24][20][36] = {
+		
+    {"AF:Afghanistan", "AL:Albania", "DZ:Algeria", "AD:Andorra",
+	"AO:Angola", "AR:Argentina", "AM:Armenia", "AT:Austria", 
+	"AZ:Azerbaijan"},
+
+	{"Bahrain", "BD:Bangladesh",
+	"BY:Belarus","BE:Belgium","BZ:Belize", "BJ:Benin", "BO:Bolivia", 
+	"BA:Bosnia and Herzegovina", "BW:Botswana", "BR:Brazil", 
+	"BN:Brunei", "BG:Bulgaria", "BF:Burkina Faso",
+	"BI:Burundi"},
+
+	{"KH:Cambodia", "CM:Cameroon", "CA:Canada",
+	"CF:Central African Republic", "TD:Chad", 
+	"CL:Chile", "CN:China", "CO:Colombia",
+	"CR:Costa Rica", "CI:Cote d'Ivoire", "HR:Croatia", "CZ:Czechia"},
+
+	{"CD:Democratic Republic of the Congo", "DK:Denmark",
+	"DJ:Djibouti","DO:Dominican Republic"},
+
+	{"EC:Ecuador", "EG:Egypt", "SV:El Salvador",
+	"GQ:Equatorial Guinea", "ER:Eritrea", "EE:Estonia", 
+	"SZ:Eswatini", "ET:Ethiopia"},
+
+	{"FI:Finland", "FR:France", "GF:French Guiana"},
+
+	{"GA:Gabon", "GM:Gambia", "GE:Georgia", "DE:Germany", 
+	"GH:Ghana", "GR:Greece", "GT:Guatemala", "GN:Guinea", 
+	"GW:Guinea-Bissau", "GY:Guyana"},
+
+	{"HT:Haiti", "VA:Holy See", "HN:Honduras", "HU:Hungary"},
+
+	{"Iceland", "IN:India", "ID:Indonesia", "IR:Iran", "IQ:Iraq", 
+	"IE:Ireland", "IL:Israel", "IT:Italy"},
+
+	{"JO:Jordan"},
+
+	{"KZ:Kazakhstan", "KE:Kenya", "Kosovo", "KW:Kuwait", "KG:Kyrgyzstan"},
+
+	{"LA:Laos", "LV:Latvia", "LB:Lebanon","Lesotho", 
+	"LR:Liberia", "LY:Libya", "LI:Liechtenstein", 
+	"LT:Lithuania", "LU:Luxembourg"},
+	// M
+	{"MO:Macao", "MW:Malawi", "MY:Malaysia",
+	"ML:Mali", "MR:Mauritania", "MX:Mexico", "MD:Moldova", 
+	"MC:Monaco", "MN:Mongolia", "ME:Montenegro", "MA:Morocco", 
+	"MZ:Mozambique"},
+	// N
+	{"NA:Namibia", "NP:Nepal", "NL:Netherlands",
+	"NI:Nicaragua", "NE:Niger", "NG:Nigeria",
+	"MK:North Macedonia", "KP:North Korea", "NO:Norway"},
+	// O
+	{"OM:Oman"},
+	// P
+	{"PK:Pakistan", "PS:Palestine", 
+	"PA:Panama", "PG:Papua New Guinea", "PY:Paraguay",
+	"PE:Peru", "PL:Poland", "PT:Portugal"},
+	// Q
+	{"QA:Qatar"},
+	// R
+	{"CG:Republic of Congo", "RO:Romania", "RU:Russian Federation", 
+	"RW:Rwanda"},
+
+	// S
+	{"SM:San Marino", "SA:Saudi Arabia", "SN:Senegal",
+	"RS:Serbia", "SL:Sierra Leone", "SG:Singapore", "SK:Slovakia",
+	"SI:Slovenia", "SO:Somalia", "ZA:South Africa", "KR:South Korea",
+	"SS:South Sudan", "ES:Spain", "SD:Sudan",
+	"SR:Suriname", "CH:Switzerland", "SE:Sweden", "SY:Syria"},
+	// T
+	{"TJ:Tajikistan", "TZ:Tanzania", "TH:Thailand", "TL:Timor-Leste", 
+	"TN:Tunisia", "TR:Turkey", "TM:Turkmenistan"},
+    // U
+	{"UG:Uganda", "UA:Ukraine", "AE:United Arab Emirates", 
+	"GB:United Kingdom", "UY:Uruguay", "UZ:Uzbekistan", "US:United States"},
+    // V
+	{"VE:Venezuela", "VN:Vietnam"},
+    // NO W
+	// NO X
+	// Y
+	{"YE:Yemen"},
+    // Z
+	{"ZM:Zambia", "ZW:Zimbabwe"},
+	};
+
+	// Pick 2 countries and construct a path until the path is valid.
+	while (sys_path == NULL || (sys_path->length > 4))
+	{
+		source = random_country(countryVertices);
+		dest = random_country(countryVertices);
+		sys_path = find_path(source, dest);
+		user_path = construct_path();
+		path_insert(user_path, source->s_data);
+	}
+
+
+
 	while (running) // while game is active
 	{
 		NF_SpriteOamSet(0);
@@ -2398,59 +2522,78 @@ int main(void)
 		oamUpdate(&oamMain);
 		oamUpdate(&oamSub);
 
+		scanKeys();
+		keys = keysDown();
 
-		// Pick 2 countries and construct a path until the path is valid.
-		while (sys_path == NULL)
-		{
-			source = random_country(countryVertices);
-			dest = random_country(countryVertices);
-			sys_path = find_path(source, dest);
-		}
-
-		iprintf("%s --> %s\n" HLINE "\n", 
-			dictionary_get_value(alpha2_to_name, source->s_data),
-			dictionary_get_value(alpha2_to_name, dest->s_data));
-
-		struct Path * user_path = user_enter_path(name_to_alpha2, 
-			alpha2_to_numeric, countryVertices, source);
-
-		int path_valid = validate_path(user_path, alpha2_to_numeric, 
-			countryVertices);
-
-		if (path_valid)
-		{
-			char * first_alpha2 = user_path->vertices[0];
-			int first_is_source = strcmp(first_alpha2, source->s_data) == 0;
-
-			char * last_alpha2 = user_path->vertices[user_path->length - 1];
-			int end_is_dest = strcmp(last_alpha2, dest->s_data) == 0;
-			if (first_is_source && end_is_dest)
-			{
-				iprintf("Congrats, you made a valid path.\n");
-				int score = score_path(sys_path, user_path);
-				iprintf("You scored %d/10 points!\n", score);
-			}
-		}
-		else
-		{
-			iprintf("Invalid path. Try again.\n");
-		}
-
-		iprintf(HLINE "\n");
-		iprintf("[A]: play again, [START]: quit\n");
-				
-		while(waiting) {
-			scanKeys();
-			keys = keysDown();
-			if(keys & KEY_START) running = 0, waiting = 0;
-			if(keys & KEY_A) waiting = 0;
-		}
+		// Check for shutdown
+		if(keys & KEY_START) running = 0;
 		
-		waiting = 1;
-		
-		sys_path = NULL;
+		// Check for done
+		if(keys & KEY_X)
+		{			
+			sys_path = NULL;
+			iprintf(HLINE "\n");
+
+			int path_valid = validate_path(user_path, alpha2_to_numeric, countryVertices);
+
+			int path_reaches = (user_path->vertices[user_path->length - 1][0] == dest->s_data[0]) &&
+				(user_path->vertices[user_path->length - 1][1] == dest->s_data[1]);
+
+			int score = path_valid && path_reaches;
+
+			if (score)
+				iprintf("You won!\n");
+			else
+				iprintf("You lost!\n");
+
+			while (1) ;;
+			// running = 0;
+		}
+
+
+		// Check for switching pages
+		if (keys & KEY_RIGHT)
+		{
+			page_selected += 1;
+			page_selected %= num_pages;
+			item_selected = 0;
+			draw_console_pages(pages, item_selected, page_selected);
+		}
+
+		// Check for switching pages
+		if (keys & KEY_LEFT)
+		{
+			page_selected -= 1;
+			if (page_selected < 0) page_selected = num_pages - 1;
+			page_selected %= num_pages;
+			item_selected = 0;
+			draw_console_pages(pages, item_selected, page_selected);
+		}
+
+		if (keys & KEY_DOWN)
+		{
+			item_selected = (item_selected + 1) % 20;
+			draw_console_pages(pages, item_selected, page_selected);
+		}
+
+		if (keys & KEY_A)
+		{
+			char * country_code = calloc(3, sizeof(char));
+			country_code[0] = pages[page_selected][item_selected][0];
+			country_code[1] = pages[page_selected][item_selected][1];
+			country_code[2] = '\0';
+			iprintf("Added %s to the path!\n", country_code);
+			path_insert(user_path, country_code);
+			path_print(user_path);
+		}
+
+		if (keys & KEY_B)
+		{
+			draw_status_page(alpha2_to_name, source, dest, user_path);
+		}
+		// iprintf(HLINE "\n");
+		// iprintf("[A]: play again, [START]: quit\n");
 		swiWaitForVBlank();
-		consoleClear();
 	}
 
 	// Free all dyamic memory used
