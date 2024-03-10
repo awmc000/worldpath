@@ -4,7 +4,7 @@ A reimplementation of [Travle](https://imois.in/games/travle/) by Oisin Carroll.
 # Technologies and libraries used
 - C programming language
 - GNU compiler collection
-- LibNDS
+- LibNDS and NightFoxLib for interfacing with the Nintendo DS 
 - LibCheck for unit testing 
 # Wishlist
 - Player can upload and download scores to and from an internet leaderboard.
