@@ -26,6 +26,15 @@
 
 #define ERASENEWLINE(buffer) buffer[strcspn(buffer, "\n")] = '\0'
 
+enum GAME_STATE 
+{
+	GENERATING,
+	PLAYING,
+	MAIN_MENU,
+	GAME_END,
+	WAITING
+};
+
 struct Vertex * select_country(struct hash_table * name_to_alpha2,
 	struct hash_table * alpha2_to_numeric,
 	struct Vertex ** countryVertices)
@@ -2502,17 +2511,20 @@ int main(void)
 	{"ZM:Zambia", "ZW:Zimbabwe"},
 	};
 
-	// Pick 2 countries and construct a path until the path is valid.
-	while (sys_path == NULL || (sys_path->length > 4))
-	{
-		source = random_country(countryVertices);
-		dest = random_country(countryVertices);
-		sys_path = find_path(source, dest);
-		user_path = construct_path();
-		path_insert(user_path, source->s_data);
-	}
+	enum GAME_STATE state = MAIN_MENU;
 
-
+	int count = 0;
+	int delay_count = 0;
+	char * title = strdup(
+		"================================\n"
+		"=== W o r l d  .  P a t h    ===\n"
+		"================================\n"
+		"===   START:        NEW GAME ===\n"
+		"=== DEV. BY:   AMCCOLM.CODES ===\n"
+		"=== USING  :   LIBNDS, NFLIB ===\n"
+		"=== TYVM<3 :   MIKA MYNETT   ===\n"
+	);
+	char * c = title;
 
 	while (running) // while game is active
 	{
@@ -2525,12 +2537,112 @@ int main(void)
 		scanKeys();
 		keys = keysDown();
 
-		// Check for shutdown
-		if(keys & KEY_START) running = 0;
-		
-		// Check for done
-		if(keys & KEY_X)
-		{			
+		if (state == WAITING)
+		{
+			if (keys & KEY_START)
+				state = MAIN_MENU;
+		}
+
+		// If we are in the main menu, loop the animated printing title
+		if (state == MAIN_MENU)
+		{
+			if (count == 5)
+			{
+				if (*c == '\0')
+				{
+					if (delay_count == 200)
+					{
+						c = title;
+						consoleClear();
+					}
+					else
+					{
+						iprintf(".");
+						delay_count++;
+					}
+				}
+
+				iprintf("%c", *c);
+				c++;
+				count = 0;
+			}
+			count++;
+			if (keys & KEY_START)
+				state = GENERATING;
+		}
+
+		// If the challenge needs to be generated..
+		if (state == GENERATING)
+		{
+			consoleClear(); // Clear out the main menu
+			// Pick 2 countries and construct a path until the path is valid.
+			while (sys_path == NULL || (sys_path->length > 4))
+			{
+				source = random_country(countryVertices);
+				dest = random_country(countryVertices);
+				sys_path = find_path(source, dest);
+				user_path = construct_path();
+				path_insert(user_path, source->s_data);
+			}
+			// Draw the status
+			draw_status_page(alpha2_to_name, source, dest, user_path);
+			// Now change the state
+			state = PLAYING;
+		}
+
+		if (state == PLAYING)
+		{
+			// If the player says they are done, go to the end screen
+			if(keys & KEY_X)
+			{		
+				state = GAME_END;
+			}
+
+
+			// Check for switching pages
+			if (keys & KEY_RIGHT)
+			{
+				page_selected += 1;
+				page_selected %= num_pages;
+				item_selected = 0;
+				draw_console_pages(pages, item_selected, page_selected);
+			}
+
+			// Check for switching pages
+			if (keys & KEY_LEFT)
+			{
+				page_selected -= 1;
+				if (page_selected < 0) page_selected = num_pages - 1;
+				page_selected %= num_pages;
+				item_selected = 0;
+				draw_console_pages(pages, item_selected, page_selected);
+			}
+
+			if (keys & KEY_DOWN)
+			{
+				item_selected = (item_selected + 1) % 20;
+				draw_console_pages(pages, item_selected, page_selected);
+			}
+
+			if (keys & KEY_A)
+			{
+				char * country_code = calloc(3, sizeof(char));
+				country_code[0] = pages[page_selected][item_selected][0];
+				country_code[1] = pages[page_selected][item_selected][1];
+				country_code[2] = '\0';
+				iprintf("Added %s to the path!\n", country_code);
+				path_insert(user_path, country_code);
+				path_print(user_path);
+			}
+
+			if (keys & KEY_B)
+			{
+				draw_status_page(alpha2_to_name, source, dest, user_path);
+			}
+		}
+
+		if (state == GAME_END)
+		{
 			sys_path = NULL;
 			iprintf(HLINE "\n");
 
@@ -2545,51 +2657,8 @@ int main(void)
 				iprintf("You won!\n");
 			else
 				iprintf("You lost!\n");
-
-			while (1) ;;
-			// running = 0;
-		}
-
-
-		// Check for switching pages
-		if (keys & KEY_RIGHT)
-		{
-			page_selected += 1;
-			page_selected %= num_pages;
-			item_selected = 0;
-			draw_console_pages(pages, item_selected, page_selected);
-		}
-
-		// Check for switching pages
-		if (keys & KEY_LEFT)
-		{
-			page_selected -= 1;
-			if (page_selected < 0) page_selected = num_pages - 1;
-			page_selected %= num_pages;
-			item_selected = 0;
-			draw_console_pages(pages, item_selected, page_selected);
-		}
-
-		if (keys & KEY_DOWN)
-		{
-			item_selected = (item_selected + 1) % 20;
-			draw_console_pages(pages, item_selected, page_selected);
-		}
-
-		if (keys & KEY_A)
-		{
-			char * country_code = calloc(3, sizeof(char));
-			country_code[0] = pages[page_selected][item_selected][0];
-			country_code[1] = pages[page_selected][item_selected][1];
-			country_code[2] = '\0';
-			iprintf("Added %s to the path!\n", country_code);
-			path_insert(user_path, country_code);
-			path_print(user_path);
-		}
-
-		if (keys & KEY_B)
-		{
-			draw_status_page(alpha2_to_name, source, dest, user_path);
+				
+			state = WAITING;
 		}
 		// iprintf(HLINE "\n");
 		// iprintf("[A]: play again, [START]: quit\n");
