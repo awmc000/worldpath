@@ -47,6 +47,8 @@ int free_vertex(struct Vertex * vert)
 
 int add_edge(struct Vertex * a, struct Vertex * b)
 {
+	if (are_adjacent(a, b))
+		return 0;
 
 	a->n_neighbours++;
 	b->n_neighbours++;

@@ -2654,7 +2654,7 @@ int main(void)
 				// Print the list of countries adjacent to the last in the path
 				int curr_path_length = user_path->length - 1;
 				char * last_in_path = user_path->vertices[curr_path_length];
-				iprintf("%s is bordered by these countries:\n", 
+				iprintf("%s is bordered by:\n", 
 					dictionary_get_value(alpha2_to_name, last_in_path));
 				// We have the Alpha2 of the current country
 				// Get the number
