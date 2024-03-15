@@ -2418,7 +2418,7 @@ int main(void)
 	consoleSelect(&console);
 
 	// Create a sprite on the top screen
-	NF_CreateSprite(0, 5, 0, 0, 100, 50);
+	// NF_CreateSprite(0, 5, 0, 0, 100, 50);
 	
 	int running = 1;
 
@@ -2522,7 +2522,10 @@ int main(void)
 		"===   START:        NEW GAME ===\n"
 		"=== DEV. BY:   AMCCOLM.CODES ===\n"
 		"=== USING  :   LIBNDS, NFLIB ===\n"
-		"=== TYVM<3 :   MIKA MYNETT   ===\n"
+		"=== TYVM<3 :     MIKA MYNETT ===\n"
+		"=== PRESS B:    STATUS CHECK ===\n"
+		"=== PRESS X:        END GAME ===\n"
+		"================================\n"
 	);
 	char * c = title;
 
@@ -2598,7 +2601,6 @@ int main(void)
 				state = GAME_END;
 			}
 
-
 			// Check for switching pages
 			if (keys & KEY_RIGHT)
 			{
@@ -2608,7 +2610,6 @@ int main(void)
 				draw_console_pages(pages, item_selected, page_selected);
 			}
 
-			// Check for switching pages
 			if (keys & KEY_LEFT)
 			{
 				page_selected -= 1;
@@ -2624,6 +2625,12 @@ int main(void)
 				draw_console_pages(pages, item_selected, page_selected);
 			}
 
+			if (keys & KEY_UP)
+			{
+				item_selected = item_selected > 0 ? item_selected - 1 : 19;
+				draw_console_pages(pages, item_selected, page_selected);
+			}
+
 			if (keys & KEY_A)
 			{
 				char * country_code = calloc(3, sizeof(char));
@@ -2635,9 +2642,32 @@ int main(void)
 				path_print(user_path);
 			}
 
+			// Status check
 			if (keys & KEY_B)
 			{
 				draw_status_page(alpha2_to_name, source, dest, user_path);
+			}
+
+			// Hint
+			if (keys & KEY_Y)
+			{
+				// Print the list of countries adjacent to the last in the path
+				int curr_path_length = user_path->length - 1;
+				char * last_in_path = user_path->vertices[curr_path_length];
+				iprintf("%s is bordered by these countries:\n", 
+					dictionary_get_value(alpha2_to_name, last_in_path));
+				// We have the Alpha2 of the current country
+				// Get the number
+				int number = atoi(dictionary_get_value(alpha2_to_numeric, last_in_path));
+
+				// Use the number to get the vertex
+				struct Vertex * v = countryVertices[number];
+
+				// Iterate over the neighbours.
+				for (int i = 0; i < v->n_neighbours; i++)
+				{
+					iprintf("%s\n", dictionary_get_value(alpha2_to_name, v->neighbours[i]->s_data));
+				}
 			}
 		}
 
@@ -2660,8 +2690,6 @@ int main(void)
 				
 			state = WAITING;
 		}
-		// iprintf(HLINE "\n");
-		// iprintf("[A]: play again, [START]: quit\n");
 		swiWaitForVBlank();
 	}
 
