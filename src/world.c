@@ -2525,6 +2525,7 @@ int main(void)
 		"=== TYVM<3 :     MIKA MYNETT ===\n"
 		"=== PRESS B:    STATUS CHECK ===\n"
 		"=== PRESS X:        END GAME ===\n"
+		"=== PRESS Y:      GET A HINT ===\n"
 		"================================\n"
 	);
 	char * c = title;
