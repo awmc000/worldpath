@@ -2372,6 +2372,20 @@ void draw_status_page(struct hash_table * alpha2_to_name, struct Vertex * source
 	path_print(user_path);
 }
 
+void print_score(int pass, int par)
+{
+	if (passes)
+	{
+		iprintf("You won!\n");
+		if (par > 0)
+			iprintf("Perfect path!\n");
+		else
+			iprintf("You scored %d over par.\n", par);
+	}
+	else
+		iprintf("You lost!\n");
+}
+
 int main(void)
 {
 	// Set up 2-letter code -> country name dictionary
@@ -2682,12 +2696,10 @@ int main(void)
 			int path_reaches = (user_path->vertices[user_path->length - 1][0] == dest->s_data[0]) &&
 				(user_path->vertices[user_path->length - 1][1] == dest->s_data[1]);
 
-			int score = path_valid && path_reaches;
-
-			if (score)
-				iprintf("You won!\n");
-			else
-				iprintf("You lost!\n");
+			int passes = path_valid && path_reaches;
+			int par = user_path->length - sys_path->length;
+			
+			print_score(passes, par);
 				
 			state = WAITING;
 		}
