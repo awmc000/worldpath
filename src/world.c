@@ -26,6 +26,10 @@
 
 #define ERASENEWLINE(buffer) buffer[strcspn(buffer, "\n")] = '\0'
 
+// Globals
+// Pannable map on top of the screen
+int camera_x = 0, camera_y = 0;
+
 enum GAME_STATE 
 {
 	GENERATING,
@@ -2358,14 +2362,18 @@ void draw_console_pages(char pages[24][20][36], int item_selected, int page_sele
 	for (int i = 0; i < 20; i++)
 	{
 		if (item_selected == i)
+		{
 			iprintf(">");
-		iprintf("%d. %s\n", i, pages[page_selected][i]);
+		}
+		if (strlen(pages[page_selected][i]) > 0)
+			iprintf("%d. %s\n", i, pages[page_selected][i]);
 	}
 }
 
 void draw_status_page(struct hash_table * alpha2_to_name, struct Vertex * source, struct Vertex * dest, struct Path * user_path)
 {
 	consoleClear();
+	iprintf("CAMERA: X=%d, Y=%d\n", camera_x, camera_y);
 	iprintf("%s --> %s\n" HLINE "\n", 
 	dictionary_get_value(alpha2_to_name, source->s_data),
 	dictionary_get_value(alpha2_to_name, dest->s_data));
@@ -2374,7 +2382,7 @@ void draw_status_page(struct hash_table * alpha2_to_name, struct Vertex * source
 
 void print_score(int pass, int par)
 {
-	if (passes)
+	if (pass)
 	{
 		iprintf("You won!\n");
 		if (par > 0)
@@ -2386,61 +2394,7 @@ void print_score(int pass, int par)
 		iprintf("You lost!\n");
 }
 
-int main(void)
-{
-	// Set up 2-letter code -> country name dictionary
-	struct hash_table * alpha2_to_name = dictionary_create(500);
-
-	// Set up country name -> 2-letter code dictionary
-	struct hash_table * name_to_alpha2 = dictionary_create(500);
-
-	// Set up 2 letter code -> number dictionary
-	struct hash_table *alpha2_to_numeric = dictionary_create(500);
-
-	// Array of countries by number for lookup
-	struct Vertex * countryVertices[895];
-	memset(countryVertices, 0, sizeof(struct Vertex *) * 895);
-	
-	create_country_strings();
-	populate_dictionaries(alpha2_to_name, name_to_alpha2, alpha2_to_numeric);
-	create_country_vertices();
-	create_country_edges();
-	populate_vertex_array(countryVertices);
-
-	// Set up random number generator.
-	srand(time(NULL));
-
-	// Starting point, destination, and generated path
-	struct Vertex * source = NULL;
-	struct Vertex * dest = NULL;
-	struct Path * sys_path = NULL;
-	struct Path * user_path = NULL;
-	
-	PrintConsole console;
-	Keyboard kb;
-	
-	int keys = 0;
-
-	system_setup();
-
-	consoleInit(&console, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true); // bottom
-	// consoleInit(&console, 0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true); // top
-	console.windowHeight = 24;
-
-	keyboardInit(&kb, 0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
-	kb.OnKeyPressed = OnKeyPressed;
-	consoleSelect(&console);
-
-	// Create a sprite on the top screen
-	// NF_CreateSprite(0, 5, 0, 0, 100, 50);
-	
-	int running = 1;
-
-	int num_pages = 26;
-	int page_selected = 0;
-	int item_selected = 0;
-
-	char pages[24][20][36] = {
+char pages[24][20][36] = {
 		
     {"AF:Afghanistan", "AL:Albania", "DZ:Algeria", "AD:Andorra",
 	"AO:Angola", "AR:Argentina", "AM:Armenia", "AT:Austria", 
@@ -2525,6 +2479,59 @@ int main(void)
 	{"ZM:Zambia", "ZW:Zimbabwe"},
 	};
 
+
+int main(void)
+{
+	// Set up 2-letter code -> country name dictionary
+	struct hash_table * alpha2_to_name = dictionary_create(500);
+
+	// Set up country name -> 2-letter code dictionary
+	struct hash_table * name_to_alpha2 = dictionary_create(500);
+
+	// Set up 2 letter code -> number dictionary
+	struct hash_table *alpha2_to_numeric = dictionary_create(500);
+
+	// Array of countries by number for lookup
+	struct Vertex * countryVertices[895];
+	memset(countryVertices, 0, sizeof(struct Vertex *) * 895);
+	
+	create_country_strings();
+	populate_dictionaries(alpha2_to_name, name_to_alpha2, alpha2_to_numeric);
+	create_country_vertices();
+	create_country_edges();
+	populate_vertex_array(countryVertices);
+
+	// Set up random number generator.
+	srand(time(NULL));
+
+	// Starting point, destination, and generated path
+	struct Vertex * source = NULL;
+	struct Vertex * dest = NULL;
+	struct Path * sys_path = NULL;
+	struct Path * user_path = NULL;
+	
+	PrintConsole console;
+	Keyboard kb;
+	
+	int keys = 0;
+
+	system_setup();
+
+	consoleInit(&console, 1, BgType_Text4bpp, BgSize_T_256x256, 18, 2, false, true); // bottom
+	// consoleInit(&console, 0, BgType_Text4bpp, BgSize_T_256x256,  2, 0, true,  true); // top
+	console.windowHeight = 24;
+
+	keyboardInit(&kb, 0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
+	kb.OnKeyPressed = OnKeyPressed;
+	consoleSelect(&console);
+	
+	int running = 1;
+
+	int num_pages = 26;
+	int page_selected = 0;
+	int item_selected = 0;
+
+	
 	enum GAME_STATE state = MAIN_MENU;
 
 	int count = 0;
@@ -2539,7 +2546,7 @@ int main(void)
 		"=== TYVM<3 :     MIKA MYNETT ===\n"
 		"=== PRESS B:    STATUS CHECK ===\n"
 		"=== PRESS X:        END GAME ===\n"
-		"=== PRESS Y:      GET A HINT ===\n"
+		"=== PRESS Y:  SEE NEIGHBOURS ===\n"
 		"================================\n"
 	);
 	char * c = title;
@@ -2615,6 +2622,19 @@ int main(void)
 			{		
 				state = GAME_END;
 			}
+
+			// Camera panning
+			if (keys & KEY_RIGHT)
+				camera_x++;
+
+			if (keys & KEY_LEFT)
+				camera_x--;
+
+			if (keys & KEY_UP)
+				camera_y--;
+
+			if (keys & KEY_DOWN)
+				camera_y++;
 
 			// Check for switching pages
 			if (keys & KEY_RIGHT)
