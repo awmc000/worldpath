@@ -36,7 +36,8 @@ enum GAME_STATE
 	PLAYING,
 	MAIN_MENU,
 	GAME_END,
-	WAITING
+	WAITING,
+	PANNING
 };
 
 struct Vertex * select_country(struct hash_table * name_to_alpha2,
@@ -2394,6 +2395,31 @@ void print_score(int pass, int par)
 		iprintf("You lost!\n");
 }
 
+/**
+ * @brief Determines the position a sprite should be drawn on screen
+ * based on camera position and sprite "world" position. Translates
+ * a position in the imagined 2d plane, incl. space not drawn to a 
+ * pixel position.
+ * @param cx camera x
+ * @param cy camera y
+ * @param sx sprite x
+ * @param sy sprite y
+ * @param dx draw x
+ * @param dy draw y 
+ **/
+void project(int cx, int cy, int sx, int sy, int * dx, int * dy)
+{
+    *dx = sx-cx;
+    *dy = sy-cy;
+}
+
+void draw_demo_moving_sprite()
+{
+	int dx = 0, dy = 0;
+	project(camera_x, camera_y, 100, 50, &dx, &dy);
+	NF_MoveSprite(0, 5, dx, dy);
+}
+
 char pages[24][20][36] = {
 		
     {"AF:Afghanistan", "AL:Albania", "DZ:Algeria", "AD:Andorra",
@@ -2479,7 +2505,6 @@ char pages[24][20][36] = {
 	{"ZM:Zambia", "ZW:Zimbabwe"},
 	};
 
-
 int main(void)
 {
 	// Set up 2-letter code -> country name dictionary
@@ -2524,6 +2549,9 @@ int main(void)
 	keyboardInit(&kb, 0, BgType_Text4bpp, BgSize_T_256x512, 14, 0, false, true);
 	kb.OnKeyPressed = OnKeyPressed;
 	consoleSelect(&console);
+
+	// Create ball sprite for test moves with project function.
+	NF_CreateSprite(0, 5, 0, 0, 100, 50);
 	
 	int running = 1;
 
@@ -2547,6 +2575,8 @@ int main(void)
 		"=== PRESS B:    STATUS CHECK ===\n"
 		"=== PRESS X:        END GAME ===\n"
 		"=== PRESS Y:  SEE NEIGHBOURS ===\n"
+		"===  SELECT:  ENTER PAN MODE ===\n"
+		"=== B (PAN): BACK TO PLAYING ===\n"
 		"================================\n"
 	);
 	char * c = title;
@@ -2561,6 +2591,8 @@ int main(void)
 
 		scanKeys();
 		keys = keysDown();
+
+		draw_demo_moving_sprite();
 
 		if (state == WAITING)
 		{
@@ -2582,7 +2614,7 @@ int main(void)
 					}
 					else
 					{
-						iprintf(".");
+						// iprintf(".");
 						delay_count++;
 					}
 				}
@@ -2622,19 +2654,6 @@ int main(void)
 			{		
 				state = GAME_END;
 			}
-
-			// Camera panning
-			if (keys & KEY_RIGHT)
-				camera_x++;
-
-			if (keys & KEY_LEFT)
-				camera_x--;
-
-			if (keys & KEY_UP)
-				camera_y--;
-
-			if (keys & KEY_DOWN)
-				camera_y++;
 
 			// Check for switching pages
 			if (keys & KEY_RIGHT)
@@ -2704,6 +2723,36 @@ int main(void)
 					iprintf("%s\n", dictionary_get_value(alpha2_to_name, v->neighbours[i]->s_data));
 				}
 			}
+
+			// switch to Panning mode
+			if (keys & KEY_SELECT)
+			{
+				state = PANNING;
+				iprintf("entered panning mode\n");
+			}
+		}
+
+		if (state == PANNING)
+		{
+			// check for return to playing mode
+			if (keys & KEY_B)
+			{
+				state = PLAYING;
+				iprintf("exiting panning mode\n");
+			}
+
+			// Camera panning
+			if (keys & KEY_RIGHT)
+				camera_x++;
+
+			if (keys & KEY_LEFT)
+				camera_x--;
+
+			if (keys & KEY_UP)
+				camera_y--;
+
+			if (keys & KEY_DOWN)
+				camera_y++;
 		}
 
 		if (state == GAME_END)
