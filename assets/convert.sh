@@ -1,6 +1,7 @@
 #!/bin/sh
 
 grit ball.png -ftb -fh! -gTFF00FF -gt -gB8 -m!
+grit dot.png -ftb -fh! -gTFF00FF -gt -gB8 -m!
 grit character.png -ftb -fh! -gTFF00FF -gt -gB8 -m!
 
 for file in *.bin; do

@@ -2335,11 +2335,11 @@ void system_setup()
     NF_LoadTiledBg("/bg/bg2", "layer_2", 1024, 256);
 
     // Load sprite files from NitroFS
-    NF_LoadSpriteGfx("/sprite/character", 0, 64, 64);
-    NF_LoadSpritePal("/sprite/character", 0);
+    NF_LoadSpriteGfx("/sprite/dot", 0, 2, 2);
+    NF_LoadSpritePal("/sprite/dot", 0);
 
-    NF_LoadSpriteGfx("/sprite/ball", 1, 32, 32);
-    NF_LoadSpritePal("/sprite/ball", 1);
+    // NF_LoadSpriteGfx("/sprite/ball", 1, 32, 32);
+    // NF_LoadSpritePal("/sprite/ball", 1);
 
     // Create top screen background
     NF_CreateTiledBg(0, 3, "nfl");
@@ -2348,12 +2348,12 @@ void system_setup()
     // NF_CreateTiledBg(1, 3, "layer_3");
     // NF_CreateTiledBg(1, 2, "layer_2");
 
-    // Transfer the required sprites to VRAM
-    NF_VramSpriteGfx(1, 0, 0, true); // Ball: Keep all frames in VRAM
+    // // Transfer the required sprites to VRAM
+    NF_VramSpriteGfx(1, 0, 0, false); // Ball: Keep all frames in VRAM
     NF_VramSpritePal(1, 0, 0);
 
-    NF_VramSpriteGfx(0, 1, 0, false); // Character: Keep unused frames in RAM
-    NF_VramSpritePal(0, 1, 0);
+    // NF_VramSpriteGfx(0, 1, 0, false); // Character: Keep unused frames in RAM
+    // NF_VramSpritePal(0, 1, 0);
 }
 
 void draw_console_pages(char pages[24][20][36], int item_selected, int page_selected)
@@ -2420,7 +2420,435 @@ void draw_demo_moving_sprite()
 	NF_MoveSprite(0, 5, dx, dy);
 }
 
-char pages[24][20][36] = {
+int spriteCoordinates[26][20][2] = {
+    {
+		// "AF:Afghanistan", 
+		{0, 0},
+	
+		// "AL:Albania", 
+		{0, 0},
+	
+		// "DZ:Algeria", 
+		{0, 0},
+		
+		// "AD:Andorra",
+		{0, 0},
+
+		// "AO:Angola", 
+		{0, 0},
+
+		// "AR:Argentina", 
+		{0, 0},
+
+		// "AM:Armenia", 
+		{0, 0},
+
+		// "AT:Austria", 
+		{0, 0},
+
+		// "AZ:Azerbaijan" 
+		{0, 0}
+
+	},
+
+	{
+		// "Bahrain", 
+		{0, 0},
+		
+		// "BD:Bangladesh",
+		{0, 0},
+		
+		// "BY:Belarus",
+		{0, 0},
+		
+		// "BE:Belgium",
+		{0, 0},
+		
+		// "BZ:Belize", 
+		{0, 0},
+		
+		//"BJ:Benin", 
+		{0, 0},
+		
+		// BO:Bolivia",
+		{0, 0},
+		
+		// "BA:Bosnia and Herzegovina", 
+		{0, 0},
+		
+		// "BW:Botswana", 
+		{0, 0},
+		
+		// "BR:Brazil", 
+		{0, 0},
+		
+		// "BN:Brunei", 
+		{0, 0},
+
+		// "BG:Bulgaria", 
+		{0, 0},
+		
+		// "BF:Burkina Faso",
+		{0, 0},
+		
+		// "BI:Burundi"
+		{0, 0},
+	},
+
+	{
+		//"KH:Cambodia"
+		{0, 0},
+		//"CM:Cameroon"
+		{0, 0},
+		//"CA:Canada",
+		{0, 0},
+		//"CF:Central African Republic"
+		{0, 0},
+		//"TD:Chad"
+		{0, 0},
+		//"CL:Chile"
+		{0, 0},
+		//"CN:China"
+		{0, 0},
+		//"CO:Colombia",
+		{0, 0},
+		//"CR:Costa Rica"
+		{0, 0},
+		//"CI:Cote d'Ivoire"
+		{0, 0},
+		//"HR:Croatia"
+		{0, 0},
+		//"CZ:Czechia"
+		{0, 0}
+	},
+
+	{
+		//"CD:Democratic Republic of the Congo"
+		{0, 0},
+		//"DK:Denmark",
+		{0, 0},
+		//"DJ:Djibouti",
+		{0, 0},
+		//"DO:Dominican Republic"
+		{0, 0}
+	},
+
+	{
+		//"EC:Ecuador"
+		{0, 0},
+		//"EG:Egypt"
+		{0, 0},
+		//"SV:El Salvador",
+		{0, 0},
+		//"GQ:Equatorial Guinea"
+		{0, 0},
+		//"ER:Eritrea"
+		{0, 0},
+		//"EE:Estonia"
+		{0, 0},
+		//"SZ:Eswatini"
+		{0, 0},
+		//"ET:Ethiopia"
+		{0, 0}
+	},
+
+	{
+		//"FI:Finland"
+		{0, 0},
+		//"FR:France"
+		{0, 0},
+		//"GF:French Guiana"
+		{0, 0}
+	},
+
+	{
+		//"GA:Gabon"
+		{0, 0},
+		//"GM:Gambia"
+		{0, 0},
+		//"GE:Georgia"
+		{0, 0},
+		//"DE:Germany"
+		{0, 0},
+		//"GH:Ghana"
+		{0, 0},
+		//"GR:Greece"
+		{0, 0},
+		//"GT:Guatemala"
+		{0, 0},
+		//"GN:Guinea"
+		{0, 0},
+		//"GW:Guinea-Bissau"
+		{0, 0},
+		//"GY:Guyana"
+		{0, 0}
+	},
+
+	{
+		//"HT:Haiti"
+		{0, 0},
+		//"VA:Holy See"
+		{0, 0},
+		//"HN:Honduras"
+		{0, 0},
+		//"HU:Hungary"
+		{0, 0}
+	},
+
+	{
+		//"Iceland"
+		{0, 0},
+		//"IN:India"
+		{0, 0},
+		//"ID:Indonesia"
+		{0, 0},
+		//"IR:Iran"
+		{0, 0},
+		//"IQ:Iraq"
+		{0, 0},
+		//"IE:Ireland"
+		{0, 0},
+		//"IL:Israel"
+		{0, 0},
+		//"IT:Italy"
+		{0, 0},
+	},
+
+	{
+		//"JO:Jordan"
+		{0, 0}
+	},
+
+	{
+		//"KZ:Kazakhstan"
+		{0, 0},
+		//"KE:Kenya"
+		{0, 0},
+		//"Kosovo"
+		{0, 0},
+		//"KW:Kuwait"
+		{0, 0},
+		//"KG:Kyrgyzstan"
+		{0, 0}
+	},
+
+	{
+		//"LA:Laos"
+		{0, 0},
+		//"LV:Latvia"
+		{0, 0},
+		//"LB:Lebanon",
+		{0, 0},
+		//"Lesotho"
+		{0, 0},
+		//"LR:Liberia"
+		{0, 0},
+		//"LY:Libya"
+		{0, 0},
+		//"LI:Liechtenstein"
+		{0, 0},
+		// "LT:Lithuania"
+		{0, 0},
+		//"LU:Luxembourg"
+		{0, 0},
+	},
+	// M
+	{
+		// "MO:Macao"
+		{0, 0},
+		//"MW:Malawi"
+		{0, 0},
+		//"MY:Malaysia",
+		{0, 0},
+		// "ML:Mali"
+		{0, 0},
+		//"MR:Mauritania"
+		{0, 0},
+		//"MX:Mexico"
+		{0, 0},
+		//"MD:Moldova"
+		{0, 0},
+		// "MC:Monaco"
+		{0, 0},
+		//"MN:Mongolia"
+		{0, 0},
+		//"ME:Montenegro"
+		{0, 0},
+		//"MA:Morocco"
+		{0, 0},
+		// "MZ:Mozambique"
+		{0, 0}
+	},
+	// N
+	{
+		//"NA:Namibia"
+		{0, 0},
+		//"NP:Nepal"
+		{0, 0},
+		//"NL:Netherlands"
+		{0, 0},
+		// "NI:Nicaragua"
+		{0, 0},
+		//"NE:Niger"
+		{0, 0},
+		//"NG:Nigeria",
+		{0, 0},
+		//"MK:North Macedonia"
+		{0, 0},
+		//"KP:North Korea"
+		{0, 0},
+		//"NO:Norway"
+		{0, 0},
+	},
+	// O
+	{
+		//"OM:Oman"
+		{0, 0}
+	},
+	// P
+	{
+		//"PK:Pakistan"
+		{0, 0},
+		//"PS:Palestine"
+		{0, 0},
+		//"PA:Panama"
+		{0, 0},
+		//"PG:Papua New Guinea"
+		{0, 0},
+		//"PY:Paraguay",
+		{0, 0},
+		//"PE:Peru"
+		{0, 0},
+		//"PL:Poland"
+		{0, 0},
+		//"PT:Portugal"
+		{0, 0}
+	},
+	// Q
+	{
+		// "QA:Qatar"
+		{0, 0}
+	},
+	// R
+	{
+		// "CG:Republic of Congo"
+		{0, 0},
+
+		//"RO:Romania"
+		{0, 0},
+		
+		//"RU:Russian Federation"
+		{0, 0},
+		
+		// "RW:Rwanda"
+		{0, 0}
+	},
+
+	// S
+	{
+		//"SM:San Marino"
+		{0, 0},
+		//"SA:Saudi Arabia"
+		{0, 0},
+		//"SN:Senegal",
+		{0, 0},
+		//"RS:Serbia"
+		{0, 0},
+		//"SL:Sierra Leone"
+		{0, 0},
+		//"SG:Singapore"
+		{0, 0},
+		//"SK:Slovakia",
+		{0, 0},
+		// "SI:Slovenia"
+		{0, 0},
+		//"SO:Somalia"
+		{0, 0},
+		//"ZA:South Africa"
+		{0, 0},
+		//"KR:South Korea",
+		{0, 0},
+		// "SS:South Sudan"
+		{0, 0},
+		//"ES:Spain"
+		{0, 0},
+		//"SD:Sudan",
+		{0, 0},
+		// "SR:Suriname"
+		{0, 0},
+		//"CH:Switzerland"
+		{0, 0},
+		//"SE:Sweden"
+		{0, 0},
+		//"SY:Syria"},
+		{0, 0}
+	},
+	// T
+	{
+		// "TJ:Tajikistan"
+		{0, 0},
+		//"TZ:Tanzania"
+		{0, 0},
+		//"TH:Thailand"
+		{0, 0},
+		//"TL:Timor-Leste"
+		{0, 0},
+		//"TN:Tunisia"
+		{0, 0},
+		//"TR:Turkey"
+		{0, 0},
+		//"TM:Turkmenistan"},
+		{0, 0}
+	},
+	// U
+	{
+		//"UG:Uganda"
+		{0, 0},
+
+		//"UA:Ukraine"
+		{0, 0},
+		
+		//"AE:United Arab Emirates"
+		{0, 0},
+		
+		//"GB:United Kingdom"
+		{0, 0},
+		
+		//"UY:Uruguay"
+		{0, 0},
+		
+		//"UZ:Uzbekistan"
+		{0, 0},
+		
+		//"US:United States"},
+		{0, 0},
+	},
+    // V
+	{
+		//"VE:Venezuela"
+		{0, 0},
+		//"VN:Vietnam"},
+		{0, 0}
+	},
+	// NO W
+	{},
+	// NO X
+	{},
+	// Y
+	{
+		//"YE:Yemen"
+		{0, 0}
+	},
+    // Z
+	{
+		//"ZM:Zambia"
+		{0, 0},
+		//"ZW:Zimbabwe"},
+		{0, 0}
+	}
+};
+
+char pages[26][20][36] = {
 		
     {"AF:Afghanistan", "AL:Albania", "DZ:Algeria", "AD:Andorra",
 	"AO:Angola", "AR:Argentina", "AM:Armenia", "AT:Austria", 
@@ -2498,7 +2926,9 @@ char pages[24][20][36] = {
     // V
 	{"VE:Venezuela", "VN:Vietnam"},
     // NO W
+	{},
 	// NO X
+	{},
 	// Y
 	{"YE:Yemen"},
     // Z
@@ -2551,7 +2981,7 @@ int main(void)
 	consoleSelect(&console);
 
 	// Create ball sprite for test moves with project function.
-	NF_CreateSprite(0, 5, 0, 0, 100, 50);
+	// NF_CreateSprite(0, 5, 1, 0, 100, 50);
 	
 	int running = 1;
 
@@ -2592,7 +3022,7 @@ int main(void)
 		scanKeys();
 		keys = keysDown();
 
-		draw_demo_moving_sprite();
+		// draw_demo_moving_sprite();
 
 		if (state == WAITING)
 		{
