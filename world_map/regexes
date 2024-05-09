@@ -1,0 +1,7 @@
+Get each country:
+
+/<path id="[a-z]{2}" class="[a-z ]+" d="m [0-9. ,\-c]+">/gm
+
+Get xy coords of each brush stroke:
+
+/([\-0-9.]+),([\-0-9.]+)/gm
