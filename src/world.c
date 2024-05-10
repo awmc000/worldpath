@@ -2335,7 +2335,7 @@ void system_setup()
     NF_LoadTiledBg("/bg/bg2", "layer_2", 1024, 256);
 
     // Load sprite files from NitroFS
-    NF_LoadSpriteGfx("/sprite/dot", 0, 2, 2);
+    NF_LoadSpriteGfx("/sprite/dot", 0, 16,16);
     NF_LoadSpritePal("/sprite/dot", 0);
 
     // NF_LoadSpriteGfx("/sprite/ball", 1, 32, 32);
@@ -2344,13 +2344,9 @@ void system_setup()
     // Create top screen background
     NF_CreateTiledBg(0, 3, "nfl");
 
-    // Create bottom screen backgrounds
-    // NF_CreateTiledBg(1, 3, "layer_3");
-    // NF_CreateTiledBg(1, 2, "layer_2");
-
     // // Transfer the required sprites to VRAM
-    NF_VramSpriteGfx(1, 0, 0, false); // Ball: Keep all frames in VRAM
-    NF_VramSpritePal(1, 0, 0);
+    NF_VramSpriteGfx(0, 0, 0, false); // Ball: Keep all frames in VRAM
+    NF_VramSpritePal(0, 0, 0);
 
     // NF_VramSpriteGfx(0, 1, 0, false); // Character: Keep unused frames in RAM
     // NF_VramSpritePal(0, 1, 0);
@@ -2456,13 +2452,13 @@ int spriteCoordinates[26][20][2] = {
 		{0, 0},
 		
 		// "BD:Bangladesh",
-		{0, 0},
+		{180, 65},
 		
 		// "BY:Belarus",
 		{0, 0},
 		
 		// "BE:Belgium",
-		{0, 0},
+		{121, 38},
 		
 		// "BZ:Belize", 
 		{0, 0},
@@ -2480,7 +2476,7 @@ int spriteCoordinates[26][20][2] = {
 		{0, 0},
 		
 		// "BR:Brazil", 
-		{0, 0},
+		{85, 105},
 		
 		// "BN:Brunei", 
 		{0, 0},
@@ -2497,11 +2493,11 @@ int spriteCoordinates[26][20][2] = {
 
 	{
 		//"KH:Cambodia"
-		{0, 0},
+		{193, 77},
 		//"CM:Cameroon"
 		{0, 0},
 		//"CA:Canada",
-		{0, 0},
+		{50, 25},
 		//"CF:Central African Republic"
 		{0, 0},
 		//"TD:Chad"
@@ -2509,7 +2505,7 @@ int spriteCoordinates[26][20][2] = {
 		//"CL:Chile"
 		{0, 0},
 		//"CN:China"
-		{0, 0},
+		{200, 60},
 		//"CO:Colombia",
 		{0, 0},
 		//"CR:Costa Rica"
@@ -2526,7 +2522,7 @@ int spriteCoordinates[26][20][2] = {
 		//"CD:Democratic Republic of the Congo"
 		{0, 0},
 		//"DK:Denmark",
-		{0, 0},
+		{127, 30},
 		//"DJ:Djibouti",
 		{0, 0},
 		//"DO:Dominican Republic"
@@ -2537,7 +2533,7 @@ int spriteCoordinates[26][20][2] = {
 		//"EC:Ecuador"
 		{0, 0},
 		//"EG:Egypt"
-		{0, 0},
+		{139, 63},
 		//"SV:El Salvador",
 		{0, 0},
 		//"GQ:Equatorial Guinea"
@@ -2554,9 +2550,9 @@ int spriteCoordinates[26][20][2] = {
 
 	{
 		//"FI:Finland"
-		{0, 0},
+		{140, 20},
 		//"FR:France"
-		{0, 0},
+		{122, 40},
 		//"GF:French Guiana"
 		{0, 0}
 	},
@@ -2573,7 +2569,7 @@ int spriteCoordinates[26][20][2] = {
 		//"GH:Ghana"
 		{0, 0},
 		//"GR:Greece"
-		{0, 0},
+		{136, 49},
 		//"GT:Guatemala"
 		{0, 0},
 		//"GN:Guinea"
@@ -2586,9 +2582,9 @@ int spriteCoordinates[26][20][2] = {
 
 	{
 		//"HT:Haiti"
-		{0, 0},
+		{70, 72},
 		//"VA:Holy See"
-		{0, 0},
+		{128, 45},
 		//"HN:Honduras"
 		{0, 0},
 		//"HU:Hungary"
@@ -2599,7 +2595,7 @@ int spriteCoordinates[26][20][2] = {
 		//"Iceland"
 		{0, 0},
 		//"IN:India"
-		{0, 0},
+		{175, 70},
 		//"ID:Indonesia"
 		{0, 0},
 		//"IR:Iran"
@@ -2611,7 +2607,7 @@ int spriteCoordinates[26][20][2] = {
 		//"IL:Israel"
 		{0, 0},
 		//"IT:Italy"
-		{0, 0},
+		{130, 46},
 	},
 
 	{
@@ -2655,7 +2651,7 @@ int spriteCoordinates[26][20][2] = {
 	// M
 	{
 		// "MO:Macao"
-		{0, 0},
+		{200, 70},
 		//"MW:Malawi"
 		{0, 0},
 		//"MY:Malaysia",
@@ -2665,13 +2661,13 @@ int spriteCoordinates[26][20][2] = {
 		//"MR:Mauritania"
 		{0, 0},
 		//"MX:Mexico"
-		{0, 0},
+		{50, 70},
 		//"MD:Moldova"
 		{0, 0},
 		// "MC:Monaco"
 		{0, 0},
 		//"MN:Mongolia"
-		{0, 0},
+		{190, 43},
 		//"ME:Montenegro"
 		{0, 0},
 		//"MA:Morocco"
@@ -2682,11 +2678,11 @@ int spriteCoordinates[26][20][2] = {
 	// N
 	{
 		//"NA:Namibia"
-		{0, 0},
+		{131, 118},
 		//"NP:Nepal"
-		{0, 0},
+		{182, 60},
 		//"NL:Netherlands"
-		{0, 0},
+		{123, 36},
 		// "NI:Nicaragua"
 		{0, 0},
 		//"NE:Niger"
@@ -2696,9 +2692,9 @@ int spriteCoordinates[26][20][2] = {
 		//"MK:North Macedonia"
 		{0, 0},
 		//"KP:North Korea"
-		{0, 0},
+		{209, 48},
 		//"NO:Norway"
-		{0, 0},
+		{129, 20},
 	},
 	// O
 	{
@@ -2722,7 +2718,7 @@ int spriteCoordinates[26][20][2] = {
 		//"PL:Poland"
 		{0, 0},
 		//"PT:Portugal"
-		{0, 0}
+		{115, 47}
 	},
 	// Q
 	{
@@ -2738,7 +2734,7 @@ int spriteCoordinates[26][20][2] = {
 		{0, 0},
 		
 		//"RU:Russian Federation"
-		{0, 0},
+		{188, 22},
 		
 		// "RW:Rwanda"
 		{0, 0}
@@ -2749,7 +2745,7 @@ int spriteCoordinates[26][20][2] = {
 		//"SM:San Marino"
 		{0, 0},
 		//"SA:Saudi Arabia"
-		{0, 0},
+		{152, 67},
 		//"SN:Senegal",
 		{0, 0},
 		//"RS:Serbia"
@@ -2765,21 +2761,21 @@ int spriteCoordinates[26][20][2] = {
 		//"SO:Somalia"
 		{0, 0},
 		//"ZA:South Africa"
-		{0, 0},
+		{137, 130},
 		//"KR:South Korea",
-		{0, 0},
+		{210, 53},
 		// "SS:South Sudan"
 		{0, 0},
 		//"ES:Spain"
-		{0, 0},
+		{117, 48},
 		//"SD:Sudan",
-		{0, 0},
+		{140, 74},
 		// "SR:Suriname"
 		{0, 0},
 		//"CH:Switzerland"
 		{0, 0},
 		//"SE:Sweden"
-		{0, 0},
+		{132, 25},
 		//"SY:Syria"},
 		{0, 0}
 	},
@@ -2796,7 +2792,7 @@ int spriteCoordinates[26][20][2] = {
 		//"TN:Tunisia"
 		{0, 0},
 		//"TR:Turkey"
-		{0, 0},
+		{142, 50},
 		//"TM:Turkmenistan"},
 		{0, 0}
 	},
@@ -2812,7 +2808,7 @@ int spriteCoordinates[26][20][2] = {
 		{0, 0},
 		
 		//"GB:United Kingdom"
-		{0, 0},
+		{119, 33},
 		
 		//"UY:Uruguay"
 		{0, 0},
@@ -2821,14 +2817,14 @@ int spriteCoordinates[26][20][2] = {
 		{0, 0},
 		
 		//"US:United States"},
-		{0, 0},
+		{50, 50},
 	},
     // V
 	{
 		//"VE:Venezuela"
 		{0, 0},
 		//"VN:Vietnam"},
-		{0, 0}
+		{196, 76}
 	},
 	// NO W
 	{},
@@ -2980,8 +2976,8 @@ int main(void)
 	kb.OnKeyPressed = OnKeyPressed;
 	consoleSelect(&console);
 
-	// Create ball sprite for test moves with project function.
-	// NF_CreateSprite(0, 5, 1, 0, 100, 50);
+	// Create a dot sprite as a test.
+	NF_CreateSprite(0, 3, 0, 0, 100, 50);
 	
 	int running = 1;
 
@@ -3122,6 +3118,9 @@ int main(void)
 				country_code[1] = pages[page_selected][item_selected][1];
 				country_code[2] = '\0';
 				iprintf("Added %s to the path!\n", country_code);
+				int x = spriteCoordinates[page_selected][item_selected][0];
+				int y = spriteCoordinates[page_selected][item_selected][1];
+				NF_CreateSprite(0, 1, 0, 0, x, y);
 				path_insert(user_path, country_code);
 				path_print(user_path);
 			}
