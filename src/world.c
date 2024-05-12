@@ -2382,7 +2382,7 @@ void print_score(int pass, int par)
 	if (pass)
 	{
 		iprintf("You won!\n");
-		if (par > 0)
+		if (par == 0)
 			iprintf("Perfect path!\n");
 		else
 			iprintf("You scored %d over par.\n", par);
@@ -3002,8 +3002,6 @@ int main(void)
 		"=== PRESS B:    STATUS CHECK ===\n"
 		"=== PRESS X:        END GAME ===\n"
 		"=== PRESS Y:  SEE NEIGHBOURS ===\n"
-		"===  SELECT:  ENTER PAN MODE ===\n"
-		"=== B (PAN): BACK TO PLAYING ===\n"
 		"================================\n"
 	);
 	char * c = title;
@@ -3187,7 +3185,6 @@ int main(void)
 
 		if (state == GAME_END)
 		{
-			sys_path = NULL;
 			iprintf(HLINE "\n");
 
 			int path_valid = validate_path(user_path, alpha2_to_numeric, countryVertices);
@@ -3198,9 +3195,19 @@ int main(void)
 			int passes = path_valid && path_reaches;
 			int par = user_path->length - sys_path->length;
 			
+			iprintf("Calculating score...\n");
 			print_score(passes, par);
-				
+			iprintf("Press START to play again.\n");
+			
+			// Destroy dots on screen
+			for (int i = 0; i < dots_on_screen; i++)
+			{
+				NF_DeleteSprite(0, i);
+				dots_on_screen = 0;
+			}
+
 			state = WAITING;
+			sys_path = NULL;
 		}
 		swiWaitForVBlank();
 	}
