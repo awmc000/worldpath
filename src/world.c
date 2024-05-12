@@ -2419,133 +2419,133 @@ void draw_demo_moving_sprite()
 int spriteCoordinates[26][20][2] = {
     {
 		// "AF:Afghanistan", 
-		{0, 0},
+		{170, 57},
 	
 		// "AL:Albania", 
-		{0, 0},
+		{134, 48},
 	
 		// "DZ:Algeria", 
-		{0, 0},
+		{122, 64},
 		
 		// "AD:Andorra",
-		{0, 0},
+		{120, 45},
 
 		// "AO:Angola", 
-		{0, 0},
+		{133, 107},
 
 		// "AR:Argentina", 
-		{0, 0},
+		{78, 134},
 
 		// "AM:Armenia", 
-		{0, 0},
+		{152, 47},
 
 		// "AT:Austria", 
-		{0, 0},
+		{130, 40},
 
 		// "AZ:Azerbaijan" 
-		{0, 0}
+		{154, 46}
 
 	},
 
 	{
 		// "Bahrain", 
-		{0, 0},
+		{155, 63},
 		
 		// "BD:Bangladesh",
 		{180, 65},
 		
 		// "BY:Belarus",
-		{0, 0},
+		{141, 32},
 		
 		// "BE:Belgium",
 		{121, 38},
 		
 		// "BZ:Belize", 
-		{0, 0},
+		{58, 73},
 		
 		//"BJ:Benin", 
-		{0, 0},
+		{123, 84},
 		
 		// BO:Bolivia",
-		{0, 0},
+		{78, 109},
 		
 		// "BA:Bosnia and Herzegovina", 
-		{0, 0},
+		{133, 43},
 		
 		// "BW:Botswana", 
-		{0, 0},
+		{137, 121},
 		
 		// "BR:Brazil", 
 		{85, 105},
 		
 		// "BN:Brunei", 
-		{0, 0},
+		{201, 89},
 
 		// "BG:Bulgaria", 
-		{0, 0},
+		{138, 44},
 		
 		// "BF:Burkina Faso",
-		{0, 0},
+		{118, 79},
 		
 		// "BI:Burundi"
-		{0, 0},
+		{142, 102},
 	},
 
 	{
 		//"KH:Cambodia"
 		{193, 77},
 		//"CM:Cameroon"
-		{0, 0},
+		{129, 87},
 		//"CA:Canada",
 		{50, 25},
 		//"CF:Central African Republic"
-		{0, 0},
+		{135, 89},
 		//"TD:Chad"
-		{0, 0},
+		{136, 75},
 		//"CL:Chile"
-		{0, 0},
+		{70, 127},
 		//"CN:China"
 		{200, 60},
 		//"CO:Colombia",
-		{0, 0},
+		{68, 88},
 		//"CR:Costa Rica"
-		{0, 0},
+		{60, 82},
 		//"CI:Cote d'Ivoire"
-		{0, 0},
+		{116, 85},
 		//"HR:Croatia"
-		{0, 0},
+		{131, 44},
 		//"CZ:Czechia"
-		{0, 0}
+		{130, 38}
 	},
 
 	{
 		//"CD:Democratic Republic of the Congo"
-		{0, 0},
+		{136, 98},
 		//"DK:Denmark",
 		{127, 30},
 		//"DJ:Djibouti",
-		{0, 0},
+		{150, 80},
 		//"DO:Dominican Republic"
-		{0, 0}
+		{73, 73}
 	},
 
 	{
 		//"EC:Ecuador"
-		{0, 0},
+		{65, 94},
 		//"EG:Egypt"
 		{139, 63},
 		//"SV:El Salvador",
-		{0, 0},
+		{57, 77},
 		//"GQ:Equatorial Guinea"
-		{0, 0},
+		{129, 92},
 		//"ER:Eritrea"
-		{0, 0},
+		{147, 77},
 		//"EE:Estonia"
-		{0, 0},
+		{140, 27},
 		//"SZ:Eswatini"
-		{0, 0},
+		{139, 28},
 		//"ET:Ethiopia"
-		{0, 0}
+		{146, 84}
 	},
 
 	{
@@ -2554,30 +2554,30 @@ int spriteCoordinates[26][20][2] = {
 		//"FR:France"
 		{122, 40},
 		//"GF:French Guiana"
-		{0, 0}
+		{84, 95}
 	},
 
 	{
 		//"GA:Gabon"
-		{0, 0},
+		{129, 95},
 		//"GM:Gambia"
-		{0, 0},
+		{119, 79},
 		//"GE:Georgia"
-		{0, 0},
+		{151, 46},
 		//"DE:Germany"
-		{0, 0},
+		{129, 36},
 		//"GH:Ghana"
-		{0, 0},
+		{119, 84},
 		//"GR:Greece"
 		{136, 49},
 		//"GT:Guatemala"
-		{0, 0},
+		{57, 74},
 		//"GN:Guinea"
-		{0, 0},
+		{114, 83},
 		//"GW:Guinea-Bissau"
-		{0, 0},
+		{113, 85},
 		//"GY:Guyana"
-		{0, 0}
+		{77, 87}
 	},
 
 	{
@@ -2586,94 +2586,94 @@ int spriteCoordinates[26][20][2] = {
 		//"VA:Holy See"
 		{128, 45},
 		//"HN:Honduras"
-		{0, 0},
+		{58, 76},
 		//"HU:Hungary"
-		{0, 0}
+		{135, 41}
 	},
 
 	{
 		//"Iceland"
-		{0, 0},
+		{106, 20},
 		//"IN:India"
 		{175, 70},
 		//"ID:Indonesia"
-		{0, 0},
+		{198, 92},
 		//"IR:Iran"
-		{0, 0},
+		{162, 58},
 		//"IQ:Iraq"
-		{0, 0},
+		{152, 55},
 		//"IE:Ireland"
-		{0, 0},
+		{114, 33},
 		//"IL:Israel"
-		{0, 0},
+		{146, 56},
 		//"IT:Italy"
 		{130, 46},
 	},
 
 	{
 		//"JO:Jordan"
-		{0, 0}
+		{147, 57}
 	},
 
 	{
 		//"KZ:Kazakhstan"
-		{0, 0},
+		{165, 35},
 		//"KE:Kenya"
-		{0, 0},
+		{146, 91},
 		//"Kosovo"
-		{0, 0},
+		{135, 45},
 		//"KW:Kuwait"
-		{0, 0},
+		{153, 60},
 		//"KG:Kyrgyzstan"
-		{0, 0}
+		{169, 47}
 	},
 
 	{
 		//"LA:Laos"
-		{0, 0},
+		{192, 73},
 		//"LV:Latvia"
-		{0, 0},
+		{137, 29},
 		//"LB:Lebanon",
-		{0, 0},
+		{147, 55},
 		//"Lesotho"
-		{0, 0},
+		{139, 128},
 		//"LR:Liberia"
-		{0, 0},
+		{113, 83},
 		//"LY:Libya"
-		{0, 0},
+		{133, 62},
 		//"LI:Liechtenstein"
-		{0, 0},
+		{126, 40},
 		// "LT:Lithuania"
-		{0, 0},
+		{136, 31},
 		//"LU:Luxembourg"
-		{0, 0},
+		{124, 38},
 	},
 	// M
 	{
 		// "MO:Macao"
 		{200, 70},
 		//"MW:Malawi"
-		{0, 0},
+		{142, 109},
 		//"MY:Malaysia",
-		{0, 0},
+		{192, 89},
 		// "ML:Mali"
-		{0, 0},
+		{121, 73},
 		//"MR:Mauritania"
-		{0, 0},
+		{114, 73},
 		//"MX:Mexico"
 		{50, 70},
 		//"MD:Moldova"
-		{0, 0},
+		{139, 41},
 		// "MC:Monaco"
-		{0, 0},
+		{125, 43},
 		//"MN:Mongolia"
 		{190, 43},
 		//"ME:Montenegro"
-		{0, 0},
+		{132, 44},
 		//"MA:Morocco"
-		{0, 0},
+		{118, 57},
 		// "MZ:Mozambique"
-		{0, 0}
+		{143, 116}
 	},
 	// N
 	{
@@ -2684,13 +2684,13 @@ int spriteCoordinates[26][20][2] = {
 		//"NL:Netherlands"
 		{123, 36},
 		// "NI:Nicaragua"
-		{0, 0},
+		{60, 80},
 		//"NE:Niger"
-		{0, 0},
+		{126, 74},
 		//"NG:Nigeria",
-		{0, 0},
+		{124, 82},
 		//"MK:North Macedonia"
-		{0, 0},
+		{136, 45},
 		//"KP:North Korea"
 		{209, 48},
 		//"NO:Norway"
@@ -2699,122 +2699,122 @@ int spriteCoordinates[26][20][2] = {
 	// O
 	{
 		//"OM:Oman"
-		{0, 0}
+		{159, 71}
 	},
 	// P
 	{
 		//"PK:Pakistan"
-		{0, 0},
+		{170, 63},
 		//"PS:Palestine"
-		{0, 0},
+		{145, 56},
 		//"PA:Panama"
-		{0, 0},
+		{62, 83},
 		//"PG:Papua New Guinea"
-		{0, 0},
+		{223, 102},
 		//"PY:Paraguay",
-		{0, 0},
+		{79, 124},
 		//"PE:Peru"
-		{0, 0},
+		{69, 106},
 		//"PL:Poland"
-		{0, 0},
+		{132, 35},
 		//"PT:Portugal"
 		{115, 47}
 	},
 	// Q
 	{
 		// "QA:Qatar"
-		{0, 0}
+		{155, 64}
 	},
 	// R
 	{
 		// "CG:Republic of Congo"
-		{0, 0},
+		{132, 95},
 
 		//"RO:Romania"
-		{0, 0},
+		{139, 44},
 		
 		//"RU:Russian Federation"
 		{188, 22},
 		
 		// "RW:Rwanda"
-		{0, 0}
+		{141, 95}
 	},
 
 	// S
 	{
 		//"SM:San Marino"
-		{0, 0},
+		{129, 45},
 		//"SA:Saudi Arabia"
 		{152, 67},
 		//"SN:Senegal",
-		{0, 0},
+		{113, 77},
 		//"RS:Serbia"
-		{0, 0},
+		{137, 44},
 		//"SL:Sierra Leone"
-		{0, 0},
+		{112, 82},
 		//"SG:Singapore"
 		{0, 0},
 		//"SK:Slovakia",
-		{0, 0},
+		{134, 39},
 		// "SI:Slovenia"
-		{0, 0},
+		{132, 41},
 		//"SO:Somalia"
-		{0, 0},
+		{153, 86},
 		//"ZA:South Africa"
 		{137, 130},
 		//"KR:South Korea",
 		{210, 53},
 		// "SS:South Sudan"
-		{0, 0},
+		{140, 84},
 		//"ES:Spain"
 		{117, 48},
 		//"SD:Sudan",
 		{140, 74},
 		// "SR:Suriname"
-		{0, 0},
+		{87, 98},
 		//"CH:Switzerland"
-		{0, 0},
+		{125, 43},
 		//"SE:Sweden"
 		{132, 25},
 		//"SY:Syria"},
-		{0, 0}
+		{147, 55}
 	},
 	// T
 	{
 		// "TJ:Tajikistan"
-		{0, 0},
+		{170, 48},
 		//"TZ:Tanzania"
-		{0, 0},
+		{145, 101},
 		//"TH:Thailand"
-		{0, 0},
+		{192, 76},
 		//"TL:Timor-Leste"
-		{0, 0},
+		{209, 103},
 		//"TN:Tunisia"
-		{0, 0},
+		{126, 54},
 		//"TR:Turkey"
 		{142, 50},
 		//"TM:Turkmenistan"},
-		{0, 0}
+		{161, 50}
 	},
 	// U
 	{
 		//"UG:Uganda"
-		{0, 0},
+		{142, 90},
 
 		//"UA:Ukraine"
-		{0, 0},
+		{144, 37},
 		
 		//"AE:United Arab Emirates"
-		{0, 0},
+		{157, 68},
 		
 		//"GB:United Kingdom"
 		{119, 33},
 		
 		//"UY:Uruguay"
-		{0, 0},
+		{80, 130},
 		
 		//"UZ:Uzbekistan"
-		{0, 0},
+		{166, 44},
 		
 		//"US:United States"},
 		{50, 50},
@@ -2822,7 +2822,7 @@ int spriteCoordinates[26][20][2] = {
     // V
 	{
 		//"VE:Venezuela"
-		{0, 0},
+		{76, 87},
 		//"VN:Vietnam"},
 		{196, 76}
 	},
@@ -2833,14 +2833,14 @@ int spriteCoordinates[26][20][2] = {
 	// Y
 	{
 		//"YE:Yemen"
-		{0, 0}
+		{155, 74}
 	},
     // Z
 	{
 		//"ZM:Zambia"
-		{0, 0},
+		{139, 112},
 		//"ZW:Zimbabwe"},
-		{0, 0}
+		{140, 117}
 	}
 };
 
@@ -2977,7 +2977,8 @@ int main(void)
 	consoleSelect(&console);
 
 	// Create a dot sprite as a test.
-	NF_CreateSprite(0, 3, 0, 0, 100, 50);
+	// NF_CreateSprite(0, 3, 0, 0, 100, 50);
+	int dots_on_screen = 0;
 	
 	int running = 1;
 
@@ -3120,7 +3121,7 @@ int main(void)
 				iprintf("Added %s to the path!\n", country_code);
 				int x = spriteCoordinates[page_selected][item_selected][0];
 				int y = spriteCoordinates[page_selected][item_selected][1];
-				NF_CreateSprite(0, 1, 0, 0, x, y);
+				NF_CreateSprite(0, dots_on_screen++, 0, 0, x, y);
 				path_insert(user_path, country_code);
 				path_print(user_path);
 			}
