@@ -177,7 +177,6 @@ int path_prepend(struct Path * path, char * vert)
 // O(N)
 void path_print(struct Path * path)
 {
-	fprintf(stderr, "printing path length %d\n", path->length);
 	for (int i = 0; i < path->length; i++)
 	{
 		if (path->vertices[i] != NULL)

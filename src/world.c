@@ -17,27 +17,22 @@
 #include "../include/hash_table.h"
 #include "../include/graph.h"
 
-
-// Image data gen. by GRIT
-// #include "world_map.h"
-
 #define BUFFERSIZE 127
 #define HLINE "+------------------------------+"
-
 #define ERASENEWLINE(buffer) buffer[strcspn(buffer, "\n")] = '\0'
 
-// Globals
-// Pannable map on top of the screen
-int camera_x = 0, camera_y = 0;
+// Longest path the game will request a player to create.
+// Shorter paths are easier to figure out.
+#define MAX_PATH_LENGTH 10
 
+// Globals
 enum GAME_STATE 
 {
 	GENERATING,
 	PLAYING,
 	MAIN_MENU,
 	GAME_END,
-	WAITING,
-	PANNING
+	WAITING
 };
 
 struct Vertex * select_country(struct hash_table * name_to_alpha2,
@@ -2370,8 +2365,7 @@ void draw_console_pages(char pages[24][20][36], int item_selected, int page_sele
 void draw_status_page(struct hash_table * alpha2_to_name, struct Vertex * source, struct Vertex * dest, struct Path * user_path)
 {
 	consoleClear();
-	iprintf("CAMERA: X=%d, Y=%d\n", camera_x, camera_y);
-	iprintf("%s --> %s\n" HLINE "\n", 
+	iprintf("Create a path from \n%s to %s\n" HLINE "\n", 
 	dictionary_get_value(alpha2_to_name, source->s_data),
 	dictionary_get_value(alpha2_to_name, dest->s_data));
 	path_print(user_path);
@@ -2389,31 +2383,6 @@ void print_score(int pass, int par)
 	}
 	else
 		iprintf("You lost!\n");
-}
-
-/**
- * @brief Determines the position a sprite should be drawn on screen
- * based on camera position and sprite "world" position. Translates
- * a position in the imagined 2d plane, incl. space not drawn to a 
- * pixel position.
- * @param cx camera x
- * @param cy camera y
- * @param sx sprite x
- * @param sy sprite y
- * @param dx draw x
- * @param dy draw y 
- **/
-void project(int cx, int cy, int sx, int sy, int * dx, int * dy)
-{
-    *dx = sx-cx;
-    *dy = sy-cy;
-}
-
-void draw_demo_moving_sprite()
-{
-	int dx = 0, dy = 0;
-	project(camera_x, camera_y, 100, 50, &dx, &dy);
-	NF_MoveSprite(0, 5, dx, dy);
 }
 
 int spriteCoordinates[26][20][2] = {
@@ -3017,8 +2986,6 @@ int main(void)
 		scanKeys();
 		keys = keysDown();
 
-		// draw_demo_moving_sprite();
-
 		if (state == WAITING)
 		{
 			if (keys & KEY_START)
@@ -3032,7 +2999,7 @@ int main(void)
 			{
 				if (*c == '\0')
 				{
-					if (delay_count == 200)
+					if (delay_count == 300)
 					{
 						c = title;
 						consoleClear();
@@ -3056,15 +3023,21 @@ int main(void)
 		// If the challenge needs to be generated..
 		if (state == GENERATING)
 		{
+			// Clear any dots on the screen from last game
+			for (int i = 0; i < dots_on_screen; i++)
+			{
+				NF_DeleteSprite(0, i);
+			}
+			dots_on_screen = 0;
+
 			consoleClear(); // Clear out the main menu
 			// Pick 2 countries and construct a path until the path is valid.
-			while (sys_path == NULL || (sys_path->length > 4))
+			while (sys_path == NULL || (sys_path->length > MAX_PATH_LENGTH))
 			{
 				source = random_country(countryVertices);
 				dest = random_country(countryVertices);
 				sys_path = find_path(source, dest);
 				user_path = construct_path();
-				path_insert(user_path, source->s_data);
 			}
 			// Draw the status
 			draw_status_page(alpha2_to_name, source, dest, user_path);
@@ -3119,7 +3092,8 @@ int main(void)
 				iprintf("Added %s to the path!\n", country_code);
 				int x = spriteCoordinates[page_selected][item_selected][0];
 				int y = spriteCoordinates[page_selected][item_selected][1];
-				NF_CreateSprite(0, dots_on_screen++, 0, 0, x, y);
+				NF_CreateSprite(0, dots_on_screen, 0, 0, x, y);
+				dots_on_screen++;
 				path_insert(user_path, country_code);
 				path_print(user_path);
 			}
@@ -3151,36 +3125,6 @@ int main(void)
 					iprintf("%s\n", dictionary_get_value(alpha2_to_name, v->neighbours[i]->s_data));
 				}
 			}
-
-			// switch to Panning mode
-			if (keys & KEY_SELECT)
-			{
-				state = PANNING;
-				iprintf("entered panning mode\n");
-			}
-		}
-
-		if (state == PANNING)
-		{
-			// check for return to playing mode
-			if (keys & KEY_B)
-			{
-				state = PLAYING;
-				iprintf("exiting panning mode\n");
-			}
-
-			// Camera panning
-			if (keys & KEY_RIGHT)
-				camera_x++;
-
-			if (keys & KEY_LEFT)
-				camera_x--;
-
-			if (keys & KEY_UP)
-				camera_y--;
-
-			if (keys & KEY_DOWN)
-				camera_y++;
 		}
 
 		if (state == GAME_END)
@@ -3198,14 +3142,7 @@ int main(void)
 			iprintf("Calculating score...\n");
 			print_score(passes, par);
 			iprintf("Press START to play again.\n");
-			
-			// Destroy dots on screen
-			for (int i = 0; i < dots_on_screen; i++)
-			{
-				NF_DeleteSprite(0, i);
-				dots_on_screen = 0;
-			}
-
+		
 			state = WAITING;
 			sys_path = NULL;
 		}
