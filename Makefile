@@ -24,7 +24,7 @@ include $(DEVKITARM)/ds_rules
 # ICON is the image used to create the game icon, leave blank to use default rule
 # NITRO is a directory that will be accessible via NitroFS
 #---------------------------------------------------------------------------------
-TARGET   := $(shell basename $(CURDIR))
+TARGET   := worldpath
 BUILD    := build
 SOURCES  := src
 INCLUDES := include
