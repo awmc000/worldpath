@@ -2326,15 +2326,10 @@ void system_setup()
 
     // Load background files from NitroFS
     NF_LoadTiledBg("/bg/nfl", "nfl", 256, 256);
-    NF_LoadTiledBg("/bg/bg3", "layer_3", 256, 256);
-    NF_LoadTiledBg("/bg/bg2", "layer_2", 1024, 256);
 
     // Load sprite files from NitroFS
     NF_LoadSpriteGfx("/sprite/dot", 0, 16,16);
     NF_LoadSpritePal("/sprite/dot", 0);
-
-    // NF_LoadSpriteGfx("/sprite/ball", 1, 32, 32);
-    // NF_LoadSpritePal("/sprite/ball", 1);
 
     // Create top screen background
     NF_CreateTiledBg(0, 3, "nfl");
@@ -2343,8 +2338,6 @@ void system_setup()
     NF_VramSpriteGfx(0, 0, 0, false); // Ball: Keep all frames in VRAM
     NF_VramSpritePal(0, 0, 0);
 
-    // NF_VramSpriteGfx(0, 1, 0, false); // Character: Keep unused frames in RAM
-    // NF_VramSpritePal(0, 1, 0);
 }
 
 void draw_console_pages(char pages[24][20][36], int item_selected, int page_selected)
